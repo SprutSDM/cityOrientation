@@ -1,19 +1,17 @@
 package ru.spbgororient.cityorientation
 
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
-import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
-import android.view.Menu
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_navigation.*
 import kotlinx.android.synthetic.main.app_bar_navigation.*
-import ru.spbgororient.cityorientation.fragments.ListOfQuestsFragment
-import ru.spbgororient.cityorientation.fragments.MyTeamFragment
+import ru.spbgororient.cityorientation.fragments.listOfQuests.ListOfQuestsFragment
+import ru.spbgororient.cityorientation.fragments.myTeam.MyTeamFragment
+import ru.spbgororient.cityorientation.fragments.waitingToStart.WaitingToStartFragment
 
 class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -29,6 +27,8 @@ class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
+        val fragment = ListOfQuestsFragment.newInstance()
+        supportFragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit()
     }
 
     override fun onBackPressed() {
@@ -40,19 +40,17 @@ class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        // Handle navigation view item clicks here.
         lateinit var fragment: Fragment
 
         when (item.itemId) {
             R.id.nav_my_group -> {
                 fragment = MyTeamFragment.newInstance()
-                // Handle the camera action
             }
             R.id.nav_list_of_quests -> {
                 fragment = ListOfQuestsFragment.newInstance()
             }
             R.id.nav_quest -> {
-
+                fragment = WaitingToStartFragment.newInstance()
             }
         }
 

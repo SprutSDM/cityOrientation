@@ -1,4 +1,4 @@
-package ru.spbgororient.cityorientation.fragments
+package ru.spbgororient.cityorientation.fragments.listOfQuests
 
 import android.content.Context
 import android.support.v7.widget.CardView
@@ -9,8 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import ru.spbgororient.cityorientation.R
-import ru.spbgororient.cityorientation.quests.Quest
-import ru.spbgororient.cityorientation.quests.QuestsController
+import ru.spbgororient.cityorientation.questsController.Quest
+import ru.spbgororient.cityorientation.questsController.QuestsController
 
 class Adapter(val context: Context,
               val questsController: QuestsController) : RecyclerView.Adapter<Adapter.ViewHolder>() {
@@ -23,13 +23,13 @@ class Adapter(val context: Context,
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
-        val v = LayoutInflater.from(context).inflate(R.layout.quest_card_view, viewGroup, false)
+        val v = LayoutInflater.from(context).inflate(R.layout.quest_in_list_card_view, viewGroup, false)
         Log.d("ссссс", "createViewHolder")
         return ViewHolder(v)
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
-        viewHolder.questCard.findViewById<TextView>(R.id.nameOfQuest).text = quests[i].name
+        viewHolder.questCard.findViewById<TextView>(R.id.numberOfQuest).text = quests[i].name
         viewHolder.questCard.findViewById<TextView>(R.id.dateToStart).text = quests[i].date
         viewHolder.questCard.findViewById<TextView>(R.id.amountOfCp).text = quests[i].amountOfCp.toString()
         Log.d("ссссс", "bindViewHolder " + i.toString())

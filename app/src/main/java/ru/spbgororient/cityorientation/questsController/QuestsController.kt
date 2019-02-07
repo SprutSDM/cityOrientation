@@ -1,4 +1,4 @@
-package ru.spbgororient.cityorientation.quests
+package ru.spbgororient.cityorientation.questsController
 
 class QuestsController private constructor() {
     var listOfQuests: MutableList<Quest> = ArrayList()

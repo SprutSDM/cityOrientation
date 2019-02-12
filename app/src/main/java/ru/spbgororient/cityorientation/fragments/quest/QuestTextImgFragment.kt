@@ -19,8 +19,6 @@ class QuestTextImgFragment(): Fragment() {
     }
 
     companion object {
-        fun newInstance(): QuestTextImgFragment {
-            return QuestTextImgFragment()
-        }
+        val instanse: QuestTextImgFragment by lazy { QuestTextImgFragment() }
     }
 }

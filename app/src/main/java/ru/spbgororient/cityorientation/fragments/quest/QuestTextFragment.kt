@@ -19,8 +19,6 @@ class QuestTextFragment(): Fragment() {
     }
 
     companion object {
-        fun newInstance(): QuestTextFragment {
-            return QuestTextFragment()
-        }
+        val instanse: QuestViewFragment by lazy { QuestViewFragment() }
     }
 }

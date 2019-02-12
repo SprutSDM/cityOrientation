@@ -19,8 +19,6 @@ class QuestTextSoundFragment(): Fragment() {
     }
 
     companion object {
-        fun newInstance(): QuestTextSoundFragment {
-            return QuestTextSoundFragment()
-        }
+        val instanse: QuestTextSoundFragment by lazy { QuestTextSoundFragment() }
     }
 }

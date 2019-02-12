@@ -23,11 +23,6 @@ import ru.spbgororient.cityorientation.questsController.DataController
 
 class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    val myTeamFragment: MyTeamFragment by lazy { MyTeamFragment.newInstance() }
-    val listOfQuestsFragment: ListOfQuestsFragment by lazy { ListOfQuestsFragment.newInstance() }
-    val waitingToStartFragment: WaitingToStartFragment by lazy { WaitingToStartFragment.newInstance() }
-    val questViewFragment: QuestViewFragment by lazy { QuestViewFragment.newInstance() }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_navigation)
@@ -40,8 +35,13 @@ class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
-        val fragment = ListOfQuestsFragment.newInstance()
+        lateinit var fragment: Fragment
+        when (DataController.instance.questId) {
+            "Quest ID" -> fragment = ListOfQuestsFragment.instanse
+            else -> fragment = QuestViewFragment.instanse
+        }
         supportFragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit()
+
         nav_view.getHeaderView(0).findViewById<TextView>(R.id.labelTeamName).text = DataController.instance.teamName
     }
 
@@ -58,13 +58,13 @@ class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
 
         when (item.itemId) {
             R.id.nav_my_group -> {
-                fragment = myTeamFragment
+                fragment = MyTeamFragment.instanse
             }
             R.id.nav_list_of_quests -> {
-                fragment = listOfQuestsFragment
+                fragment = ListOfQuestsFragment.instanse
             }
             R.id.nav_quest -> {
-                fragment = waitingToStartFragment
+                fragment = WaitingToStartFragment.instanse
             }
         }
 

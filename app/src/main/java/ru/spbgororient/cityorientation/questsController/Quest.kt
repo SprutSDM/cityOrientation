@@ -1,3 +1,12 @@
 package ru.spbgororient.cityorientation.questsController
 
-data class Quest(var name: String, var date: String, var time: String, var place: String, var amountOfCp: Int)
+import com.google.gson.annotations.SerializedName
+
+data class Quest(
+    @SerializedName("quest_id") var questId: String,
+    @SerializedName("name") var name: String,
+    @SerializedName("place") var place: String,
+    @SerializedName("date") var date: Int,
+    @SerializedName("time") var time: Int,
+    @SerializedName("amountOfCp") var amountOfCp: Int,
+    @SerializedName("duration") var duration: Int)

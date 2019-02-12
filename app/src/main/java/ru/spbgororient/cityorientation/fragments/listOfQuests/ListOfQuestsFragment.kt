@@ -27,7 +27,6 @@ class ListOfQuestsFragment: Fragment() {
         )
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(thisView.context)
-        Log.d("ссссс", "onCreateViewListOfQuests")
         return thisView
     }
 
@@ -40,8 +39,6 @@ class ListOfQuestsFragment: Fragment() {
     }
 
     companion object {
-        fun newInstance(): ListOfQuestsFragment {
-            return ListOfQuestsFragment()
-        }
+        val instanse: ListOfQuestsFragment by lazy { ListOfQuestsFragment() }
     }
 }

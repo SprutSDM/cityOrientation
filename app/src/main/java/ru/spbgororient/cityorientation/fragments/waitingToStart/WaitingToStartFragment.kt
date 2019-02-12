@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.fragment_waiting_to_start.*
 import ru.spbgororient.cityorientation.R
 import ru.spbgororient.cityorientation.fragments.quest.QuestViewFragment
 
-class WaitingToStartFragment(): Fragment() {
+class WaitingToStartFragment: Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_waiting_to_start, container, false)
@@ -19,14 +19,12 @@ class WaitingToStartFragment(): Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         butContinue.setOnClickListener {
-            val questFragment = QuestViewFragment.newInstance()
+            val questFragment = QuestViewFragment.instanse
             fragmentManager!!.beginTransaction().replace(R.id.content_frame, questFragment).commit()
         }
     }
 
     companion object {
-        fun newInstance(): WaitingToStartFragment {
-            return WaitingToStartFragment()
-        }
+        val instanse: WaitingToStartFragment by lazy { WaitingToStartFragment() }
     }
 }

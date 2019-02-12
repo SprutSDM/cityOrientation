@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import ru.spbgororient.cityorientation.R
 import ru.spbgororient.cityorientation.questsController.Quest
@@ -28,15 +29,21 @@ class Adapter(val context: Context,
         return ViewHolder(v)
     }
 
+    fun callbackApply(ans: Boolean) {
+
+    }
+
     override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
         viewHolder.questCard.findViewById<TextView>(R.id.numberOfQuest).text = quests[i].name
-        viewHolder.questCard.findViewById<TextView>(R.id.dateToStart).text = quests[i].date
+        viewHolder.questCard.findViewById<TextView>(R.id.dateToStart).text = quests[i].date.toString()
         viewHolder.questCard.findViewById<TextView>(R.id.amountOfCp).text = quests[i].amountOfCp.toString()
-        Log.d("ссссс", "bindViewHolder " + i.toString())
+        viewHolder.questCard.findViewById<Button>(R.id.butApply).setOnClickListener {
+            DataController.instance.joinToQuest(i, ::callbackApply)
+        }
+
     }
 
     override fun getItemCount(): Int {
-        Log.d("ссссс", "getItemCountAdapter")
         return quests.size
     }
 
@@ -45,7 +52,6 @@ class Adapter(val context: Context,
         val questCard: CardView = itemView.findViewById(R.id.quest_card_view)
 
         init {
-            Log.d("ссссс", "initViewHolder")
             itemView.setOnClickListener(this)
         }
 

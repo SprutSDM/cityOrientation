@@ -3,17 +3,32 @@ package ru.spbgororient.cityorientation
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import kotlinx.android.synthetic.main.activity_login.*
 import ru.spbgororient.cityorientation.questsController.DataController
 
 class LoginActivity : AppCompatActivity() {
 
-    fun callback(ans: Boolean) {
+    fun callbackListOfTasks(ans: Boolean) {
         if (ans) {
             val intent = Intent(this, NavigationActivity::class.java)
             startActivity(intent)
-        } else {
+        }
+    }
+
+    fun callbackGetState(ans: Boolean) {
+        if (ans) {
+            if (DataController.instance.questId == "Quest ID") {
+                val intent = Intent(this, NavigationActivity::class.java)
+                startActivity(intent)
+            } else
+                DataController.instance.listOfTasks(::callbackListOfTasks)
+        }
+    }
+
+    fun callbackLogin(ans: Boolean) {
+        if (ans)
+            DataController.instance.getState(::callbackGetState)
+        else {
 
         }
     }
@@ -28,7 +43,7 @@ class LoginActivity : AppCompatActivity() {
             val login = inputLogin.editText!!.text.toString()
             val password = inputPassword.editText!!.text.toString()
             if (login.isNotEmpty() && password.isNotEmpty())
-                DataController.instance.loginTeam(login, password, ::callback)
+                DataController.instance.loginTeam(login, password, ::callbackLogin)
         }
     }
 }

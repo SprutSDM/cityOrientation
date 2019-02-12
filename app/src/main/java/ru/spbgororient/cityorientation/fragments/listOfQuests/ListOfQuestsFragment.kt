@@ -9,7 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import ru.spbgororient.cityorientation.R
-import ru.spbgororient.cityorientation.questsController.QuestsController
+import ru.spbgororient.cityorientation.questsController.DataController
 
 class ListOfQuestsFragment: Fragment() {
 
@@ -23,7 +23,7 @@ class ListOfQuestsFragment: Fragment() {
 
         adapter = Adapter(
             thisView.context,
-            QuestsController.instance
+            DataController.instance
         )
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(thisView.context)
@@ -34,7 +34,7 @@ class ListOfQuestsFragment: Fragment() {
     fun showAllQuests() {
         adapter = Adapter(
             thisView.context,
-            QuestsController.instance
+            DataController.instance
         )
         recyclerView.adapter = adapter
     }

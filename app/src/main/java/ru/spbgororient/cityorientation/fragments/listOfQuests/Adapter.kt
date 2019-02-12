@@ -10,10 +10,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import ru.spbgororient.cityorientation.R
 import ru.spbgororient.cityorientation.questsController.Quest
-import ru.spbgororient.cityorientation.questsController.QuestsController
+import ru.spbgororient.cityorientation.questsController.DataController
 
 class Adapter(val context: Context,
-              val questsController: QuestsController) : RecyclerView.Adapter<Adapter.ViewHolder>() {
+              val questsController: DataController) : RecyclerView.Adapter<Adapter.ViewHolder>() {
 
     private val quests: List<Quest>
 

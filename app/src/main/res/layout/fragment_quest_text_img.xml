@@ -20,7 +20,7 @@
                 app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 app:layout_constraintTop_toTopOf="parent" android:textColor="@android:color/black"
-                android:layout_marginTop="8dp"/>
+                android:layout_marginTop="4dp"/>
         <TextView
                 android:text="Шарманщик, запах жареных каштанов и уютных кафе. Такая вот частичка франузской романтики. Сколько этажей в здании с флагом России?"
                 android:layout_width="0dp"
@@ -30,7 +30,7 @@
                 android:layout_marginStart="8dp" android:textSize="14sp"
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent" android:layout_marginRight="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/imageOfQuest" android:layout_marginTop="8dp"/>
+                app:layout_constraintTop_toBottomOf="@+id/imageOfQuest" android:layout_marginTop="4dp"/>
         <android.support.design.widget.TextInputLayout
                 android:id="@+id/inputLogin"
                 android:layout_width="wrap_content"
@@ -54,13 +54,14 @@
                     android:textSize="14sp"/>
         </android.support.design.widget.TextInputLayout>
         <Button
-                android:text="Получить подсказку"
+                android:text="Отправить"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/getTip" android:textSize="10sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="8dp" android:layout_marginRight="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/dateOfQuest"/>
+                app:layout_constraintTop_toBottomOf="@+id/dateOfQuest"
+        />
         <ImageView
                 android:layout_width="0dp"
                 android:layout_height="140dp" card_view:srcCompat="@drawable/logo"

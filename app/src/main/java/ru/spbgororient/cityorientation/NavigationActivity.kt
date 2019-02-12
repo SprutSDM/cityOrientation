@@ -1,19 +1,32 @@
 package ru.spbgororient.cityorientation
 
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
+import android.support.v4.view.MenuItemCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.view.Menu
 import android.view.MenuItem
+import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_navigation.*
 import kotlinx.android.synthetic.main.app_bar_navigation.*
+import kotlinx.android.synthetic.main.nav_header_navigation.*
+import kotlinx.android.synthetic.main.nav_header_navigation.view.*
 import ru.spbgororient.cityorientation.fragments.listOfQuests.ListOfQuestsFragment
 import ru.spbgororient.cityorientation.fragments.myTeam.MyTeamFragment
+import ru.spbgororient.cityorientation.fragments.quest.QuestViewFragment
 import ru.spbgororient.cityorientation.fragments.waitingToStart.WaitingToStartFragment
+import ru.spbgororient.cityorientation.questsController.DataController
 
 class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
+    val myTeamFragment: MyTeamFragment by lazy { MyTeamFragment.newInstance() }
+    val listOfQuestsFragment: ListOfQuestsFragment by lazy { ListOfQuestsFragment.newInstance() }
+    val waitingToStartFragment: WaitingToStartFragment by lazy { WaitingToStartFragment.newInstance() }
+    val questViewFragment: QuestViewFragment by lazy { QuestViewFragment.newInstance() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +42,7 @@ class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         nav_view.setNavigationItemSelectedListener(this)
         val fragment = ListOfQuestsFragment.newInstance()
         supportFragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit()
+        nav_view.getHeaderView(0).findViewById<TextView>(R.id.labelTeamName).text = DataController.instance.teamName
     }
 
     override fun onBackPressed() {
@@ -44,13 +58,13 @@ class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
 
         when (item.itemId) {
             R.id.nav_my_group -> {
-                fragment = MyTeamFragment.newInstance()
+                fragment = myTeamFragment
             }
             R.id.nav_list_of_quests -> {
-                fragment = ListOfQuestsFragment.newInstance()
+                fragment = listOfQuestsFragment
             }
             R.id.nav_quest -> {
-                fragment = WaitingToStartFragment.newInstance()
+                fragment = waitingToStartFragment
             }
         }
 

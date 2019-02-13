@@ -42,6 +42,6 @@ class MyTeamFragment: Fragment() {
     }
 
     companion object {
-        val instanse: MyTeamFragment by lazy { MyTeamFragment() }
+        val instance: MyTeamFragment by lazy { MyTeamFragment() }
     }
 }

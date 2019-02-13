@@ -22,6 +22,10 @@ class DataController private constructor() {
     var gsonBuilder = GsonBuilder().create()
     var client = OkHttpClient()
 
+    fun getTask(): Task {
+        return listOfTasks[step]
+    }
+
     private fun makeRequest(urlRequest: String, reqObj: kotlin.Any): Request {
         val fullUrl = "$url/$urlRequest"
         val request = Request.Builder()
@@ -148,12 +152,12 @@ class DataController private constructor() {
                 val data = gsonBuilder.fromJson(body, GetStateResponse::class.java)
                 Log.d("getState", data.toString())
                 if (data.message == "ok") {
-                    callback(true)
                     teamName = data.teamName
                     questId = data.questId
                     step = data.step
                     times = data.times
                     timesComplete = data.timesComplete
+                    callback(true)
                 } else
                     callback(false)
             }

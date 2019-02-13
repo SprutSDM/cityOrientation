@@ -39,6 +39,6 @@ class ListOfQuestsFragment: Fragment() {
     }
 
     companion object {
-        val instanse: ListOfQuestsFragment by lazy { ListOfQuestsFragment() }
+        val instance: ListOfQuestsFragment by lazy { ListOfQuestsFragment() }
     }
 }

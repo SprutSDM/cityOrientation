@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_waiting_to_start.*
 import ru.spbgororient.cityorientation.R
-import ru.spbgororient.cityorientation.fragments.quest.QuestViewFragment
+import ru.spbgororient.cityorientation.fragments.quest.QuestTextFragment
+import ru.spbgororient.cityorientation.fragments.quest.QuestTextImgFragment
+import ru.spbgororient.cityorientation.questsController.DataController
 
 class WaitingToStartFragment: Fragment() {
 
@@ -19,12 +21,16 @@ class WaitingToStartFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         butContinue.setOnClickListener {
-            val questFragment = QuestViewFragment.instanse
-            fragmentManager!!.beginTransaction().replace(R.id.content_frame, questFragment).commit()
+            lateinit var fragment: Fragment
+            if (DataController.instance.getTask().img == "")
+                fragment = QuestTextFragment.newInstance()
+            else
+                fragment = QuestTextImgFragment.newInstance()
+            fragmentManager!!.beginTransaction().replace(R.id.content_frame, fragment).commit()
         }
     }
 
     companion object {
-        val instanse: WaitingToStartFragment by lazy { WaitingToStartFragment() }
+        val instance: WaitingToStartFragment by lazy { WaitingToStartFragment() }
     }
 }

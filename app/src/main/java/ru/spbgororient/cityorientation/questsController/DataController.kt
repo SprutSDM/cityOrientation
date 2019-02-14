@@ -18,7 +18,8 @@ class DataController private constructor() {
 
     var isLoadListOfQuests = false
 
-    var url = "http://127.0.0.1/api/v1.0"
+    var url = "http://127.0.0.1:5123/api/v1.0"
+    var urlImg = "http://127.0.0.1:5123/static"
     var gsonBuilder = GsonBuilder().create()
     var client = OkHttpClient()
 
@@ -158,7 +159,9 @@ class DataController private constructor() {
                     times = data.times
                     timesComplete = data.timesComplete
                     callback(true)
-                } else
+                } else if (data.message == "ok but not")
+                    callback(true)
+                else
                     callback(false)
             }
 

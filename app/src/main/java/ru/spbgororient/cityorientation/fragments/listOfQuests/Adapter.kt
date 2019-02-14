@@ -29,8 +29,15 @@ class Adapter(val context: Context,
         return ViewHolder(v)
     }
 
-    fun callbackApply(ans: Boolean) {
+    fun callbackListOfTasks(ans: Boolean) {
+        if (ans) {
 
+        }
+    }
+
+    fun callbackApply(ans: Boolean) {
+        if (ans)
+            DataController.instance.listOfTasks(::callbackListOfTasks)
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {

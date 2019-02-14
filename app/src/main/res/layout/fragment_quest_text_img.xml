@@ -91,6 +91,8 @@
             <Button
                     android:text="Отправить"
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:backgroundTint="@color/colorAccent"
+                    android:textColor="@color/colorWhite"
                     android:id="@+id/checkAnswer" android:textSize="10sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginEnd="8dp" android:layout_marginRight="8dp"

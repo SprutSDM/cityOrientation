@@ -1,11 +1,15 @@
 package ru.spbgororient.cityorientation.fragments.quest
 
+import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import kotlinx.android.synthetic.main.fragment_quest_text.*
 import ru.spbgororient.cityorientation.R
 import ru.spbgororient.cityorientation.fragments.finish.FinishFragment
@@ -23,30 +27,60 @@ class QuestTextFragment: Fragment() {
 
         numberOfQuest.text = "Задание №${DataController.instance.step + 1}"
         contentOfQuest.text = DataController.instance.listOfTasks[DataController.instance.step].content
+        inputAnswer.setOnEditorActionListener { v, actionId, event ->
+            when (actionId) {
+                EditorInfo.IME_ACTION_DONE -> {
+                    if (inputAnswer.text.toString() != "") {
+                        (activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(
+                            activity!!.currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+                        if (checkAnswer!!.text.toString() in DataController.instance.getTask().answers) {
+                            updateCardFragment()
+                            Snackbar.make(
+                                activity!!.findViewById(R.id.content_frame), "Правильно!", Snackbar.LENGTH_LONG).show()
+                        } else
+                            Snackbar.make(activity!!.findViewById(R.id.content_frame), "Ответ неверный!", Snackbar.LENGTH_LONG).show()
+                    }
+                    true
+                }
+                else -> {
+                    false
+                }
+            }
+        }
         checkAnswer.setOnClickListener {
-            lateinit var fragment: Fragment
-            if (DataController.instance.getTask().answers.contains(checkAnswer!!.text.toString())) {
-                DataController.instance.step += 1
-                if (DataController.instance.questId == "Quest ID")
-                    fragment = ListOfQuestsFragment.instance
-                else if (DataController.instance.step >= DataController.instance.listOfTasks.size)
-                    fragment = FinishFragment.instance
-                else if (DataController.instance.getTask().img == "")
-                    fragment = QuestTextFragment.newInstance()
-                else
-                    fragment = QuestTextImgFragment.newInstance()
-                fragmentManager!!.beginTransaction().replace(R.id.content_frame, fragment).commit()
-                Snackbar.make(activity!!.findViewById(R.id.content_frame), "Правильно!", Snackbar.LENGTH_LONG).show()
-            } else
-                Snackbar.make(activity!!.findViewById(R.id.content_frame), "Ответ неверный!", Snackbar.LENGTH_LONG).show()
+            if (inputAnswer.text.toString() == "")
+
+            else {
+                (activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(
+                    activity!!.currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+                if (inputAnswer.text.toString() in DataController.instance.getTask().answers) {
+                    updateCardFragment()
+                    Snackbar.make(activity!!.findViewById(R.id.content_frame), "Правильно!", Snackbar.LENGTH_LONG).show()
+                } else {
+                    Snackbar.make(activity!!.findViewById(R.id.content_frame), "Ответ неверный!", Snackbar.LENGTH_LONG)
+                        .show()
+                }
+            }
         }
     }
 
-    companion object {
-        var instance: QuestTextImgFragment = QuestTextImgFragment()
+    fun updateCardFragment() {
+        lateinit var fragment: Fragment
+        DataController.instance.step += 1
+        if (DataController.instance.step >= DataController.instance.listOfTasks.size)
+            fragment = FinishFragment.instance
+        else if (DataController.instance.getTask().img == "")
+            fragment = QuestTextFragment.newInstance()
+        else
+            fragment = QuestTextImgFragment.newInstance()
+        fragmentManager!!.beginTransaction().replace(R.id.content_frame, fragment).commit()
+    }
 
-        fun newInstance(): QuestTextImgFragment {
-            instance = QuestTextImgFragment()
+    companion object {
+        var instance: QuestTextFragment = QuestTextFragment()
+
+        fun newInstance(): QuestTextFragment {
+            instance = QuestTextFragment()
             return instance
         }
     }

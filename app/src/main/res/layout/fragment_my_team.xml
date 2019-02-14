@@ -17,6 +17,7 @@
                 android:inputType="textPersonName"
                 android:ems="10"
                 android:id="@+id/editNameTeam"
+                android:imeOptions="actionDone"
                 android:hint="Название команды"/>
     </android.support.design.widget.TextInputLayout>
     <android.support.design.widget.TextInputLayout
@@ -65,6 +66,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/button3"
+            android:backgroundTint="@color/colorAccent"
+            android:textColor="@color/colorWhite"
             app:layout_constraintStart_toStartOf="@+id/inputPasswordTeam"
             android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/divider"/>
     <View
@@ -80,6 +83,8 @@
             android:text="Сохранить"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorAccent"
+            android:textColor="@color/colorWhite"
             android:id="@+id/butRenameTeam" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
             app:layout_constraintStart_toEndOf="@+id/inputNameTeam" android:layout_marginStart="8dp"
             app:layout_constraintHorizontal_bias="1.0"

@@ -1,12 +1,16 @@
 package ru.spbgororient.cityorientation.fragments.myTeam
 
+import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.NavigationView
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import kotlinx.android.synthetic.main.fragment_my_team.*
 import ru.spbgororient.cityorientation.R
@@ -32,13 +36,30 @@ class MyTeamFragment: Fragment() {
         }
 
         butRenameTeam.setOnClickListener {
-            DataController.instance.renameTeam(editNameTeam.text.toString(), ::callback)
+            if (editNameTeam.text.toString() != "")
+                DataController.instance.renameTeam(editNameTeam.text.toString(), ::callback)
+        }
+        editNameTeam.setOnEditorActionListener { v, actionId, event ->
+            when (actionId) {
+                EditorInfo.IME_ACTION_DONE -> {
+                    if (editNameTeam.text.toString() != "")
+                        (activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(
+                            activity!!.currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+                        DataController.instance.renameTeam(editNameTeam.text.toString(), ::callback)
+                    true
+                }
+                else -> false
+            }
         }
     }
 
     fun callback(ans: Boolean) {
-        if (ans)
-            activity?.findViewById<NavigationView>(R.id.nav_view)?.getHeaderView(0)?.findViewById<TextView>(R.id.labelTeamName)?.text = DataController.instance.teamName
+        if (ans) {
+            Snackbar.make(activity!!.findViewById(R.id.activityLogin), "Команда успешно переименована!",
+                Snackbar.LENGTH_LONG).show()
+            activity?.findViewById<NavigationView>(R.id.nav_view)?.getHeaderView(0)
+                ?.findViewById<TextView>(R.id.labelTeamName)?.text = DataController.instance.teamName
+        }
     }
 
     companion object {

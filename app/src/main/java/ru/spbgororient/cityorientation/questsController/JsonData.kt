@@ -55,3 +55,11 @@ data class GetStateResponse(
     @SerializedName("step") val step: Int,
     @SerializedName("date_now") val dateNow: Int,
     @SerializedName("time_now") val timeNow: Int)
+
+data class CompleteTaskRequest(
+    @SerializedName("login") val login: String,
+    @SerializedName("quest_id") val questId: String,
+    @SerializedName("task_number") val taskNumber: String)
+
+data class CompleteTaskResponse(
+    @SerializedName("message") val message: String)

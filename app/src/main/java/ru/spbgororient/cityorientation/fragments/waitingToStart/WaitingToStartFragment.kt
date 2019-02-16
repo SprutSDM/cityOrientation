@@ -1,12 +1,14 @@
 package ru.spbgororient.cityorientation.fragments.waitingToStart
 
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_waiting_to_start.*
 import ru.spbgororient.cityorientation.R
+import ru.spbgororient.cityorientation.fragments.finish.FinishFragment
 import ru.spbgororient.cityorientation.fragments.quest.QuestTextFragment
 import ru.spbgororient.cityorientation.fragments.quest.QuestTextImgFragment
 import ru.spbgororient.cityorientation.questsController.DataController
@@ -22,7 +24,9 @@ class WaitingToStartFragment: Fragment() {
 
         butContinue.setOnClickListener {
             lateinit var fragment: Fragment
-            if (DataController.instance.getTask().img == "")
+            if (DataController.instance.step == DataController.instance.listOfTasks.size)
+                fragment = FinishFragment.instance
+            else if (DataController.instance.getTask().img == "")
                 fragment = QuestTextFragment.newInstance()
             else
                 fragment = QuestTextImgFragment.newInstance()

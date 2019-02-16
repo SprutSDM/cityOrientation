@@ -195,6 +195,21 @@ class DataController private constructor() {
         })
     }
 
+    fun completeTask() {
+        val request = makeRequest("completeTask", CompleteTaskRequest(login=login, questId=questId, taskNumber=step.toString()))
+        client.newCall(request).enqueue(object: Callback {
+            override fun onResponse(call: Call, response: Response) {
+                val body = response.body()?.string()
+                val data = gsonBuilder.fromJson(body, CompleteTaskResponse::class.java)
+                Log.d("completeTask", data.toString())
+            }
+
+            override fun onFailure(call: Call, e: IOException) {
+
+            }
+        })
+    }
+
     companion object {
         val instance: DataController by lazy { DataController() }
     }

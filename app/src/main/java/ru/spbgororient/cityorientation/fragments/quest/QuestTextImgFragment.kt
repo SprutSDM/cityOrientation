@@ -37,7 +37,7 @@ class QuestTextImgFragment: Fragment() {
                     if (inputAnswer.text.toString() != "") {
                         (activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(
                             activity!!.currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
-                        if (checkAnswer!!.text.toString().toLowerCase() in DataController.instance.getTask().answers) {
+                        if (inputAnswer!!.text.toString().toLowerCase() in DataController.instance.getTask().answers) {
                             updateCardFragment()
                             Snackbar.make(
                                 activity!!.findViewById(R.id.content_frame), "Правильно!", Snackbar.LENGTH_LONG).show()
@@ -52,9 +52,7 @@ class QuestTextImgFragment: Fragment() {
             }
         }
         checkAnswer.setOnClickListener {
-            if (inputAnswer.text.toString() == "")
-
-            else {
+            if (inputAnswer.text.toString() != "") {
                 (activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(
                     activity!!.currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
                 if (inputAnswer.text.toString().toLowerCase() in DataController.instance.getTask().answers) {
@@ -66,6 +64,14 @@ class QuestTextImgFragment: Fragment() {
                 }
             }
         }
+        getTip1.setOnClickListener {
+            labelTip1.text = "Подсказка №1: ${DataController.instance.getTask().tips[0]}"
+            getTip1.visibility = View.GONE
+        }
+        getTip2.setOnClickListener {
+            labelTip2.text = "Подсказка №2: ${DataController.instance.getTask().tips[1]}"
+            getTip2.visibility = View.GONE
+        }
         imageOfQuest.setOnClickListener {
             val intent = Intent(context, FullImageActivity::class.java)
             activity!!.startActivity(intent)
@@ -74,6 +80,7 @@ class QuestTextImgFragment: Fragment() {
 
     fun updateCardFragment() {
         lateinit var fragment: Fragment
+        DataController.instance.completeTask()
         DataController.instance.step += 1
         if (DataController.instance.step >= DataController.instance.listOfTasks.size)
             fragment = FinishFragment.instance

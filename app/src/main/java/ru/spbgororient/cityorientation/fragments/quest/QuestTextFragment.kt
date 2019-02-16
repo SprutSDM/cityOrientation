@@ -26,7 +26,7 @@ class QuestTextFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         numberOfQuest.text = "Задание №${DataController.instance.step + 1}"
-        contentOfQuest.text = DataController.instance.listOfTasks[DataController.instance.step].content
+        contentOfQuest.text = DataController.instance.getTask().content
         inputAnswer.setOnEditorActionListener { v, actionId, event ->
             when (actionId) {
                 EditorInfo.IME_ACTION_DONE -> {
@@ -62,10 +62,19 @@ class QuestTextFragment: Fragment() {
                 }
             }
         }
+        getTip1.setOnClickListener {
+            labelTip1.text = "Подсказка №1: ${DataController.instance.getTask().tips[0]}"
+            getTip1.visibility = View.GONE
+        }
+        getTip2.setOnClickListener {
+            labelTip2.text = "Подсказка №2: ${DataController.instance.getTask().tips[1]}"
+            getTip2.visibility = View.GONE
+        }
     }
 
     fun updateCardFragment() {
         lateinit var fragment: Fragment
+        DataController.instance.completeTask()
         DataController.instance.step += 1
         if (DataController.instance.step >= DataController.instance.listOfTasks.size)
             fragment = FinishFragment.instance

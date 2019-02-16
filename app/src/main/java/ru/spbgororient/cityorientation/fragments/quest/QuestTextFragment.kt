@@ -33,7 +33,7 @@ class QuestTextFragment: Fragment() {
                     if (inputAnswer.text.toString() != "") {
                         (activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(
                             activity!!.currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
-                        if (checkAnswer!!.text.toString() in DataController.instance.getTask().answers) {
+                        if (inputAnswer!!.text.toString().toLowerCase() in DataController.instance.getTask().answers) {
                             updateCardFragment()
                             Snackbar.make(
                                 activity!!.findViewById(R.id.content_frame), "Правильно!", Snackbar.LENGTH_LONG).show()
@@ -53,7 +53,7 @@ class QuestTextFragment: Fragment() {
             else {
                 (activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(
                     activity!!.currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
-                if (inputAnswer.text.toString() in DataController.instance.getTask().answers) {
+                if (inputAnswer.text.toString().toLowerCase() in DataController.instance.getTask().answers) {
                     updateCardFragment()
                     Snackbar.make(activity!!.findViewById(R.id.content_frame), "Правильно!", Snackbar.LENGTH_LONG).show()
                 } else {

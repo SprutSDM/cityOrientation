@@ -1,6 +1,7 @@
 package ru.spbgororient.cityorientation.fragments.listOfQuests
 
 import android.content.Context
+import android.support.v4.app.FragmentManager
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.util.Log
@@ -10,11 +11,17 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import ru.spbgororient.cityorientation.R
+import ru.spbgororient.cityorientation.fragments.myTeam.MyTeamFragment
+import ru.spbgororient.cityorientation.fragments.quest.QuestTextImgFragment
+import ru.spbgororient.cityorientation.fragments.waitingToStart.WaitingToStartFragment
 import ru.spbgororient.cityorientation.questsController.Quest
 import ru.spbgororient.cityorientation.questsController.DataController
+import java.text.SimpleDateFormat
+import java.util.*
 
 class Adapter(val context: Context,
-              val questsController: DataController) : RecyclerView.Adapter<Adapter.ViewHolder>() {
+              val questsController: DataController,
+              val fragmentManager: FragmentManager?) : RecyclerView.Adapter<Adapter.ViewHolder>() {
 
     private val quests: List<Quest>
 
@@ -31,18 +38,24 @@ class Adapter(val context: Context,
 
     fun callbackListOfTasks(ans: Boolean) {
         if (ans) {
-
+            val fragment = WaitingToStartFragment.newInstance()
+            fragmentManager!!.beginTransaction().replace(R.id.content_frame, fragment).commit()
         }
     }
 
     fun callbackApply(ans: Boolean) {
-        if (ans)
+        if (ans) {
+            MyTeamFragment.instance.setVisibleLeaveButton()
             DataController.instance.listOfTasks(::callbackListOfTasks)
+        }
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
         viewHolder.questCard.findViewById<TextView>(R.id.numberOfQuest).text = quests[i].name
-        viewHolder.questCard.findViewById<TextView>(R.id.dateToStart).text = quests[i].date.toString()
+        viewHolder.questCard.findViewById<TextView>(R.id.placeToStart).text = quests[i].place
+        val date = Date((quests[i].date * 86400 + quests[i].time) * 1000L)
+        val sdf = SimpleDateFormat("MMM, dd в HH:mm", Locale("ru"))
+        viewHolder.questCard.findViewById<TextView>(R.id.dateToStart).text = sdf.format(date)
         viewHolder.questCard.findViewById<TextView>(R.id.amountOfCp).text = quests[i].amountOfCp.toString()
         viewHolder.questCard.findViewById<Button>(R.id.butApply).setOnClickListener {
             DataController.instance.joinToQuest(i, ::callbackApply)

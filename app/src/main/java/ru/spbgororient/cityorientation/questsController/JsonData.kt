@@ -28,6 +28,13 @@ data class JoinToQuestRequest(
 data class JoinToQuestResponse(
     @SerializedName("message") val message: String)
 
+data class LeaveQuestRequest(
+    @SerializedName("login") val login: String,
+    @SerializedName("quest_id") val questId: String)
+
+data class LeaveQuestResponse(
+    @SerializedName("message") val message: String)
+
 data class ListOfTasksRequest(
     @SerializedName("login") val login: String,
     @SerializedName("quest_id") val questId: String)

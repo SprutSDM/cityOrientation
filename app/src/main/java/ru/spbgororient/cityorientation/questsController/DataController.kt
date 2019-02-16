@@ -1,5 +1,6 @@
 package ru.spbgororient.cityorientation.questsController
 
+import android.content.SharedPreferences
 import android.util.Log
 import com.google.gson.GsonBuilder
 import okhttp3.*
@@ -18,10 +19,12 @@ class DataController private constructor() {
 
     var isLoadListOfQuests = false
 
-    var url = "http://127.0.0.1:5123/api/v1.0"
-    var urlImg = "http://127.0.0.1:5123/static"
+    var url = "http://192.168.1.35:5000/api/v1.0"
+    var urlImg = "http://192.168.1.35:5000/quest_images/"
     var gsonBuilder = GsonBuilder().create()
     var client = OkHttpClient()
+
+    lateinit var mSettings: SharedPreferences
 
     fun getTask(): Task {
         return listOfTasks[step]
@@ -90,6 +93,7 @@ class DataController private constructor() {
             override fun onResponse(call: Call, response: Response) {
                 val body = response.body()?.string()
                 val data = gsonBuilder.fromJson(body, ListOfQuestsResponse::class.java)
+                Log.d("listOfQuests", body)
                 if (data.message == "ok") {
                     listOfQuests = data.listOfQuests
                     isLoadListOfQuests = true
@@ -116,6 +120,26 @@ class DataController private constructor() {
                     questId = listOfQuests[position].questId
                     callback(true)
                 } else
+                    callback(false)
+            }
+
+            override fun onFailure(call: Call, e: IOException) {
+                callback(false)
+            }
+        })
+    }
+
+    fun leaveQuest(callback: (ans: Boolean) -> Unit) {
+        val request = makeRequest("leaveQuest", LeaveQuestRequest(login=login, questId=questId))
+        client.newCall(request).enqueue(object: Callback {
+            override fun onResponse(call: Call, response: Response) {
+                val body = response.body()?.string()
+                Log.d("leaveQuest", body)
+                val data = gsonBuilder.fromJson(body, LeaveQuestResponse::class.java)
+                Log.d("leaveQuest", data.message)
+                if (data.message == "ok")
+                    callback(true)
+                else
                     callback(false)
             }
 

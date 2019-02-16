@@ -65,11 +65,20 @@
             android:text="Покинуть команду"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/button3"
+            android:id="@+id/butLeaveTeam"
             android:backgroundTint="@color/colorAccent"
             android:textColor="@color/colorWhite"
             app:layout_constraintStart_toStartOf="@+id/inputPasswordTeam"
             android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/divider"/>
+    <Button
+            android:text="Покинуть квест"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/butLeaveQuest"
+            android:backgroundTint="@color/colorAccent"
+            android:textColor="@color/colorWhite"
+            app:layout_constraintStart_toStartOf="@+id/butLeaveTeam" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/butLeaveTeam"/>
     <View
             android:id="@+id/divider"
             android:layout_width="344dp"

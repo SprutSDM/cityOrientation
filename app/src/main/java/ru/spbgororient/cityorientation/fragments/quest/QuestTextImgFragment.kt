@@ -1,6 +1,7 @@
 package ru.spbgororient.cityorientation.fragments.quest
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
@@ -11,6 +12,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_quest_text_img.*
+import ru.spbgororient.cityorientation.FullImageActivity
 import ru.spbgororient.cityorientation.R
 import ru.spbgororient.cityorientation.fragments.finish.FinishFragment
 import ru.spbgororient.cityorientation.questsController.DataController
@@ -35,7 +37,7 @@ class QuestTextImgFragment: Fragment() {
                     if (inputAnswer.text.toString() != "") {
                         (activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(
                             activity!!.currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
-                        if (checkAnswer!!.text.toString() in DataController.instance.getTask().answers) {
+                        if (checkAnswer!!.text.toString().toLowerCase() in DataController.instance.getTask().answers) {
                             updateCardFragment()
                             Snackbar.make(
                                 activity!!.findViewById(R.id.content_frame), "Правильно!", Snackbar.LENGTH_LONG).show()
@@ -55,7 +57,7 @@ class QuestTextImgFragment: Fragment() {
             else {
                 (activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(
                     activity!!.currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
-                if (inputAnswer.text.toString() in DataController.instance.getTask().answers) {
+                if (inputAnswer.text.toString().toLowerCase() in DataController.instance.getTask().answers) {
                     updateCardFragment()
                     Snackbar.make(activity!!.findViewById(R.id.content_frame), "Правильно!", Snackbar.LENGTH_LONG).show()
                 } else {
@@ -63,6 +65,10 @@ class QuestTextImgFragment: Fragment() {
                         .show()
                 }
             }
+        }
+        imageOfQuest.setOnClickListener {
+            val intent = Intent(context, FullImageActivity::class.java)
+            activity!!.startActivity(intent)
         }
     }
 

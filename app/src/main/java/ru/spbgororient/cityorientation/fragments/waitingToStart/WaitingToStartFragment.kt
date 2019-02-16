@@ -31,6 +31,11 @@ class WaitingToStartFragment: Fragment() {
     }
 
     companion object {
-        val instance: WaitingToStartFragment by lazy { WaitingToStartFragment() }
+        var instance: WaitingToStartFragment = WaitingToStartFragment()
+
+        fun newInstance(): WaitingToStartFragment {
+            instance = WaitingToStartFragment()
+            return instance
+        }
     }
 }

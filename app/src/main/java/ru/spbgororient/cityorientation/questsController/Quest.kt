@@ -8,5 +8,5 @@ data class Quest(
     @SerializedName("place") var place: String,
     @SerializedName("date") var date: Int,
     @SerializedName("time") var time: Int,
-    @SerializedName("amountOfCp") var amountOfCp: Int,
+    @SerializedName("amount_of_cp") var amountOfCp: Int,
     @SerializedName("duration") var duration: Int)

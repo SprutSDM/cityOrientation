@@ -21,21 +21,15 @@ class ListOfQuestsFragment: Fragment() {
         thisView = inflater.inflate(R.layout.fragment_list_of_quests, container, false)
         recyclerView = thisView.findViewById(R.id.recyclerList)
 
+
         adapter = Adapter(
             thisView.context,
-            DataController.instance
+            DataController.instance,
+            fragmentManager
         )
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(thisView.context)
         return thisView
-    }
-
-    fun showAllQuests() {
-        adapter = Adapter(
-            thisView.context,
-            DataController.instance
-        )
-        recyclerView.adapter = adapter
     }
 
     companion object {

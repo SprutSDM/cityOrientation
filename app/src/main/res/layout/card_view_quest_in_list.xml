@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_quest_view_preview"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_marginTop="8dp" android:layout_marginBottom="8dp"
+        android:layout_marginStart="16dp" android:layout_marginEnd="16dp"
+        card_view:cardCornerRadius="8dp">
+
+    <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent" android:layout_height="wrap_content">
+
+        <TextView
+                android:id="@+id/text_number_quest"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" android:layout_marginBottom="200dp"
+                android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
+                android:text="Название квеста"
+                android:textColor="@android:color/black"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"/>
+        <View
+                android:id="@+id/vertical_line"
+                android:layout_width="1dp" android:layout_height="0dp"
+                android:layout_marginTop="8dp" android:layout_marginBottom="8dp"
+                android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintTop_toBottomOf="@+id/text_number_quest" app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"/>
+        <TextView
+                android:id="@+id/text_content_quest"
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
+                android:gravity="right"
+                android:text="Дата и время начала"
+                android:textSize="12sp"
+                app:layout_constraintTop_toTopOf="@+id/vertical_line"
+                app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toStartOf="@+id/vertical_line"/>
+        <TextView
+                android:id="@+id/text_place"
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
+                android:text="Место проведения"
+                android:textSize="12sp"
+                android:gravity="right"
+                app:layout_constraintTop_toBottomOf="@+id/text_content_quest"
+                app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toStartOf="@+id/vertical_line"/>
+        <TextView
+                android:id="@+id/text_cp"
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
+                android:gravity="right"
+                android:text="Количество контрольных пунктов"
+                android:textSize="12sp"
+                app:layout_constraintTop_toBottomOf="@+id/text_place"
+                app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toStartOf="@+id/vertical_line"/>
+        <TextView
+                android:id="@+id/text_date_start"
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
+                android:text="16.02.2019 в 14:47"
+                android:textSize="12sp"
+                app:layout_constraintTop_toTopOf="@+id/vertical_line"
+                app:layout_constraintStart_toEndOf="@+id/vertical_line" app:layout_constraintEnd_toEndOf="parent"/>
+        <TextView
+                android:id="@+id/text_place_start"
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
+                android:text="Выборгский район"
+                android:textSize="12sp"
+                app:layout_constraintTop_toBottomOf="@+id/text_date_start"
+                app:layout_constraintStart_toEndOf="@+id/vertical_line" app:layout_constraintEnd_toEndOf="parent"/>
+        <TextView
+                android:id="@+id/text_amount_cp"
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="15"
+                android:textSize="12sp"
+                app:layout_constraintTop_toBottomOf="@+id/text_place_start" app:layout_constraintBottom_toBottomOf="@+id/text_cp"
+                app:layout_constraintStart_toEndOf="@+id/vertical_line" app:layout_constraintEnd_toEndOf="parent"/>
+        <Button
+                android:id="@+id/but_apply"
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:backgroundTint="@color/colorAccent"
+                android:text="Подать заявку"
+                android:textColor="@color/colorWhite"
+                android:textSize="12sp"
+                app:layout_constraintTop_toBottomOf="@+id/text_cp" app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toStartOf="@+id/vertical_line"/>
+    </android.support.constraint.ConstraintLayout>
+</android.support.v7.widget.CardView>

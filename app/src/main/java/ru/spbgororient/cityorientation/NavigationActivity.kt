@@ -26,6 +26,7 @@ import android.view.inputmethod.InputMethodManager
 class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     DrawerLayout.DrawerListener {
     lateinit var fragment: Fragment
+    var needChangeFragment = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,19 +40,20 @@ class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
 
         drawer_layout.addDrawerListener(this)
 
-        nav_view.setNavigationItemSelectedListener(this)
+        navigation_view.setNavigationItemSelectedListener(this)
 
         if (DataController.instance.questId == "Quest ID")
             fragment = ListOfQuestsFragment.instance
         else if (DataController.instance.step >= DataController.instance.listOfTasks.size)
             fragment = FinishFragment.instance
         else if (DataController.instance.getTask().img == "")
-            fragment = QuestTextFragment.newInstance()
+            fragment = QuestTextFragment.instance
         else
-            fragment = QuestTextImgFragment.newInstance()
+            fragment = QuestTextImgFragment.instance
+        fragment.tag
         supportFragmentManager.beginTransaction().replace(R.id.content_frame,  fragment).commit()
 
-        nav_view.getHeaderView(0).findViewById<TextView>(R.id.labelTeamName).text = DataController.instance.teamName
+        navigation_view.getHeaderView(0).findViewById<TextView>(R.id.text_name_team).text = DataController.instance.teamName
     }
 
     override fun onBackPressed() {
@@ -63,37 +65,24 @@ class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        lateinit var fragment: Fragment
-
-        when (item.itemId) {
-            R.id.nav_my_group -> {
-                fragment = MyTeamFragment.instance
-            }
-            R.id.nav_list_of_quests -> {
-                fragment = ListOfQuestsFragment.instance
-            }
-            R.id.nav_quest -> {
-                fragment = WaitingToStartFragment.instance
-            }
+        fragment = when (item.itemId) {
+            R.id.nav_my_group -> MyTeamFragment.instance
+            R.id.nav_list_of_quests -> ListOfQuestsFragment.instance
+            R.id.nav_quest -> WaitingToStartFragment.instance
+            else -> ListOfQuestsFragment.instance
         }
+        needChangeFragment = true
         title = item.title
-        supportFragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit()
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
     }
 
-    /*
-    findViewById<EditText>(R.id.search).setOnEditorActionListener { v, actionId, event ->
-    return@setOnEditorActionListener when (actionId) {
-        EditorInfo.IME_ACTION_SEND -> {
-            sendMessage()
-            true
+    override fun onDrawerStateChanged(state: Int) {
+        if (needChangeFragment && state == DrawerLayout.STATE_IDLE) {
+            supportFragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit()
+            needChangeFragment = false
         }
-        else -> false
-    }
-     */
-    override fun onDrawerStateChanged(p0: Int) {
         (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(
             currentFocus!!.windowToken,
             InputMethodManager.HIDE_NOT_ALWAYS

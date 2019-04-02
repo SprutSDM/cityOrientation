@@ -1,7 +1,6 @@
 package ru.spbgororient.cityorientation.fragments.waitingToStart
 
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -22,7 +21,7 @@ class WaitingToStartFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        butContinue.setOnClickListener {
+        button_login.setOnClickListener {
             lateinit var fragment: Fragment
             if (DataController.instance.step == DataController.instance.listOfTasks.size)
                 fragment = FinishFragment.instance
@@ -36,6 +35,7 @@ class WaitingToStartFragment: Fragment() {
 
     companion object {
         var instance: WaitingToStartFragment = WaitingToStartFragment()
+        val TAG = "WaitingToStartFragment"
 
         fun newInstance(): WaitingToStartFragment {
             instance = WaitingToStartFragment()

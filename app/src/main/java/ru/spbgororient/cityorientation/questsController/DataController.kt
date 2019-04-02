@@ -19,8 +19,8 @@ class DataController private constructor() {
 
     var isLoadListOfQuests = false
 
-    var url = "http://192.168.1.35:5000/api/v1.0"
-    var urlImg = "http://192.168.1.35:5000/quest_images/"
+    var url = "http://192.168.43.32:5000/api/v1.0"
+    var urlImg = "http://192.168.43.32:5000/quest_images/"
     var gsonBuilder = GsonBuilder().create()
     var client = OkHttpClient()
 
@@ -92,8 +92,8 @@ class DataController private constructor() {
         client.newCall(request).enqueue(object: Callback {
             override fun onResponse(call: Call, response: Response) {
                 val body = response.body()?.string()
-                val data = gsonBuilder.fromJson(body, ListOfQuestsResponse::class.java)
                 Log.d("listOfQuests", body)
+                val data = gsonBuilder.fromJson(body, ListOfQuestsResponse::class.java)
                 if (data.message == "ok") {
                     listOfQuests = data.listOfQuests
                     isLoadListOfQuests = true

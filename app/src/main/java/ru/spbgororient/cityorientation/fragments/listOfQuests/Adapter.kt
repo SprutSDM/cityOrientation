@@ -12,7 +12,6 @@ import android.widget.Button
 import android.widget.TextView
 import ru.spbgororient.cityorientation.R
 import ru.spbgororient.cityorientation.fragments.myTeam.MyTeamFragment
-import ru.spbgororient.cityorientation.fragments.quest.QuestTextImgFragment
 import ru.spbgororient.cityorientation.fragments.waitingToStart.WaitingToStartFragment
 import ru.spbgororient.cityorientation.questsController.Quest
 import ru.spbgororient.cityorientation.questsController.DataController
@@ -31,7 +30,7 @@ class Adapter(val context: Context,
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
-        val v = LayoutInflater.from(context).inflate(R.layout.quest_in_list_card_view, viewGroup, false)
+        val v = LayoutInflater.from(context).inflate(R.layout.card_view_quest_in_list, viewGroup, false)
         Log.d("ссссс", "createViewHolder")
         return ViewHolder(v)
     }
@@ -51,13 +50,13 @@ class Adapter(val context: Context,
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
-        viewHolder.questCard.findViewById<TextView>(R.id.numberOfQuest).text = quests[i].name
-        viewHolder.questCard.findViewById<TextView>(R.id.placeToStart).text = quests[i].place
+        viewHolder.questCard.findViewById<TextView>(R.id.text_number_quest).text = quests[i].name
+        viewHolder.questCard.findViewById<TextView>(R.id.text_place_start).text = quests[i].place
         val date = Date((quests[i].date * 86400 + quests[i].time) * 1000L)
         val sdf = SimpleDateFormat("MMM, dd в HH:mm", Locale("ru"))
-        viewHolder.questCard.findViewById<TextView>(R.id.dateToStart).text = sdf.format(date)
-        viewHolder.questCard.findViewById<TextView>(R.id.amountOfCp).text = quests[i].amountOfCp.toString()
-        viewHolder.questCard.findViewById<Button>(R.id.butApply).setOnClickListener {
+        viewHolder.questCard.findViewById<TextView>(R.id.text_date_start).text = sdf.format(date)
+        viewHolder.questCard.findViewById<TextView>(R.id.text_amount_cp).text = quests[i].amountOfCp.toString()
+        viewHolder.questCard.findViewById<Button>(R.id.but_apply).setOnClickListener {
             DataController.instance.joinToQuest(i, ::callbackApply)
         }
 
@@ -69,7 +68,7 @@ class Adapter(val context: Context,
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
-        val questCard: CardView = itemView.findViewById(R.id.quest_card_view)
+        val questCard: CardView = itemView.findViewById(R.id.card_quest_view_preview)
 
         init {
             itemView.setOnClickListener(this)

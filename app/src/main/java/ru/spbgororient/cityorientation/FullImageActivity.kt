@@ -13,6 +13,6 @@ class FullImageActivity: AppCompatActivity() {
 
         Picasso.with(baseContext)
             .load(DataController.instance.urlImg + DataController.instance.getTask().img)
-            .into(fullImage)
+            .into(image_full_size)
     }
 }

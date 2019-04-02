@@ -1,161 +1,185 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent" android:layout_height="match_parent">
-    <TextView
-            android:text="Тайны Петербурга"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:id="@+id/titleOfQuest" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginLeft="8dp" android:layout_marginStart="8dp" android:layout_marginTop="36dp"
-            app:layout_constraintTop_toTopOf="parent" android:textSize="18sp" android:textColor="@android:color/black"/>
-    <TextView
-            android:text="55:34:12"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:id="@+id/totalTime"
-            android:textSize="10sp"
-            app:layout_constraintTop_toBottomOf="@+id/textView10" android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginRight="8dp"/>
-    <TextView
-            android:text="Время прохождения"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:id="@+id/textView10"
-            app:layout_constraintTop_toTopOf="parent"
-            android:textSize="10sp" android:layout_marginTop="8dp" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="8dp" android:layout_marginRight="8dp"/>
-    <TextView
-            android:text="Время на этом этапе:"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:id="@+id/textView7" app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp" android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
-            android:textSize="10sp"/>
-    <TextView
-            android:text="12:14:07"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:textSize="10sp"
-            app:layout_constraintTop_toBottomOf="@+id/textView7" android:id="@+id/timeOnStage"/>
-    <android.support.v7.widget.CardView
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:id="@+id/quest_card_view"
-            app:layout_constraintTop_toBottomOf="@+id/titleOfQuest" app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            card_view:cardCornerRadius="8dp"
-            android:layout_margin="8dp">
-        <android.support.constraint.ConstraintLayout
-                android:layout_width="match_parent" android:layout_height="match_parent">
-            <TextView
-                    android:text="Задание №1"
-                    android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:id="@+id/numberOfQuest" app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginLeft="8dp" android:layout_marginStart="8dp"
-                    app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
-                    app:layout_constraintTop_toTopOf="parent" android:textColor="@android:color/black"
-                    android:layout_marginTop="8dp"/>
-            <TextView
-                    android:text="Шарманщик, запах жареных каштанов и уютных кафе. Такая вот частичка франузской романтики. Сколько этажей в здании с флагом России?"
-                    android:layout_width="0dp" android:layout_height="wrap_content"
-                    android:id="@+id/contentOfQuest"
-                    app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="8dp"
-                    android:layout_marginStart="8dp" android:textSize="14sp"
-                    android:layout_marginEnd="8dp"
-                    app:layout_constraintEnd_toEndOf="parent" android:layout_marginRight="8dp"
-                    android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/numberOfQuest"/>
-            <android.support.design.widget.TextInputLayout
-                    android:id="@+id/inputLogin"
-                    android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@+id/contentOfQuest"
-                    app:layout_constraintStart_toStartOf="parent">
-                <EditText
-                        android:layout_height="wrap_content"
-                        android:inputType="text"
-                        android:ems="10"
-                        android:id="@+id/inputAnswer"
-                        android:hint="Ответ"
-                        android:layout_width="150dp"
-                        android:layout_marginStart="8dp"
+        android:layout_width="match_parent" android:layout_height="match_parent"
+        android:fillViewport="true">
+
+    <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent" android:layout_height="wrap_content">
+
+        <TextView
+                android:id="@+id/text_title_of_quest"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_marginTop="36dp"
+                android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
+                android:text="Тайны Петербурга"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"/>
+        <TextView
+                android:id="@+id/text_stage"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp"
+                android:text="Время на этом этапе:"
+                android:textSize="10sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+        <TextView
+                android:id="@+id/text_time_stage"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="12:14:07"
+                android:textSize="10sp"
+                app:layout_constraintTop_toBottomOf="@+id/text_stage"
+                app:layout_constraintStart_toStartOf="parent"/>
+        <TextView
+                android:id="@+id/text_quest"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="Время прохождения"
+                android:textSize="10sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+        <TextView
+                android:id="@+id/text_total_time"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="55:34:12"
+                android:textSize="10sp"
+                app:layout_constraintTop_toBottomOf="@+id/text_quest"
+                app:layout_constraintEnd_toEndOf="parent"/>
+        <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/card_quest_view"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/text_title_of_quest"
+                app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                card_view:cardCornerRadius="8dp">
+
+            <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent" android:layout_height="match_parent">
+
+                <TextView
+                        android:id="@+id/text_number_quest"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
+                        android:text="Задание №1"
+                        android:textColor="@android:color/black"
+                        app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
+                <TextView
+                        android:id="@+id/text_content_quest"
+                        android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
+                        android:text="Шарманщик, запах жареных каштанов и уютных кафе. Такая вот частичка франузской романтики. Сколько этажей в здании с флагом России?"
+                        android:textSize="14sp"
+                        app:layout_constraintTop_toBottomOf="@+id/text_number_quest"
+                        app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"/>
+                <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_answer"
+                        android:layout_width="0dp" android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/text_content_quest"
+                        app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toStartOf="@+id/button_check_answer">
+
+                    <EditText
+                            android:id="@+id/edit_answer"
+                            android:layout_width="match_parent" android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
+                            android:inputType="text"
+                            android:ems="10"
+                            android:hint="Ответ"
+                            android:textSize="14sp"
+                            app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"/>
+                </android.support.design.widget.TextInputLayout>
+
+                <Button
+                        android:id="@+id/button_check_answer"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:backgroundTint="@color/colorAccent"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="10sp"
+                        android:text="Отправить"
+                        app:layout_constraintTop_toBottomOf="@+id/text_content_quest"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+            </android.support.constraint.ConstraintLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/card_tip_1"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/card_quest_view"
+                app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                card_view:cardCornerRadius="8dp">
+
+            <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent" android:layout_height="match_parent">
+
+                <Button
+                        android:id="@+id/button_get_tip_1"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:backgroundTint="@color/colorAccent"
+                        android:text="Получить"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="10sp"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        android:textSize="14sp"/>
-            </android.support.design.widget.TextInputLayout>
-            <Button
-                    android:text="Отправить"
-                    android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:backgroundTint="@color/colorAccent"
-                    android:textColor="@color/colorWhite"
-                    android:id="@+id/checkAnswer" android:textSize="10sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginEnd="8dp" android:layout_marginRight="8dp"
-                    app:layout_constraintTop_toBottomOf="@+id/contentOfQuest"/>
-        </android.support.constraint.ConstraintLayout>
-    </android.support.v7.widget.CardView>
-    <android.support.v7.widget.CardView
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:id="@+id/tip_1_card"
-            app:layout_constraintTop_toBottomOf="@+id/quest_card_view" app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            card_view:cardCornerRadius="8dp"
-            android:layout_marginLeft="8dp" android:layout_marginRight="8dp" android:layout_marginTop="16dp">
-        <android.support.constraint.ConstraintLayout
-                android:layout_width="match_parent" android:layout_height="match_parent">
-            <Button
-                    android:text="Получить"
-                    android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:id="@+id/getTip1" android:textSize="10sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:backgroundTint="@color/colorAccent"
-                    android:textColor="@color/colorWhite" android:layout_marginEnd="8dp"/>
-            <TextView
-                    android:text="Получить подсказку №1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/labelTip1" app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginStart="8dp" android:layout_marginTop="8dp"
-                    app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent" android:textSize="12sp"/>
-        </android.support.constraint.ConstraintLayout>
-    </android.support.v7.widget.CardView>
-    <android.support.v7.widget.CardView
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:id="@+id/tip_2_card"
-            app:layout_constraintTop_toBottomOf="@+id/tip_1_card" app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            card_view:cardCornerRadius="8dp"
-            android:layout_margin="8dp">
-        <android.support.constraint.ConstraintLayout
-                android:layout_width="match_parent" android:layout_height="match_parent">
-            <Button
-                    android:text="Получить"
-                    android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:id="@+id/getTip2" android:textSize="10sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:backgroundTint="@color/colorAccent"
-                    android:textColor="@color/colorWhite" android:layout_marginEnd="8dp"/>
-            <TextView
-                    android:text="Получить подсказку №2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/labelTip2" app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginStart="8dp" android:layout_marginTop="8dp"
-                    app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent" android:textSize="12sp"/>
-        </android.support.constraint.ConstraintLayout>
-    </android.support.v7.widget.CardView>
-</android.support.constraint.ConstraintLayout>
+                        app:layout_constraintEnd_toEndOf="parent"/>
+                <TextView
+                        android:id="@+id/text_tip_1"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp" android:layout_marginBottom="8dp"
+                        android:layout_marginStart="8dp"
+                        android:text="Получить подсказку №1"
+                        android:textSize="12sp"
+                        app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
+            </android.support.constraint.ConstraintLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/card_tip_2"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/card_tip_1"
+                app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                card_view:cardCornerRadius="8dp">
+
+            <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent" android:layout_height="match_parent">
+
+                <Button
+                        android:id="@+id/button_get_tip_2"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:backgroundTint="@color/colorAccent"
+                        android:text="Получить"
+                        android:textSize="10sp"
+                        android:textColor="@color/colorWhite"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+                <TextView
+                        android:id="@+id/text_tip_2"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp" android:layout_marginBottom="8dp"
+                        android:layout_marginStart="8dp"
+                        android:text="Получить подсказку №2"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+            </android.support.constraint.ConstraintLayout>
+        </android.support.v7.widget.CardView>
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>

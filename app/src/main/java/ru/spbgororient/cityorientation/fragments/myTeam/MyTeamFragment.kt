@@ -3,11 +3,11 @@ package ru.spbgororient.cityorientation.fragments.myTeam
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.support.design.widget.NavigationView
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.text.InputType
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,29 +16,22 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.TextView
 import kotlinx.android.synthetic.main.fragment_my_team.*
-import ru.spbgororient.cityorientation.LoginActivity
+import ru.spbgororient.cityorientation.activities.LoginActivity
 import ru.spbgororient.cityorientation.R
-import ru.spbgororient.cityorientation.questsController.DataController
+import ru.spbgororient.cityorientation.dataController.DataController
+import ru.spbgororient.cityorientation.network.Network
 
 class MyTeamFragment: Fragment() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.d("cityorientation", "MyTeamFragment onCreate")
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        Log.d("cityorientation", "MyTeamFragment onCreateView")
         return inflater.inflate(R.layout.fragment_my_team, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("cityorientation", "MyTeamFragment onViewCreated")
-        edit_name_team.setText(DataController.instance.teamName)
-        edit_login_team.setText(DataController.instance.login)
-        edit_password_team.setText(DataController.instance.password)
-        if (DataController.instance.questId == "Quest ID")
+        edit_name_team.setText(DataController.instance.team.teamName)
+        edit_login_team.setText(DataController.instance.team.login)
+        edit_password_team.setText(DataController.instance.team.password)
+        if (DataController.instance.quests.questId == "")
             button_leave_quest.visibility = View.INVISIBLE
 
         check_box.setOnCheckedChangeListener { compoundButton, isChecked ->
@@ -61,30 +54,23 @@ class MyTeamFragment: Fragment() {
                     if (edit_name_team.text.toString() != "")
                         (activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(
                             activity!!.currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
-                        DataController.instance.renameTeam(edit_name_team.text.toString(), ::callbackRenameTeam)
+                    DataController.instance.renameTeam(edit_name_team.text.toString(), ::callbackRenameTeam)
                     true
                 }
                 else -> false
             }
         }
         button_leave_team.setOnClickListener {
-            val editor = DataController.instance.mSettings.edit()
-            editor.remove("login")
-            editor.remove("password")
-            editor.apply()
+            DataController.instance.resetTeam()
             val intent = Intent(context, LoginActivity::class.java)
             activity!!.startActivity(intent)
         }
         button_leave_quest.setOnClickListener {
-            if (DataController.instance.questId != "Quest ID")
+            if (DataController.instance.quests.questId != "")
                 DataController.instance.leaveQuest(::callbackLeaveQuest)
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d("cityorientation", "MyTeam onDestroy")
-    }
 
     fun setVisibleLeaveButton() {
         activity?.runOnUiThread {
@@ -92,19 +78,25 @@ class MyTeamFragment: Fragment() {
         }
     }
 
-    fun callbackRenameTeam(ans: Boolean) {
-        if (ans) {
+    /**
+     * Вызывается при завершении запроса на переименование команды.
+     */
+    private fun callbackRenameTeam(response: Network.NetworkResponse) {
+        if (response == Network.NetworkResponse.OK) {
             Snackbar.make(activity!!.findViewById(R.id.content_frame), "Команда успешно переименована!",
                 Snackbar.LENGTH_LONG).show()
             activity?.runOnUiThread {
                 activity?.findViewById<NavigationView>(R.id.navigation_view)?.getHeaderView(0)
-                    ?.findViewById<TextView>(R.id.text_name_team)?.text = DataController.instance.teamName
+                    ?.findViewById<TextView>(R.id.text_name_team)?.text = DataController.instance.team.teamName
             }
         }
     }
 
-    fun callbackLeaveQuest(ans: Boolean) {
-        if (ans) {
+    /**
+     * Вызывается при завершении запроса покидание квеста.
+     */
+    private fun callbackLeaveQuest(response: Network.NetworkResponse) {
+        if (response == Network.NetworkResponse.OK) {
             activity?.runOnUiThread {
                 button_leave_quest.visibility = View.INVISIBLE
                 Snackbar.make(activity!!.findViewById(R.id.content_frame), "Вы успешно покинули текущий квест!",
@@ -115,6 +107,5 @@ class MyTeamFragment: Fragment() {
 
     companion object {
         var instance = MyTeamFragment()
-        val TAG = "MyTeamFragment"
     }
 }

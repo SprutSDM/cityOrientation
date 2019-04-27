@@ -7,13 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_waiting_to_start.*
 import ru.spbgororient.cityorientation.R
+import ru.spbgororient.cityorientation.dataController.DataController
 import ru.spbgororient.cityorientation.fragments.finish.FinishFragment
 import ru.spbgororient.cityorientation.fragments.quest.QuestTextFragment
 import ru.spbgororient.cityorientation.fragments.quest.QuestTextImgFragment
-import ru.spbgororient.cityorientation.questsController.DataController
 
 class WaitingToStartFragment: Fragment() {
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_waiting_to_start, container, false)
     }
@@ -22,13 +21,12 @@ class WaitingToStartFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         button_login.setOnClickListener {
-            lateinit var fragment: Fragment
-            if (DataController.instance.step == DataController.instance.listOfTasks.size)
-                fragment = FinishFragment.instance
-            else if (DataController.instance.getTask().img == "")
-                fragment = QuestTextFragment.newInstance()
+            val fragment = if (DataController.instance.quests.step == DataController.instance.quests.listOfTasks.size)
+                FinishFragment.instance
+            else if (DataController.instance.quests.getTask().img == "")
+                QuestTextFragment.newInstance()
             else
-                fragment = QuestTextImgFragment.newInstance()
+                QuestTextImgFragment.newInstance()
             fragmentManager!!.beginTransaction().replace(R.id.content_frame, fragment).commit()
         }
     }

@@ -4,48 +4,41 @@ import android.content.Context
 import android.support.v4.app.FragmentManager
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import ru.spbgororient.cityorientation.App
 import ru.spbgororient.cityorientation.R
+import ru.spbgororient.cityorientation.dataController.DataController
 import ru.spbgororient.cityorientation.fragments.myTeam.MyTeamFragment
 import ru.spbgororient.cityorientation.fragments.waitingToStart.WaitingToStartFragment
-import ru.spbgororient.cityorientation.questsController.Quest
-import ru.spbgororient.cityorientation.questsController.DataController
+import ru.spbgororient.cityorientation.network.Network
+import ru.spbgororient.cityorientation.quests.Quest
 import java.text.SimpleDateFormat
 import java.util.*
 
 class Adapter(val context: Context,
-              val questsController: DataController,
-              val fragmentManager: FragmentManager?) : RecyclerView.Adapter<Adapter.ViewHolder>() {
-
-    private val quests: List<Quest>
-
-    init {
-        this.quests = questsController.listOfQuests
-        Log.d("ссссс", "initAdapter")
-    }
+              private val fragmentManager: FragmentManager?) : RecyclerView.Adapter<Adapter.ViewHolder>() {
+    private val quests: List<Quest> = DataController.instance.quests.listOfQuests
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
         val v = LayoutInflater.from(context).inflate(R.layout.card_view_quest_in_list, viewGroup, false)
-        Log.d("ссссс", "createViewHolder")
         return ViewHolder(v)
     }
 
-    fun callbackListOfTasks(ans: Boolean) {
-        if (ans) {
+    private fun callbackListOfTasks(response: Network.NetworkResponse) {
+        if (response == Network.NetworkResponse.OK) {
             val fragment = WaitingToStartFragment.newInstance()
             fragmentManager!!.beginTransaction().replace(R.id.content_frame, fragment).commit()
         }
     }
 
-    fun callbackApply(ans: Boolean) {
-        if (ans) {
+    private fun callbackApply(response: Network.NetworkResponse) {
+        if (response == Network.NetworkResponse.OK) {
             MyTeamFragment.instance.setVisibleLeaveButton()
-            DataController.instance.listOfTasks(::callbackListOfTasks)
+            DataController.instance.loadTasks(::callbackListOfTasks)
         }
     }
 

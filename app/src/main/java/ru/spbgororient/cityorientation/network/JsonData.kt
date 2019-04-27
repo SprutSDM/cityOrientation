@@ -1,6 +1,8 @@
-package ru.spbgororient.cityorientation.questsController
+package ru.spbgororient.cityorientation.network
 
 import com.google.gson.annotations.SerializedName
+import ru.spbgororient.cityorientation.quests.Quest
+import ru.spbgororient.cityorientation.quests.Task
 
 data class LoginTeamRequest(
     @SerializedName("login") val login: String,

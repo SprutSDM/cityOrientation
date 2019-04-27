@@ -1,4 +1,4 @@
-package ru.spbgororient.cityorientation.questsController
+package ru.spbgororient.cityorientation.quests
 
 import com.google.gson.annotations.SerializedName
 

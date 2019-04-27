@@ -1,29 +1,26 @@
-package ru.spbgororient.cityorientation
+package ru.spbgororient.cityorientation.activities
 
 import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.Snackbar
+import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.widget.ProgressBar
 import kotlinx.android.synthetic.main.activity_login.*
-import ru.spbgororient.cityorientation.questsController.DataController
 import android.view.inputmethod.InputMethodManager
+import ru.spbgororient.cityorientation.R
+import ru.spbgororient.cityorientation.dataController.DataController
+import ru.spbgororient.cityorientation.network.Network
 
 
 class LoginActivity : AppCompatActivity() {
-    val APP_PREFERENCES = "mysettings"
-    val LOGIN = "login"
-    val PASSWORD = "password"
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        DataController.instance.loadQuests({})
-
-        DataController.instance.mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
+        DataController.instance.loadQuests{}
 
         button_login.setOnClickListener {
             val login = input_answer.editText!!.text.toString()
@@ -55,19 +52,22 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (DataController.instance.mSettings.contains(LOGIN)) {
-            DataController.instance.login = DataController.instance.mSettings.getString(LOGIN, "")
-            DataController.instance.password = DataController.instance.mSettings.getString(PASSWORD, "")
-            input_answer.editText!!.setText(DataController.instance.login)
-            input_password.editText!!.setText(DataController.instance.password)
+        if (DataController.instance.loadTeam()) {
+            input_answer.editText?.setText(DataController.instance.team.login)
+            input_password.editText?.setText(DataController.instance.team.password)
             progress_bar.visibility = ProgressBar.VISIBLE
             button_login.isEnabled = false
-            DataController.instance.loginTeam(DataController.instance.login, DataController.instance.password, ::callbackLogin)
+            DataController.instance.loginTeam(
+                DataController.instance.team.login,
+                DataController.instance.team.password, ::callbackLogin)
         }
     }
 
-    fun callbackListOfTasks(ans: Boolean) {
-        if (ans) {
+    /**
+     * Вызывается при завершении загрузки списка задач.
+     */
+    private fun callbackListOfTasks(response: Network.NetworkResponse) {
+        if (response == Network.NetworkResponse.OK) {
             runOnUiThread {
                 progress_bar.visibility = ProgressBar.INVISIBLE
                 button_login.isEnabled = true
@@ -77,17 +77,21 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    fun callbackGetState(ans: Boolean) {
-        if (ans) {
-            if (DataController.instance.questId == "Quest ID") {
+    /**
+     * Вызывается при завершении загрузки текущего состояния.
+     */
+    private fun callbackGetState(response: Network.NetworkResponse) {
+        if (response == Network.NetworkResponse.OK) {
+            // Если текущий квест не выбран, то сразу переходим на NavigationActivity
+            if (DataController.instance.quests.questId == "") {
                 runOnUiThread {
                     progress_bar.visibility = ProgressBar.INVISIBLE
                     button_login.isEnabled = true
                 }
                 val intent = Intent(this, NavigationActivity::class.java)
                 startActivity(intent)
-            } else {
-                DataController.instance.listOfTasks(::callbackListOfTasks)
+            } else { // Иначе грузим текущие задачи.
+                DataController.instance.loadTasks(::callbackListOfTasks)
             }
         } else {
             runOnUiThread {
@@ -97,19 +101,23 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    fun callbackLogin(ans: Boolean) {
-        if (ans) {
-            val editor = DataController.instance.mSettings.edit()
-            editor.putString(LOGIN, DataController.instance.login)
-            editor.putString(PASSWORD, DataController.instance.password)
-            editor.apply()
+    /**
+     * Вызывается при завершении login команды.
+     */
+    private fun callbackLogin(response: Network.NetworkResponse) {
+        Log.d(LOG_KEY, response.toString())
+        if (response == Network.NetworkResponse.OK)
             DataController.instance.getState(::callbackGetState)
-        } else {
+        else {
             runOnUiThread {
                 progress_bar.visibility = ProgressBar.INVISIBLE
                 button_login.isEnabled = true
             }
             Snackbar.make(findViewById(R.id.activity_login), "Неправильный логин или пароль!", Snackbar.LENGTH_LONG).show()
         }
+    }
+
+    companion object {
+        private const val LOG_KEY = "LoginActivity"
     }
 }

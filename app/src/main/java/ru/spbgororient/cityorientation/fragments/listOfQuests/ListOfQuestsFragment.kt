@@ -8,13 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import ru.spbgororient.cityorientation.R
-import ru.spbgororient.cityorientation.questsController.DataController
 
 class ListOfQuestsFragment: Fragment() {
-
-    lateinit var adapter: Adapter
-    lateinit var recyclerView: RecyclerView
-    lateinit var thisView: View
+    private lateinit var adapter: Adapter
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var thisView: View
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         thisView = inflater.inflate(R.layout.fragment_list_of_quests, container, false)
@@ -22,7 +20,6 @@ class ListOfQuestsFragment: Fragment() {
 
         adapter = Adapter(
             thisView.context,
-            DataController.instance,
             fragmentManager
         )
         recyclerView.adapter = adapter

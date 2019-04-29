@@ -88,14 +88,14 @@ class QuestTextImgFragment: Fragment() {
             else if (DataController.instance.quests.getTask().img == "")
                 QuestTextFragment.newInstance()
             else
-                QuestTextImgFragment.newInstance()
-            fragmentManager!!.beginTransaction().replace(R.id.content_frame, fragment).commit()
+                newInstance()
+            fragmentManager!!.beginTransaction().replace(R.id.content_frame, fragment, fragment.tag).commit()
         }
     }
 
     companion object {
         var instance: QuestTextImgFragment = QuestTextImgFragment()
-        val TAG = "QuestTextImgFragment"
+        const val TAG = "QuestTextImgFragment"
 
         fun newInstance(): QuestTextImgFragment {
             instance = QuestTextImgFragment()

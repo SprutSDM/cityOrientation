@@ -1,5 +1,6 @@
 package ru.spbgororient.cityorientation.network
 
+import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -10,6 +11,9 @@ import ru.spbgororient.cityorientation.quests.Quest
 import ru.spbgororient.cityorientation.quests.Quests
 import ru.spbgororient.cityorientation.quests.Task
 import ru.spbgororient.cityorientation.team.Team
+import ru.spbgororient.cityorientation.BuildConfig
+
+
 
 /**
  * Этот класс содержит методы для общения с Rest Api сервером.
@@ -27,6 +31,7 @@ class Network private constructor() {
     private val mRetrofit = Retrofit.Builder()
         .baseUrl(URL_API)
         .addConverterFactory(GsonConverterFactory.create())
+        .client(OkHttpClient())
         .build()
 
     private val cityApi = mRetrofit.create(CityOrientationApi::class.java)

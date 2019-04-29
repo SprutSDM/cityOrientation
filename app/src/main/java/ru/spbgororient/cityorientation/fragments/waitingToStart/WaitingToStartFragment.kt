@@ -27,13 +27,13 @@ class WaitingToStartFragment: Fragment() {
                 QuestTextFragment.newInstance()
             else
                 QuestTextImgFragment.newInstance()
-            fragmentManager!!.beginTransaction().replace(R.id.content_frame, fragment).commit()
+            fragmentManager!!.beginTransaction().replace(R.id.content_frame, fragment, fragment.tag).commit()
         }
     }
 
     companion object {
         var instance: WaitingToStartFragment = WaitingToStartFragment()
-        val TAG = "WaitingToStartFragment"
+        const val TAG = "WaitingToStartFragment"
 
         fun newInstance(): WaitingToStartFragment {
             instance = WaitingToStartFragment()

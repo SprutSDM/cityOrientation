@@ -31,7 +31,7 @@ class Adapter(val context: Context,
     private fun callbackListOfTasks(response: Network.NetworkResponse) {
         if (response == Network.NetworkResponse.OK) {
             val fragment = WaitingToStartFragment.newInstance()
-            fragmentManager!!.beginTransaction().replace(R.id.content_frame, fragment).commit()
+            fragmentManager!!.beginTransaction().replace(R.id.content_frame, fragment, fragment.tag).commit()
         }
     }
 

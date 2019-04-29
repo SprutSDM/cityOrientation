@@ -18,6 +18,6 @@ class FinishFragment: Fragment() {
 
     companion object {
         val instance: FinishFragment by lazy { FinishFragment() }
-        val TAG = "FinishFragment"
+        const val TAG = "FinishFragment"
     }
 }

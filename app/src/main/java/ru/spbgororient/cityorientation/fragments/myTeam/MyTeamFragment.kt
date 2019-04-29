@@ -44,16 +44,14 @@ class MyTeamFragment: Fragment() {
         button_rename_team.setOnClickListener {
             if (edit_name_team.text.toString() != "") {
                 DataController.instance.renameTeam(edit_name_team.text.toString(), ::callbackRenameTeam)
-                (activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(
-                    activity!!.currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+                hideKeyboard()
             }
         }
         edit_name_team.setOnEditorActionListener { v, actionId, event ->
             when (actionId) {
                 EditorInfo.IME_ACTION_DONE -> {
                     if (edit_name_team.text.toString() != "")
-                        (activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(
-                            activity!!.currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+                        hideKeyboard()
                     DataController.instance.renameTeam(edit_name_team.text.toString(), ::callbackRenameTeam)
                     true
                 }
@@ -83,11 +81,9 @@ class MyTeamFragment: Fragment() {
      */
     private fun callbackRenameTeam(response: Network.NetworkResponse) {
         if (response == Network.NetworkResponse.OK) {
-            Snackbar.make(activity!!.findViewById(R.id.content_frame), "Команда успешно переименована!",
-                Snackbar.LENGTH_LONG).show()
-            activity?.runOnUiThread {
-                activity?.findViewById<NavigationView>(R.id.navigation_view)?.getHeaderView(0)
-                    ?.findViewById<TextView>(R.id.text_name_team)?.text = DataController.instance.team.teamName
+            activity?.let {
+                Snackbar.make(it.findViewById(R.id.content_frame), "Команда успешно переименована!",
+                    Snackbar.LENGTH_LONG).show()
             }
         }
     }
@@ -99,13 +95,23 @@ class MyTeamFragment: Fragment() {
         if (response == Network.NetworkResponse.OK) {
             activity?.runOnUiThread {
                 button_leave_quest.visibility = View.INVISIBLE
-                Snackbar.make(activity!!.findViewById(R.id.content_frame), "Вы успешно покинули текущий квест!",
-                    Snackbar.LENGTH_LONG).show()
+                activity?.let {
+                    Snackbar.make(it.findViewById(R.id.content_frame), "Вы успешно покинули текущий квест!",
+                        Snackbar.LENGTH_LONG).show()
+                }
             }
+        }
+    }
+
+    private fun hideKeyboard() {
+        activity?.currentFocus?.let { v ->
+            val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+            imm?.hideSoftInputFromWindow(v.windowToken, 0)
         }
     }
 
     companion object {
         var instance = MyTeamFragment()
+        const val TAG = "MyTeamFragment"
     }
 }

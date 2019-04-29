@@ -23,16 +23,16 @@ class DataController private constructor(private val sharedPreferences: SharedPr
     /**
      * Производит login команды.
      *
-     * Вызывает метод [Network.loginTeam], который возвращает два параметра: response, teamName.
+     * Вызывает метод [Network.signUp], который возвращает два параметра: response, teamName.
      * Затем вызывается сам [callback].
      *
      * @param[login] логин команды.
      * @param[password] пароль команды.
      * @param[callback] вызывается при завершении запроса.
      */
-    fun loginTeam(login: String, password: String, callback: (response: Network.NetworkResponse) -> Unit) {
+    fun signUp(login: String, password: String, callback: (response: Network.NetworkResponse) -> Unit) {
         Log.d("DataController", "loginTeam login:$login, password:$password")
-        network.loginTeam(login, password) { response, teamName ->
+        network.signUp(login, password) { response, teamName ->
             if (response == Network.NetworkResponse.OK) {
                 team.save(login, password, sharedPreferences)
                 team.rename(teamName)

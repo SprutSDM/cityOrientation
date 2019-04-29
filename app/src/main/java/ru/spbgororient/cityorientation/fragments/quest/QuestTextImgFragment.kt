@@ -29,7 +29,7 @@ class QuestTextImgFragment: Fragment() {
         text_number_quest.text = "Задание №${DataController.instance.quests.step + 1}"
         text_content_quest.text = DataController.instance.quests.getTask().content
         Picasso.with(context)
-            .load(Network.urlImg + DataController.instance.quests.getTask().img)
+            .load(Network.URL_IMG + DataController.instance.quests.getTask().img)
             .into(image_quest)
         edit_answer.setOnEditorActionListener { v, actionId, event ->
             when (actionId) {

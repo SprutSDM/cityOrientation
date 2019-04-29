@@ -24,11 +24,12 @@ import android.view.inputmethod.InputMethodManager
 import ru.spbgororient.cityorientation.App
 import ru.spbgororient.cityorientation.R
 import ru.spbgororient.cityorientation.dataController.DataController
+import ru.spbgororient.cityorientation.network.Network
+import kotlin.concurrent.timer
 
 
-class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
-    DrawerLayout.DrawerListener {
-    lateinit var fragment: Fragment
+class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, DrawerLayout.DrawerListener {
+    private lateinit var fragment: Fragment
     private var needChangeFragment = false
 
     private lateinit var teamName: TextView
@@ -61,10 +62,12 @@ class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                 else
                     fragment = QuestTextImgFragment.instance
         fragment.tag
-        supportFragmentManager.beginTransaction().replace(R.id.content_frame,  fragment).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit()
 
         teamName = navigation_view.getHeaderView(0).findViewById(R.id.text_name_team)
         teamName.text = DataController.instance.team.teamName
+
+        startBackgroundUpdate()
     }
 
     override fun onBackPressed() {
@@ -123,10 +126,52 @@ class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
     override fun onDrawerOpened(p0: View) {
     }
 
-    private fun renameTeamCallback() {
-        runOnUiThread {
-            navigation_view.getHeaderView(0).findViewById<TextView>(R.id.text_name_team).text =
-                DataController.instance.team.teamName
+    private fun startBackgroundUpdate() {
+        val getStateTimer = timer(name = "getStateTimer", initialDelay = 5000, period = 5000) {
+            DataController.instance.getStateForTimer(::updateData)
+        }
+    }
+
+    private fun updateData(response: Network.NetworkResponse, questId: String, step: Int, times: List<Int>, timesComplete: List<Int>) {
+        Log.d("NavigationActivity", "questId: $questId, response: $response DCQuestId: ${DataController.instance.quests.questId}")
+        if (response != Network.NetworkResponse.OK)
+            return
+
+        // Кто-то нажал кнопку покинуть квест
+        if (questId == "" && DataController.instance.quests.questId != "") {
+            // Кто-то нажал кнопку покинуть квест
+            DataController.instance.quests.resetQuest()
+            Log.d("NavigationActivity", "Tag: ${fragment.tag}")
+            if (fragment.tag == "FragmentQuestText" || fragment.tag == "FragmentQuestTextImg" || fragment.tag == "FragmentWaitingToStart")
+                runOnUiThread {
+                    supportFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.content_frame, ListOfQuestsFragment.instance)
+                        .commit()
+                }
+            return
+        }
+
+        // Кто-то выбрал квест
+        // Возможно, кто-то нажал кнопку покинуть квест и выбрал новый.
+        if (questId != "" && (DataController.instance.quests.questId == "" || DataController.instance.quests.questId != questId)) {
+            DataController.instance.quests.questId = questId
+            DataController.instance.quests.step = step
+            DataController.instance.quests.times = times
+            DataController.instance.quests.timesComplete = timesComplete
+            DataController.instance.loadTasks {
+                if (it == Network.NetworkResponse.OK) {
+                    // TODO: Добавить переход на экран с ожиданием квеста / заданием.
+                }
+            }
+            return
+        }
+
+        // Кто-то ввёл правильный ответ
+        if (step != DataController.instance.quests.step) {
+            DataController.instance.quests.step = step
+            // TODO: Добавить переход к следующему квесту.
+            return
         }
     }
 }

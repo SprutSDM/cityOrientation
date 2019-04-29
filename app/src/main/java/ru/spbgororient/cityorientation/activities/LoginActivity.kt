@@ -28,7 +28,7 @@ class LoginActivity : AppCompatActivity() {
             if (login.isNotEmpty() && password.isNotEmpty()) {
                 progress_bar.visibility = ProgressBar.VISIBLE
                 button_login.isEnabled = false
-                DataController.instance.loginTeam(login, password, ::callbackLogin)
+                DataController.instance.signUp(login, password, ::callbackLogin)
             }
         }
         input_password.editText!!.setOnEditorActionListener { v, actionId, event ->
@@ -41,7 +41,7 @@ class LoginActivity : AppCompatActivity() {
                             currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
                         progress_bar.visibility = ProgressBar.VISIBLE
                         button_login.isEnabled = false
-                        DataController.instance.loginTeam(login, password, ::callbackLogin)
+                        DataController.instance.signUp(login, password, ::callbackLogin)
                     }
                     true
                 }
@@ -57,7 +57,7 @@ class LoginActivity : AppCompatActivity() {
             input_password.editText?.setText(DataController.instance.team.password)
             progress_bar.visibility = ProgressBar.VISIBLE
             button_login.isEnabled = false
-            DataController.instance.loginTeam(
+            DataController.instance.signUp(
                 DataController.instance.team.login,
                 DataController.instance.team.password, ::callbackLogin)
         }

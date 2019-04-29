@@ -1,13 +1,15 @@
 package ru.spbgororient.cityorientation.network
 
-import android.util.Log
-import com.google.gson.GsonBuilder
-import okhttp3.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import ru.spbgororient.cityorientation.api.*
 import ru.spbgororient.cityorientation.quests.Quest
 import ru.spbgororient.cityorientation.quests.Quests
 import ru.spbgororient.cityorientation.quests.Task
 import ru.spbgororient.cityorientation.team.Team
-import java.io.IOException
 
 /**
  * Этот класс содержит методы для общения с Rest Api сервером.
@@ -22,27 +24,12 @@ class Network private constructor() {
         ERROR
     }
 
-    private val gsonBuilder = GsonBuilder().create()
-    private val client = OkHttpClient()
+    private val mRetrofit = Retrofit.Builder()
+        .baseUrl(URL_API)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
 
-    /**
-     * Создаёт запрос.
-     *
-     * @param[uri] относительный URI нужного REST запроса.
-     * @param[reqObj] тело запроса.
-     * @return возвращает экземпляр Request
-     */
-    private fun makeRequest(uri: String, reqObj: kotlin.Any): Request {
-        val fullUrl = "$urlApi/$uri"
-        return Request.Builder()
-            .url(fullUrl)
-            .post(
-                RequestBody.create(
-                    MediaType.parse("application/json; charset=utf-8"),
-                    gsonBuilder.toJson(reqObj)
-                ))
-            .build()
-    }
+    private val cityApi = mRetrofit.create(CityOrientationApi::class.java)
 
     /**
      * Производит login команды.
@@ -53,21 +40,17 @@ class Network private constructor() {
      * @param[password] пароль команды.
      * @param[callback] вызывается при завершении запроса.
      */
-    fun loginTeam(login: String, password: String, callback: (response: NetworkResponse, team: String) -> Unit) {
-        val request = makeRequest("loginTeam",
-            LoginTeamRequest(login = login, password = password)
-        )
-        client.newCall(request).enqueue(object: Callback {
-            override fun onResponse(call: Call, response: Response) {
-                val body = response.body()?.string()
-                val data = gsonBuilder.fromJson(body, LoginTeamResponse::class.java)
+    fun signUp(login: String, password: String, callback: (response: NetworkResponse, team: String) -> Unit) {
+        cityApi.signUp(SignUpRequest(login = login, password = password)).enqueue(object: Callback<SignUpResponse> {
+            override fun onResponse(call: Call<SignUpResponse>, response: Response<SignUpResponse>) {
+                val data = response.body()!!
                 if (data.message == "ok")
                     callback(NetworkResponse.OK, data.teamName)
                 else
                     callback(NetworkResponse.ERROR, "")
             }
 
-            override fun onFailure(call: Call, e: IOException) {
+            override fun onFailure(call: Call<SignUpResponse>, t: Throwable) {
                 callback(NetworkResponse.ERROR, "")
             }
         })
@@ -83,14 +66,9 @@ class Network private constructor() {
      * @param[callback] вызывается при завершении запроса
      */
     fun renameTeam(login:String, teamName: String, callback: (response: NetworkResponse) -> Unit) {
-        val request = makeRequest("renameTeam",
-            RenameTeamRequest(login = login, teamName = teamName)
-        )
-        client.newCall(request).enqueue(object: Callback {
-            override fun onResponse(call: Call, response: Response) {
-                Log.d(LOG_KEY, "response: $response")
-                val body = response.body()?.string()
-                val data = gsonBuilder.fromJson(body, RenameTeamResponse::class.java)
+        cityApi.renameTeam(RenameTeamRequest(login = login, teamName = teamName)).enqueue(object: Callback<RenameTeamResponse> {
+            override fun onResponse(call: Call<RenameTeamResponse>, response: Response<RenameTeamResponse>) {
+                val data = response.body()!!
                 callback(
                     when (data.message) {
                         "ok" -> NetworkResponse.OK
@@ -99,7 +77,7 @@ class Network private constructor() {
                 )
             }
 
-            override fun onFailure(call: Call, e: IOException) {
+            override fun onFailure(call: Call<RenameTeamResponse>, t: Throwable) {
                 callback(NetworkResponse.ERROR)
             }
         })
@@ -113,11 +91,9 @@ class Network private constructor() {
      * @param[callback] вызывается при завершении запроса.
      */
     fun joinToQuest(login: String, questId: String, callback: (response: NetworkResponse) -> Unit) {
-        val request = makeRequest("joinToQuest", JoinToQuestRequest(login = login, questId = questId))
-        client.newCall(request).enqueue(object: Callback {
-            override fun onResponse(call: Call, response: Response) {
-                val body = response.body()?.string()
-                val data = gsonBuilder.fromJson(body, JoinToQuestResponse::class.java)
+        cityApi.joinToQuest(JoinToQuestRequest(login = login, questId = questId)).enqueue(object: Callback<JoinToQuestResponse> {
+            override fun onResponse(call: Call<JoinToQuestResponse>, response: Response<JoinToQuestResponse>) {
+                val data = response.body()!!
                 callback(
                     when (data.message) {
                         "ok" -> NetworkResponse.OK
@@ -126,13 +102,13 @@ class Network private constructor() {
                 )
             }
 
-            override fun onFailure(call: Call, e: IOException) {
+            override fun onFailure(call: Call<JoinToQuestResponse>, t: Throwable) {
                 callback(NetworkResponse.ERROR)
             }
         })
     }
 
-    /**)
+    /**
      * Убирает команду из участия в квесте с id [questId]
      *
      * @param[login] логин команды.
@@ -140,11 +116,9 @@ class Network private constructor() {
      * @param[callback] вызывается при завершении запроса.
      */
     fun leaveQuest(login: String, questId: String, callback: (response: NetworkResponse) -> Unit) {
-        val request = makeRequest("leaveQuest", LeaveQuestRequest(login = login, questId = questId))
-        client.newCall(request).enqueue(object: Callback {
-            override fun onResponse(call: Call, response: Response) {
-                val body = response.body()?.string()
-                val data = gsonBuilder.fromJson(body, LeaveQuestResponse::class.java)
+        cityApi.leaveQuest(LeaveQuestRequest(login = login, questId = questId)).enqueue(object: Callback<LeaveQuestResponse> {
+            override fun onResponse(call: Call<LeaveQuestResponse>, response: Response<LeaveQuestResponse>) {
+                val data = response.body()!!
                 callback(
                     when (data.message) {
                         "ok" -> NetworkResponse.OK
@@ -153,7 +127,7 @@ class Network private constructor() {
                 )
             }
 
-            override fun onFailure(call: Call, e: IOException) {
+            override fun onFailure(call: Call<LeaveQuestResponse>, t: Throwable) {
                 callback(NetworkResponse.ERROR)
             }
         })
@@ -165,18 +139,16 @@ class Network private constructor() {
      * @param[callback] вызывается при завершении запроса.
      */
     fun loadQuests(callback: (response: NetworkResponse, listOfQuests: List<Quest>) -> Unit) {
-        val request = makeRequest("listOfQuests", "")
-        client.newCall(request).enqueue(object: Callback {
-            override fun onResponse(call: Call, response: Response) {
-                val body = response.body()?.string()
-                val data = gsonBuilder.fromJson(body, ListOfQuestsResponse::class.java)
+        cityApi.loadQuests().enqueue(object: Callback<QuestsResponse> {
+            override fun onResponse(call: Call<QuestsResponse>, response: Response<QuestsResponse>) {
+                val data = response.body()!!
                 when (data.message) {
                     "ok" -> callback(NetworkResponse.OK, data.listOfQuests)
                     else -> callback(NetworkResponse.ERROR, ArrayList())
                 }
             }
 
-            override fun onFailure(call: Call, e: IOException) {
+            override fun onFailure(call: Call<QuestsResponse>, t: Throwable) {
                 callback(NetworkResponse.ERROR, ArrayList())
             }
         })
@@ -190,18 +162,16 @@ class Network private constructor() {
      * @param[callback] вызывается при завершении запроса.
      */
     fun loadTasks(login: String, questId: String, callback: (response: NetworkResponse, listOfTasks: List<Task>) -> Unit) {
-        val request = makeRequest("listOfTasks", ListOfTasksRequest(login = login, questId = questId))
-        client.newCall(request).enqueue(object: Callback {
-            override fun onResponse(call: Call, response: Response) {
-                val body = response.body()?.string()
-                val data = gsonBuilder.fromJson(body, ListOfTasksResponse::class.java)
+        cityApi.tasks(TasksRequest(login = login, questId = questId)).enqueue(object: Callback<TasksResponse> {
+            override fun onResponse(call: Call<TasksResponse>, response: Response<TasksResponse>) {
+                val data = response.body()!!
                 when (data.message) {
                     "ok" -> callback(NetworkResponse.OK, data.tasks)
                     else -> callback(NetworkResponse.ERROR, ArrayList())
                 }
             }
 
-            override fun onFailure(call: Call, e: IOException) {
+            override fun onFailure(call: Call<TasksResponse>, t: Throwable) {
                 callback(NetworkResponse.ERROR, ArrayList())
             }
         })
@@ -222,13 +192,9 @@ class Network private constructor() {
      */
     fun getState(login: String, callback: (response: NetworkResponse, teamName: String, questId: String, step: Int,
                                            times: List<Int>, timesComplete: List<Int>) -> Unit) {
-        val request = makeRequest("getState",
-            GetStateRequest(login = login)
-        )
-        client.newCall(request).enqueue(object: Callback {
-            override fun onResponse(call: Call, response: Response) {
-                val body = response.body()?.string()
-                val data = gsonBuilder.fromJson(body, GetStateResponse::class.java)
+        cityApi.getState(GetStateRequest(login = login)).enqueue(object: Callback<GetStateResponse> {
+            override fun onResponse(call: Call<GetStateResponse>, response: Response<GetStateResponse>) {
+                val data = response.body()!!
                 when (data.message) {
                     "ok" ->
                         callback(NetworkResponse.OK, data.teamName, data.questId, data.step, data.times, data.timesComplete)
@@ -236,7 +202,7 @@ class Network private constructor() {
                 }
             }
 
-            override fun onFailure(call: Call, e: IOException) {
+            override fun onFailure(call: Call<GetStateResponse>, t: Throwable) {
                 callback(NetworkResponse.ERROR, "", "", 0, ArrayList(), ArrayList())
             }
         })
@@ -251,12 +217,10 @@ class Network private constructor() {
      * @param[callback] вызывается при завершении запроса.
      */
     fun completeTask(login: String, questId: String, step: Int, callback: (response: NetworkResponse) -> Unit) {
-        val request = makeRequest("completeTask",
-            CompleteTaskRequest(login = login, questId = questId, taskNumber = step.toString()))
-        client.newCall(request).enqueue(object: Callback {
-            override fun onResponse(call: Call, response: Response) {
-                val body = response.body()?.string()
-                val data = gsonBuilder.fromJson(body, CompleteTaskResponse::class.java)
+        cityApi.completeTask(CompleteTaskRequest(login = login, questId = questId, taskNumber = step.toString()))
+            .enqueue(object: Callback<CompleteTaskResponse> {
+            override fun onResponse(call: Call<CompleteTaskResponse>, response: Response<CompleteTaskResponse>) {
+                val data = response.body()!!
                 callback(
                     when (data.message) {
                         "ok" -> NetworkResponse.OK
@@ -265,7 +229,7 @@ class Network private constructor() {
                 )
             }
 
-            override fun onFailure(call: Call, e: IOException) {
+            override fun onFailure(call: Call<CompleteTaskResponse>, t: Throwable) {
 
             }
         })
@@ -279,9 +243,9 @@ class Network private constructor() {
     companion object {
         private const val LOG_KEY = "Network"
         private lateinit var instance: Network
-        private const val url = "http://192.168.43.32:5000"
-        private const val urlApi = "$url/api/v1.0"
-        const val urlImg = "$url/quest_images/"
+        private const val URL = "http://192.168.43.32:5000"
+        private const val URL_API = "$URL/api/v1/"
+        const val URL_IMG = "$URL/quest_images/"
 
         fun newInstance(): Network? {
             if (::instance.isInitialized)

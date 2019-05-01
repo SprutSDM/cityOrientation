@@ -9,8 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import kotlinx.android.synthetic.main.activity_navigation.*
 import kotlinx.android.synthetic.main.fragment_quest_text.*
 import ru.spbgororient.cityorientation.R
+import ru.spbgororient.cityorientation.activities.NavigationActivity
 import ru.spbgororient.cityorientation.dataController.DataController
 import ru.spbgororient.cityorientation.fragments.finish.FinishFragment
 import ru.spbgororient.cityorientation.network.Network
@@ -75,13 +77,12 @@ class QuestTextFragment: Fragment() {
 
     private fun completeTaskCallback(response: Network.NetworkResponse) {
         if (response == Network.NetworkResponse.OK) {
-            val fragment = if (DataController.instance.quests.step >= DataController.instance.quests.listOfTasks.size)
-                FinishFragment.instance
-            else if (DataController.instance.quests.getTask().img == "")
-                newInstance()
-            else
-                QuestTextImgFragment.newInstance()
-            fragmentManager!!.beginTransaction().replace(R.id.content_frame, fragment, fragment.tag).commit()
+            when {
+                DataController.instance.quests.isFinished -> return
+                DataController.instance.quests.getTask().img == "" -> newInstance()
+                else -> QuestTextImgFragment.newInstance()
+            }
+            (context as NavigationActivity).navigation_view.selectedItemId = R.id.nav_quest
         }
     }
 

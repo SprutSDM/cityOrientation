@@ -9,8 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import ru.spbgororient.cityorientation.App
+import kotlinx.android.synthetic.main.activity_navigation.*
 import ru.spbgororient.cityorientation.R
+import ru.spbgororient.cityorientation.activities.NavigationActivity
 import ru.spbgororient.cityorientation.dataController.DataController
 import ru.spbgororient.cityorientation.fragments.myTeam.MyTeamFragment
 import ru.spbgororient.cityorientation.fragments.waitingToStart.WaitingToStartFragment
@@ -20,26 +21,12 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class Adapter(val context: Context,
-              private val fragmentManager: FragmentManager?) : RecyclerView.Adapter<Adapter.ViewHolder>() {
-    private val quests: List<Quest> = DataController.instance.quests.listOfQuests
+              private val fragmentManager: FragmentManager) : RecyclerView.Adapter<Adapter.ViewHolder>() {
+    private val quests: List<Quest> = DataController.instance.quests.getListOfQuests()
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
         val v = LayoutInflater.from(context).inflate(R.layout.card_view_quest_in_list, viewGroup, false)
         return ViewHolder(v)
-    }
-
-    private fun callbackListOfTasks(response: Network.NetworkResponse) {
-        if (response == Network.NetworkResponse.OK) {
-            val fragment = WaitingToStartFragment.newInstance()
-            fragmentManager!!.beginTransaction().replace(R.id.content_frame, fragment, fragment.tag).commit()
-        }
-    }
-
-    private fun callbackApply(response: Network.NetworkResponse) {
-        if (response == Network.NetworkResponse.OK) {
-            MyTeamFragment.instance.setVisibleLeaveButton()
-            DataController.instance.loadTasks(::callbackListOfTasks)
-        }
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
@@ -52,7 +39,16 @@ class Adapter(val context: Context,
         viewHolder.questCard.findViewById<Button>(R.id.but_apply).setOnClickListener {
             DataController.instance.joinToQuest(quests[i].questId, ::callbackApply)
         }
+    }
 
+    /**
+     * Вызывается, когда приходит ответ на запрос участия в квесте.
+     */
+    private fun callbackApply(response: Network.NetworkResponse) {
+        if (response == Network.NetworkResponse.OK) {
+            MyTeamFragment.instance.setVisibleLeaveButton()
+            DataController.instance.loadTasks(::callbackListOfTasks)
+        }
     }
 
     /**

@@ -28,22 +28,15 @@ class NavigationActivity : AppCompatActivity(), BottomNavigationView.OnNavigatio
 
         navigation_view.setOnNavigationItemSelectedListener(this)
 
-        if (DataController.instance.quests.questId == "")
-            fragment = ListOfQuestsFragment.instance
-        else
-            if (DataController.instance.quests.step >= DataController.instance.quests.listOfTasks.size)
-                fragment = FinishFragment.instance
-            else
-                if (DataController.instance.quests.getTask().img == "")
-                    fragment = QuestTextFragment.instance
-                else
-                    fragment = QuestTextImgFragment.instance
-        loadFragment(fragment)
+        navigation_view.selectedItemId = when {
+            DataController.instance.quests.questId == "" -> R.id.nav_list_of_quests
+            else -> R.id.nav_quest
+        }
 
-        startBackgroundUpdate()
+        // startBackgroundUpdate()
     }
 
-    fun loadFragment(fragment: Fragment) {
+    private fun loadFragment(fragment: Fragment) {
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.content_frame, fragment)
@@ -51,17 +44,20 @@ class NavigationActivity : AppCompatActivity(), BottomNavigationView.OnNavigatio
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        Log.d("NavigationActivity", "item selected: ${item.title}")
         fragment = when (item.itemId) {
             R.id.nav_my_group -> MyTeamFragment.instance
             R.id.nav_list_of_quests -> ListOfQuestsFragment.instance
             R.id.nav_quest -> {
-                if (DataController.instance.quests.isStarted)
-                    if (DataController.instance.quests.getTask().img == "")
-                        QuestTextFragment.instance
-                    else
-                        QuestTextImgFragment.instance
-                else
-                    WaitingToStartFragment.instance
+                DataController.instance.quests.let {
+                    when {
+                        !it.isStarted -> WaitingToStartFragment.instance
+                        it.isFinished -> FinishFragment.instance
+                        it.getTask().img == "" -> QuestTextFragment.instance
+                        it.getTask().img != "" -> QuestTextImgFragment.instance
+                        else -> WaitingToStartFragment.instance
+                    }
+                }
             }
             else -> ListOfQuestsFragment.instance
         }

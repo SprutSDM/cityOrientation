@@ -26,8 +26,7 @@ class LoginActivity : AppCompatActivity() {
             val login = input_answer.editText!!.text.toString()
             val password = input_password.editText!!.text.toString()
             if (login.isNotEmpty() && password.isNotEmpty()) {
-                progress_bar.visibility = ProgressBar.VISIBLE
-                button_login.isEnabled = false
+                showProgressBar()
                 DataController.instance.signUp(login, password, ::callbackLogin)
             }
         }
@@ -39,8 +38,7 @@ class LoginActivity : AppCompatActivity() {
                     if (login.isNotEmpty() && password.isNotEmpty()) {
                         (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(
                             currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
-                        progress_bar.visibility = ProgressBar.VISIBLE
-                        button_login.isEnabled = false
+                        showProgressBar()
                         DataController.instance.signUp(login, password, ::callbackLogin)
                     }
                     true
@@ -55,11 +53,22 @@ class LoginActivity : AppCompatActivity() {
         if (DataController.instance.loadTeam()) {
             input_answer.editText?.setText(DataController.instance.team.login)
             input_password.editText?.setText(DataController.instance.team.password)
-            progress_bar.visibility = ProgressBar.VISIBLE
-            button_login.isEnabled = false
+            showProgressBar()
             DataController.instance.signUp(
                 DataController.instance.team.login,
                 DataController.instance.team.password, ::callbackLogin)
+        }
+    }
+
+    private fun showProgressBar() {
+        progress_bar.visibility = ProgressBar.VISIBLE
+        button_login.isEnabled = false
+    }
+
+    private fun hideProgressBar() {
+        runOnUiThread {
+            progress_bar.visibility = ProgressBar.INVISIBLE
+            button_login.isEnabled = true
         }
     }
 
@@ -68,10 +77,7 @@ class LoginActivity : AppCompatActivity() {
      */
     private fun callbackListOfTasks(response: Network.NetworkResponse) {
         if (response == Network.NetworkResponse.OK) {
-            runOnUiThread {
-                progress_bar.visibility = ProgressBar.INVISIBLE
-                button_login.isEnabled = true
-            }
+            hideProgressBar()
             val intent = Intent(this, NavigationActivity::class.java)
             startActivity(intent)
         }
@@ -84,20 +90,14 @@ class LoginActivity : AppCompatActivity() {
         if (response == Network.NetworkResponse.OK) {
             // Если текущий квест не выбран, то сразу переходим на NavigationActivity
             if (DataController.instance.quests.questId == "") {
-                runOnUiThread {
-                    progress_bar.visibility = ProgressBar.INVISIBLE
-                    button_login.isEnabled = true
-                }
+                hideProgressBar()
                 val intent = Intent(this, NavigationActivity::class.java)
                 startActivity(intent)
             } else { // Иначе грузим текущие задачи.
                 DataController.instance.loadTasks(::callbackListOfTasks)
             }
         } else {
-            runOnUiThread {
-                progress_bar.visibility = ProgressBar.INVISIBLE
-                button_login.isEnabled = true
-            }
+            hideProgressBar()
         }
     }
 
@@ -109,11 +109,13 @@ class LoginActivity : AppCompatActivity() {
         if (response == Network.NetworkResponse.OK)
             DataController.instance.getState(::callbackGetState)
         else {
-            runOnUiThread {
-                progress_bar.visibility = ProgressBar.INVISIBLE
-                button_login.isEnabled = true
-            }
-            Snackbar.make(findViewById(R.id.activity_login), "Неправильный логин или пароль!", Snackbar.LENGTH_LONG).show()
+            hideProgressBar()
+            Snackbar.make(findViewById(R.id.activity_login),
+                when (response) {
+                    Network.NetworkResponse.NETWORK_ERROR -> "Нет соединения с сетью Интернет."
+                    else -> "Неправильный логин или пароль!"
+                },
+                Snackbar.LENGTH_LONG).show()
         }
     }
 

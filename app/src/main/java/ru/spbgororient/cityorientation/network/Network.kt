@@ -12,8 +12,6 @@ import ru.spbgororient.cityorientation.quests.Quest
 import ru.spbgororient.cityorientation.quests.Quests
 import ru.spbgororient.cityorientation.quests.Task
 import ru.spbgororient.cityorientation.team.Team
-import ru.spbgororient.cityorientation.BuildConfig
-
 
 
 /**
@@ -26,7 +24,8 @@ class Network private constructor() {
     enum class NetworkResponse {
         OK,
         LOADING,
-        ERROR
+        FAILURE,
+        NETWORK_ERROR
     }
 
     private val interceptor = HttpLoggingInterceptor()
@@ -59,11 +58,11 @@ class Network private constructor() {
                 if (data.message == "ok")
                     callback(NetworkResponse.OK, data.teamName)
                 else
-                    callback(NetworkResponse.ERROR, "")
+                    callback(NetworkResponse.FAILURE, "")
             }
 
             override fun onFailure(call: Call<SignUpResponse>, t: Throwable) {
-                callback(NetworkResponse.ERROR, "")
+                callback(NetworkResponse.NETWORK_ERROR, "")
             }
         })
     }
@@ -84,13 +83,13 @@ class Network private constructor() {
                 callback(
                     when (data.message) {
                         "ok" -> NetworkResponse.OK
-                        else -> NetworkResponse.ERROR
+                        else -> NetworkResponse.FAILURE
                     }
                 )
             }
 
             override fun onFailure(call: Call<RenameTeamResponse>, t: Throwable) {
-                callback(NetworkResponse.ERROR)
+                callback(NetworkResponse.NETWORK_ERROR)
             }
         })
     }
@@ -109,13 +108,13 @@ class Network private constructor() {
                 callback(
                     when (data.message) {
                         "ok" -> NetworkResponse.OK
-                        else -> NetworkResponse.ERROR
+                        else -> NetworkResponse.FAILURE
                     }
                 )
             }
 
             override fun onFailure(call: Call<JoinToQuestResponse>, t: Throwable) {
-                callback(NetworkResponse.ERROR)
+                callback(NetworkResponse.NETWORK_ERROR)
             }
         })
     }
@@ -134,13 +133,13 @@ class Network private constructor() {
                 callback(
                     when (data.message) {
                         "ok" -> NetworkResponse.OK
-                        else -> NetworkResponse.ERROR
+                        else -> NetworkResponse.FAILURE
                     }
                 )
             }
 
             override fun onFailure(call: Call<LeaveQuestResponse>, t: Throwable) {
-                callback(NetworkResponse.ERROR)
+                callback(NetworkResponse.NETWORK_ERROR)
             }
         })
     }
@@ -156,12 +155,12 @@ class Network private constructor() {
                 val data = response.body()!!
                 when (data.message) {
                     "ok" -> callback(NetworkResponse.OK, data.listOfQuests)
-                    else -> callback(NetworkResponse.ERROR, ArrayList())
+                    else -> callback(NetworkResponse.FAILURE, ArrayList())
                 }
             }
 
             override fun onFailure(call: Call<QuestsResponse>, t: Throwable) {
-                callback(NetworkResponse.ERROR, ArrayList())
+                callback(NetworkResponse.NETWORK_ERROR, ArrayList())
             }
         })
     }
@@ -179,12 +178,12 @@ class Network private constructor() {
                 val data = response.body()!!
                 when (data.message) {
                     "ok" -> callback(NetworkResponse.OK, data.tasks)
-                    else -> callback(NetworkResponse.ERROR, ArrayList())
+                    else -> callback(NetworkResponse.FAILURE, ArrayList())
                 }
             }
 
             override fun onFailure(call: Call<TasksResponse>, t: Throwable) {
-                callback(NetworkResponse.ERROR, ArrayList())
+                callback(NetworkResponse.NETWORK_ERROR, ArrayList())
             }
         })
     }
@@ -208,13 +207,13 @@ class Network private constructor() {
                 val data = response.body()!!
                 when (data.message) {
                     "ok" ->
-                        callback(NetworkResponse.OK, data.teamName, data.questId, data.step, data.times, data.timesComplete)
-                    else -> callback(NetworkResponse.ERROR, "", "", 0, ArrayList(), ArrayList())
+                        callback(NetworkResponse.OK, data)
+                    else -> callback(NetworkResponse.FAILURE, GetStateResponse("", "", "", ArrayList(), ArrayList(), 0, 0, 0))
                 }
             }
 
             override fun onFailure(call: Call<GetStateResponse>, t: Throwable) {
-                callback(NetworkResponse.ERROR, "", "", 0, ArrayList(), ArrayList())
+                callback(NetworkResponse.NETWORK_ERROR, GetStateResponse("", "", "", ArrayList(), ArrayList(), 0, 0, 0))
             }
         })
     }
@@ -235,34 +234,22 @@ class Network private constructor() {
                 callback(
                     when (data.message) {
                         "ok" -> NetworkResponse.OK
-                        else -> NetworkResponse.ERROR
+                        else -> NetworkResponse.FAILURE
                     }
                 )
             }
 
             override fun onFailure(call: Call<CompleteTaskResponse>, t: Throwable) {
-
+                callback(NetworkResponse.NETWORK_ERROR)
             }
         })
     }
 
-    /**
-     * Запрещает создание более чем одного такого объекта.
-     *
-     * Глобальной точки доступа нету. При первом вызове newInstance возвращает ссылку на объект.
-     */
     companion object {
         private const val LOG_KEY = "Network"
-        private lateinit var instance: Network
+        val instance: Network by lazy { Network() }
         private const val URL = "http://192.168.43.32:5000"
         private const val URL_API = "$URL/api/v1/"
         const val URL_IMG = "$URL/quest_images/"
-
-        fun newInstance(): Network? {
-            if (::instance.isInitialized)
-                return null
-            instance = Network()
-            return instance
-        }
     }
 }

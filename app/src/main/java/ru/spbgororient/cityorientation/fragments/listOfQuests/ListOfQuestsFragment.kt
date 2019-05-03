@@ -20,7 +20,7 @@ class ListOfQuestsFragment: Fragment() {
 
         adapter = Adapter(
             thisView.context,
-            fragmentManager
+            fragmentManager!!
         )
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(thisView.context)

@@ -9,6 +9,13 @@ class Quests {
     var timesComplete: List<Int> = ArrayList(0)
     var isStarted = false
 
+    val isFinished : Boolean
+        get() = step >= listOfTasks.size
+
+    fun getQuest(): Quest? {
+        return mapOfQuests[questId]
+    }
+
     /**
      * Возвращает текущее задание.
      */

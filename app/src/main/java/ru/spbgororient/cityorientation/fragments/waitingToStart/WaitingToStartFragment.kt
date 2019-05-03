@@ -1,12 +1,16 @@
 package ru.spbgororient.cityorientation.fragments.waitingToStart
 
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kotlinx.android.synthetic.main.activity_navigation.*
 import kotlinx.android.synthetic.main.fragment_waiting_to_start.*
 import ru.spbgororient.cityorientation.R
+import ru.spbgororient.cityorientation.activities.NavigationActivity
 import ru.spbgororient.cityorientation.dataController.DataController
 import java.text.SimpleDateFormat
 import java.util.*
@@ -23,15 +27,9 @@ class WaitingToStartFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         button_login.setOnClickListener {
-            val fragment = if (DataController.instance.quests.step == DataController.instance.quests.listOfTasks.size)
-                FinishFragment.instance
-            else if (DataController.instance.quests.getTask().img == "")
-                QuestTextFragment.newInstance()
-            else
-                QuestTextImgFragment.newInstance()
-            fragmentManager!!.beginTransaction().replace(R.id.content_frame, fragment, fragment.tag).commit()
+            DataController.instance.quests.isStarted = true // TODO: убрать это от сюда
+            (context as NavigationActivity).navigation_view.selectedItemId = R.id.nav_quest
         }
         DataController.instance.quests.getQuest()?.let { quest ->
             val time = quest.seconds * 1000 - System.currentTimeMillis()

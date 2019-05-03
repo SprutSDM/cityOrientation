@@ -6,6 +6,12 @@ import ru.spbgororient.cityorientation.network.Network
 import ru.spbgororient.cityorientation.quests.Quests
 import ru.spbgororient.cityorientation.team.Team
 
+/**
+ * Этот класс производит контроль данных, получаемых через [Network].
+ *
+ * Сохраняет некоторые данные сразу в [Team] и [Quests], убирая таким образом эту обязанность с кода,
+ * в котором вызываются эти методы. Данные возвращаются через callback.
+ */
 class DataController private constructor(private val sharedPreferences: SharedPreferences,
                                          val team: Team,
                                          val quests: Quests,
@@ -184,7 +190,7 @@ class DataController private constructor(private val sharedPreferences: SharedPr
         fun initInstance(sharedPreferences: SharedPreferences){
             if (::instance.isInitialized)
                 return
-            instance = DataController(sharedPreferences, Team(), Quests(), Network.newInstance()!!)
+            instance = DataController(sharedPreferences, Team(), Quests(), Network.instance)
         }
     }
 }

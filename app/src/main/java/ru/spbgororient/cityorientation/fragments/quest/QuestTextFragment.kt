@@ -14,7 +14,6 @@ import kotlinx.android.synthetic.main.fragment_quest_text.*
 import ru.spbgororient.cityorientation.R
 import ru.spbgororient.cityorientation.activities.NavigationActivity
 import ru.spbgororient.cityorientation.dataController.DataController
-import ru.spbgororient.cityorientation.fragments.finish.FinishFragment
 import ru.spbgororient.cityorientation.network.Network
 
 class QuestTextFragment: Fragment() {

@@ -17,7 +17,6 @@ import ru.spbgororient.cityorientation.activities.FullImageActivity
 import ru.spbgororient.cityorientation.R
 import ru.spbgororient.cityorientation.activities.NavigationActivity
 import ru.spbgororient.cityorientation.dataController.DataController
-import ru.spbgororient.cityorientation.fragments.finish.FinishFragment
 import ru.spbgororient.cityorientation.network.Network
 
 class QuestTextImgFragment: Fragment() {

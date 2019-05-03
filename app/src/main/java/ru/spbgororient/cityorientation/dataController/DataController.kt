@@ -5,12 +5,13 @@ import android.util.Log
 import ru.spbgororient.cityorientation.network.Network
 import ru.spbgororient.cityorientation.quests.Quests
 import ru.spbgororient.cityorientation.team.Team
-import java.util.*
 
 class DataController private constructor(private val sharedPreferences: SharedPreferences,
                                          val team: Team,
                                          val quests: Quests,
                                          private val network: Network) {
+    var timeZone: Long = 0
+    var timeOffset: Long = 0
     /**
      * Загружает login, password команды из внутреннего хранилища.
      *
@@ -67,13 +68,12 @@ class DataController private constructor(private val sharedPreferences: SharedPr
     }
 
     /**
-     * Добавляет команду к участю в квесте, который находится в массиве [Quests.listOfQuests] на позиции [pos].
+     * Добавляет команду к участю в квесте c id [questId].
      *
-     * @param[pos] позиция квеста в массиве [Quests.listOfQuests].
+     * @param[questId] id квеста.
      * @param[callback] вызывается при завершении запроса.
      */
-    fun joinToQuest(pos: Int, callback: (response: Network.NetworkResponse) -> Unit) {
-        val questId = quests.listOfQuests[pos].questId
+    fun joinToQuest(questId: String, callback: (response: Network.NetworkResponse) -> Unit) {
         network.joinToQuest(team.login, questId) { response ->
             if (response == Network.NetworkResponse.OK)
                 quests.questId = questId
@@ -102,7 +102,7 @@ class DataController private constructor(private val sharedPreferences: SharedPr
     fun loadQuests(callback: (response: Network.NetworkResponse) -> Unit) {
         network.loadQuests { response, listOfQuests ->
             if (response == Network.NetworkResponse.OK)
-                quests.listOfQuests = listOfQuests
+                quests.setMapOfQuests(listOfQuests)
             callback(response)
         }
     }
@@ -129,14 +129,16 @@ class DataController private constructor(private val sharedPreferences: SharedPr
      * @param[callback] вызывается при завершении запроса.
      */
     fun getState(callback: (response: Network.NetworkResponse) -> Unit) {
-        network.getState(team.login) { response, teamName, questId, step, times, timesComplete ->
+        network.getState(team.login) { response, data ->
             if (response == Network.NetworkResponse.OK) {
-                team.teamName = teamName
+                team.teamName = data.teamName
+                timeZone = data.timeZone
+                timeOffset = data.seconds * 1000 - System.currentTimeMillis()
                 with(quests) {
-                    this.questId = questId
-                    this.step = step
-                    this.times = times
-                    this.timesComplete = timesComplete
+                    this.questId = data.questId
+                    this.step = data.step
+                    this.times = data.times
+                    this.timesComplete = data.timesComplete
                 }
             }
             callback(response)
@@ -152,14 +154,14 @@ class DataController private constructor(private val sharedPreferences: SharedPr
      *
      * @param[callback] вызывается при завершении запроса.
      */
-    fun getStateForTimer(callback: (response: Network.NetworkResponse, questId: String, step: Int, times: List<Int>, timesComplete: List<Int>) -> Unit) {
-        network.getState(team.login) { response, teamName, questId, step, times, timesComplete ->
+    /*fun getStateForTimer(callback: (response: Network.NetworkResponse, questId: String, step: Int, seconds: Long, times: List<Int>, timesComplete: List<Int>) -> Unit) {
+        network.getState(team.login) { response, data ->
             if (response == Network.NetworkResponse.OK) {
-                team.teamName = teamName
+                team.teamName = data.teamName
             }
-            callback(response, questId, step, times, timesComplete)
+            callback(response, questId, step, seconds, times, timeZone, timesComplete)
         }
-    }
+    }*/
 
     /**
      * Уведомлеят о том, что текущее задание из текущего квеста решено верно.

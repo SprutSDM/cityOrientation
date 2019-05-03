@@ -1,6 +1,7 @@
 package ru.spbgororient.cityorientation.network
 
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -28,11 +29,17 @@ class Network private constructor() {
         ERROR
     }
 
+    private val interceptor = HttpLoggingInterceptor()
+    private val okHttp3client = OkHttpClient.Builder().addInterceptor(interceptor).build()
     private val mRetrofit = Retrofit.Builder()
         .baseUrl(URL_API)
         .addConverterFactory(GsonConverterFactory.create())
-        .client(OkHttpClient())
+        .client(okHttp3client)
         .build()
+
+    init {
+        interceptor.level = HttpLoggingInterceptor.Level.BODY
+    }
 
     private val cityApi = mRetrofit.create(CityOrientationApi::class.java)
 
@@ -195,8 +202,7 @@ class Network private constructor() {
      * @param[login] логин команды.
      * @param[callback] вызывается при завершении запроса.
      */
-    fun getState(login: String, callback: (response: NetworkResponse, teamName: String, questId: String, step: Int,
-                                           times: List<Int>, timesComplete: List<Int>) -> Unit) {
+    fun getState(login: String, callback: (response: NetworkResponse, data: GetStateResponse) -> Unit) {
         cityApi.getState(GetStateRequest(login = login)).enqueue(object: Callback<GetStateResponse> {
             override fun onResponse(call: Call<GetStateResponse>, response: Response<GetStateResponse>) {
                 val data = response.body()!!

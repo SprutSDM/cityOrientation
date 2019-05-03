@@ -55,8 +55,8 @@ data class GetStateResponse(
     @SerializedName("times") val times: List<Int>,
     @SerializedName("times_complete") val timesComplete: List<Int>,
     @SerializedName("step") val step: Int,
-    @SerializedName("date_now") val dateNow: Int,
-    @SerializedName("time_now") val timeNow: Int)
+    @SerializedName("seconds") val seconds: Long,
+    @SerializedName("time_zone") val timeZone: Long)
 
 data class CompleteTaskRequest(
     @SerializedName("login") val login: String,

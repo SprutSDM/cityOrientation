@@ -1,10 +1,10 @@
 package ru.spbgororient.cityorientation.quests
 
 class Quests {
-    var listOfQuests: List<Quest> = ArrayList()
+    var mapOfQuests: Map<String, Quest> = HashMap()
     var listOfTasks: List<Task> = ArrayList()
-    var questId: String = ""
-    var step: Int = 0
+    var questId = ""
+    var step = 0
     var times: List<Int> = ArrayList(0)
     var timesComplete: List<Int> = ArrayList(0)
     var isStarted = false
@@ -14,6 +14,14 @@ class Quests {
      */
     fun getTask(): Task {
         return listOfTasks[step]
+    }
+
+    fun setMapOfQuests(listOfQuests: List<Quest>) {
+        mapOfQuests = listOfQuests.associate { Pair(it.questId, it) }
+    }
+
+    fun getListOfQuests(): ArrayList<Quest> {
+        return ArrayList(mapOfQuests.values)
     }
 
     /**

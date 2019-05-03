@@ -45,14 +45,25 @@ class Adapter(val context: Context,
     override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
         viewHolder.questCard.findViewById<TextView>(R.id.text_number_quest).text = quests[i].name
         viewHolder.questCard.findViewById<TextView>(R.id.text_place_start).text = quests[i].place
-        val date = Date((quests[i].date * 86400 + quests[i].time) * 1000L)
+        val date = Date(quests[i].seconds * 1000L)
         val sdf = SimpleDateFormat("MMM, dd в HH:mm", Locale("ru"))
         viewHolder.questCard.findViewById<TextView>(R.id.text_date_start).text = sdf.format(date)
         viewHolder.questCard.findViewById<TextView>(R.id.text_amount_cp).text = quests[i].amountOfCp.toString()
         viewHolder.questCard.findViewById<Button>(R.id.but_apply).setOnClickListener {
-            DataController.instance.joinToQuest(i, ::callbackApply)
+            DataController.instance.joinToQuest(quests[i].questId, ::callbackApply)
         }
 
+    }
+
+    /**
+     * Вызывается, когда приходит список заданий.
+     * Переходит на экран с квестом.
+     */
+    private fun callbackListOfTasks(response: Network.NetworkResponse) {
+        if (response == Network.NetworkResponse.OK) {
+            WaitingToStartFragment.newInstance() // TODO: разобраться, нужно ли это
+            (context as NavigationActivity).navigation_view.selectedItemId = R.id.nav_quest
+        }
     }
 
     override fun getItemCount(): Int {

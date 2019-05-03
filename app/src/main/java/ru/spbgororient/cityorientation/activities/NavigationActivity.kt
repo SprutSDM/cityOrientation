@@ -70,13 +70,13 @@ class NavigationActivity : AppCompatActivity(), BottomNavigationView.OnNavigatio
         return true
     }
 
-    private fun startBackgroundUpdate() {
+    /*private fun startBackgroundUpdate() {
         val getStateTimer = timer(name = "getStateTimer", initialDelay = 5000, period = 5000) {
             DataController.instance.getStateForTimer(::updateData)
         }
-    }
+    }*/
 
-    private fun updateData(response: Network.NetworkResponse, questId: String, step: Int, times: List<Int>, timesComplete: List<Int>) {
+    private fun updateData(response: Network.NetworkResponse, questId: String, step: Int, seonds: Long, times: List<Int>, timesComplete: List<Int>) {
         Log.d("NavigationActivity", "questId: $questId, response: $response DCQuestId: ${DataController.instance.quests.questId}")
         if (response != Network.NetworkResponse.OK)
             return

@@ -15,6 +15,10 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
     buildTypes {
         release {
             minifyEnabled false
@@ -25,13 +29,10 @@ android {
 
 ext {
     retrofitVersion = '2.5.0'
-    retrofitConverterGson = '2.5.0'
-    retrofitRxAdapter = '2.5.0'
-    okhttp3Version = '3.9.1'
+    retrofitConverterGsonVersion = '2.5.0'
+    okhttp3Version = '3.14.1'
+    okhttp3InterceptorVersion = '3.14.1'
     picassoVersion = '2.5.2'
-
-    rxJavaVersion = '2.2.8'
-    rxAndroidVersion = '2.1.1'
 }
 
 dependencies {
@@ -44,12 +45,10 @@ dependencies {
     implementation 'com.android.support:support-v4:28.0.0'
 
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofitConverterGson"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitConverterGsonVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp3InterceptorVersion"
     implementation "com.squareup.okhttp3:okhttp:$okhttp3Version"
     implementation "com.squareup.picasso:picasso:$picassoVersion"
-
-    implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
-    implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
 
     implementation 'com.google.code.gson:gson:2.8.5'
     testImplementation 'junit:junit:4.12'

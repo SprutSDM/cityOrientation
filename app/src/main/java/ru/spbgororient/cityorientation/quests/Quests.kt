@@ -6,7 +6,6 @@ class Quests {
     var questId = "" // ID текущего квест
     var step = 0 // текущий этап
     var timesComplete: MutableList<Int> = ArrayList()
-    var isStarted = false
 
     val isFinished : Boolean
         get() = step >= listOfTasks.size
@@ -46,6 +45,5 @@ class Quests {
         questId = ""
         step = 0
         listOfTasks = ArrayList()
-        isStarted = false
     }
 }

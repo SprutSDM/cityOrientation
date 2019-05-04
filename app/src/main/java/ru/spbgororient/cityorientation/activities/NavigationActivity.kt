@@ -15,6 +15,7 @@ import ru.spbgororient.cityorientation.fragments.quest.QuestTextImgFragment
 import ru.spbgororient.cityorientation.fragments.waitingToStart.WaitingToStartFragment
 import ru.spbgororient.cityorientation.R
 import ru.spbgororient.cityorientation.dataController.DataController
+import ru.spbgororient.cityorientation.fragments.finish.NoQuestSelectedFragment
 import ru.spbgororient.cityorientation.network.Network
 import kotlin.concurrent.timer
 
@@ -49,10 +50,12 @@ class NavigationActivity : AppCompatActivity(), BottomNavigationView.OnNavigatio
             R.id.nav_my_group -> MyTeamFragment.instance
             R.id.nav_list_of_quests -> ListOfQuestsFragment.instance
             R.id.nav_quest -> {
+                val quest = DataController.instance.quests.getQuest()
                 DataController.instance.quests.let {
                     when {
-                        !it.isStarted -> WaitingToStartFragment.instance
-                        it.isFinished -> FinishFragment.instance
+                        quest == null -> NoQuestSelectedFragment.instance
+                        quest.startTime * 1000 > DataController.instance.currentTime  -> WaitingToStartFragment.instance
+                        it.isFinished || (quest.startTime + quest.duration) * 1000 <= DataController.instance.currentTime -> FinishFragment.instance
                         it.getTask().img == "" -> QuestTextFragment.instance
                         it.getTask().img != "" -> QuestTextImgFragment.instance
                         else -> WaitingToStartFragment.instance

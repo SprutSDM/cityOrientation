@@ -18,7 +18,10 @@ class DataController private constructor(private val sharedPreferences: SharedPr
                                          private val network: Network) {
     var timeZone: Long = 0
     var timeOffset: Long = 0
-    /**Z
+    val currentTime: Long
+        get() = System.currentTimeMillis() + timeOffset
+
+    /**
      * Загружает login, password команды из внутреннего хранилища.
      *
      * @return возвращает true, если данные были успешно считаны. Иначе false.

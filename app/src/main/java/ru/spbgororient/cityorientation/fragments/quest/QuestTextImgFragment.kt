@@ -65,9 +65,7 @@ class QuestTextImgFragment: Fragment() {
                     }
                     true
                 }
-                else -> {
-                    false
-                }
+                else -> false
             }
         }
         button_check_answer.setOnClickListener {
@@ -118,7 +116,7 @@ class QuestTextImgFragment: Fragment() {
 
     private fun startTimer() {
         DataController.instance.quests.getQuest()?.let { quest ->
-            val time = (quest.duration + quest.startTime) * 1000 - (System.currentTimeMillis() + DataController.instance.timeOffset)
+            val time = (quest.duration + quest.startTime) * 1000 - DataController.instance.currentTime
             Log.d("QuestTextImg", "System.currentTimeMillis: ${System.currentTimeMillis()}, quest: ${quest.startTime * 1000}")
             Log.d("QuestTextImg", "time: $time")
             timer = object: CountDownTimer(time, 1000L) {
@@ -144,7 +142,7 @@ class QuestTextImgFragment: Fragment() {
     private fun completeTaskCallback(response: Network.NetworkResponse) {
         if (response == Network.NetworkResponse.OK) {
             when {
-                DataController.instance.quests.isFinished -> return
+                DataController.instance.quests.isFinished -> 0 // Действий не надо. Всё будет сделано за нас в NavigationActivity
                 DataController.instance.quests.getTask().img == "" -> QuestTextFragment.newInstance()
                 else -> newInstance()
             }

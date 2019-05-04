@@ -16,7 +16,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"/>
     <TextView
-            android:id="@+id/text_reward"
+            android:id="@+id/text"
             android:layout_width="0dp" android:layout_height="wrap_content"
             android:layout_marginTop="28dp"
             android:layout_marginStart="16dp" android:layout_marginEnd="16dp"
@@ -30,7 +30,7 @@
             android:layout_marginTop="28dp"
             android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
             android:text="До начала осталось:"
-            app:layout_constraintTop_toBottomOf="@+id/text_reward"
+            app:layout_constraintTop_toBottomOf="@+id/text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
     <TextView
@@ -38,19 +38,9 @@
             android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
-            android:text="00:03:15"
+            android:text="00:00:00"
             android:textSize="30sp"
             android:textColor="@android:color/black"
             app:layout_constraintTop_toBottomOf="@+id/text_stage"
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"/>
-    <Button
-            android:id="@+id/button_login"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
-            android:backgroundTint="@color/colorAccent"
-            android:text="Продолжить"
-            android:textColor="@color/colorWhite"
-            app:layout_constraintTop_toBottomOf="@+id/text_time_from_start_quest"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"/>
 </android.support.constraint.ConstraintLayout>

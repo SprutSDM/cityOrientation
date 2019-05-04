@@ -102,7 +102,7 @@ class QuestTextFragment: Fragment() {
     private fun startTimer() {
         Log.d("QuestText", "quest is null - ${DataController.instance.quests.getQuest() == null}")
         DataController.instance.quests.getQuest()?.let { quest ->
-            val time = (quest.duration + quest.startTime) * 1000 - (System.currentTimeMillis() + DataController.instance.timeOffset)
+            val time = (quest.duration + quest.startTime) * 1000 - DataController.instance.currentTime
             Log.d("QuestText", "System.currentTimeMillis: ${System.currentTimeMillis()}, quest: ${quest.startTime * 1000}")
             Log.d("QuestText", "time: $time")
             timer = object: CountDownTimer(time, 1000L) {
@@ -128,7 +128,7 @@ class QuestTextFragment: Fragment() {
     private fun completeTaskCallback(response: Network.NetworkResponse) {
         if (response == Network.NetworkResponse.OK) {
             when {
-                DataController.instance.quests.isFinished -> return
+                DataController.instance.quests.isFinished -> 0 // Действий не надо. Всё будет сделано за нас в NavigationActivity
                 DataController.instance.quests.getTask().img == "" -> newInstance()
                 else -> QuestTextImgFragment.newInstance()
             }

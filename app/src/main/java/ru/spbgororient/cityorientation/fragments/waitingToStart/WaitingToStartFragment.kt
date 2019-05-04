@@ -27,10 +27,6 @@ class WaitingToStartFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        button_login.setOnClickListener {
-            DataController.instance.quests.isStarted = true // TODO: убрать это от сюда
-            (context as NavigationActivity).navigation_view.selectedItemId = R.id.nav_quest
-        }
         DataController.instance.quests.getQuest()?.let { quest ->
             val time = quest.startTime * 1000 - System.currentTimeMillis()
             text_time_from_start_quest.text = sdf.format(time)
@@ -62,7 +58,6 @@ class WaitingToStartFragment: Fragment() {
 
                 override fun onFinish() {
                     Log.d("WaitingToStartFragment", "timer is finished")
-                    DataController.instance.quests.isStarted = true
                     (context as NavigationActivity).navigation_view.selectedItemId = R.id.nav_quest
                 }
             }.start()

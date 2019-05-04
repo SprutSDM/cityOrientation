@@ -32,7 +32,7 @@ class WaitingToStartFragment: Fragment() {
             (context as NavigationActivity).navigation_view.selectedItemId = R.id.nav_quest
         }
         DataController.instance.quests.getQuest()?.let { quest ->
-            val time = quest.seconds * 1000 - System.currentTimeMillis()
+            val time = quest.startTime * 1000 - System.currentTimeMillis()
             text_time_from_start_quest.text = sdf.format(time)
         }
     }
@@ -47,11 +47,10 @@ class WaitingToStartFragment: Fragment() {
         stopTimer()
     }
 
-
     private fun startTimer() {
         DataController.instance.quests.getQuest()?.let { quest ->
-            val time = quest.seconds * 1000 - (System.currentTimeMillis() + DataController.instance.timeOffset)
-            Log.d("WaitingToStart", "System.currentTimeMillis: ${System.currentTimeMillis()}, quest: ${quest.seconds * 1000}")
+            val time = quest.startTime * 1000 - (System.currentTimeMillis() + DataController.instance.timeOffset)
+            Log.d("WaitingToStart", "System.currentTimeMillis: ${System.currentTimeMillis()}, quest: ${quest.startTime * 1000}")
             Log.d("WaitingToStart", "time: $time")
             Log.d("WaitingToStart", "timeOffset: ${DataController.instance.timeOffset}")
             timer = object: CountDownTimer(time, 1000L) {
@@ -71,7 +70,9 @@ class WaitingToStartFragment: Fragment() {
     }
 
     private fun stopTimer() {
-        timer.cancel()
+        DataController.instance.quests.getQuest()?.let {
+            timer.cancel()
+        }
     }
 
     companion object {

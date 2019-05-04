@@ -2,8 +2,10 @@ package ru.spbgororient.cityorientation.fragments.quest
 
 import android.content.Context
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,9 +17,16 @@ import ru.spbgororient.cityorientation.R
 import ru.spbgororient.cityorientation.activities.NavigationActivity
 import ru.spbgororient.cityorientation.dataController.DataController
 import ru.spbgororient.cityorientation.network.Network
+import java.text.SimpleDateFormat
+import java.util.*
 
 class QuestTextFragment: Fragment() {
+
+    private lateinit var timer: CountDownTimer
+    val sdf = SimpleDateFormat("HH:mm:ss")
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        sdf.timeZone = TimeZone.getTimeZone("UTC")
         return inflater.inflate(R.layout.fragment_quest_text, container, false)
     }
 
@@ -68,10 +77,52 @@ class QuestTextFragment: Fragment() {
             text_tip_2.text = "Подсказка №2: ${DataController.instance.quests.getTask().tips[1]}"
             button_get_tip_2.visibility = View.GONE
         }
+
+        DataController.instance.quests.getQuest()?.let { quest ->
+            text_time_stage.text = sdf.format(quest.startTime * 1000 - (System.currentTimeMillis() + DataController.instance.timeOffset) - DataController.instance.quests.getTimeCompleteLastTask())
+            text_time_until_finish.text = sdf.format(System.currentTimeMillis() + DataController.instance.timeOffset)
+        }
+    }
+
+    override fun onStart() {
+        Log.d("QuestText", "onStart")
+        super.onStart()
+        startTimer()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        stopTimer()
     }
 
     private fun updateCardFragment() {
         DataController.instance.completeTask(::completeTaskCallback)
+    }
+
+    private fun startTimer() {
+        Log.d("QuestText", "quest is null - ${DataController.instance.quests.getQuest() == null}")
+        DataController.instance.quests.getQuest()?.let { quest ->
+            val time = (quest.duration + quest.startTime) * 1000 - (System.currentTimeMillis() + DataController.instance.timeOffset)
+            Log.d("QuestText", "System.currentTimeMillis: ${System.currentTimeMillis()}, quest: ${quest.startTime * 1000}")
+            Log.d("QuestText", "time: $time")
+            timer = object: CountDownTimer(time, 1000L) {
+
+                override fun onTick(millisUntilFinished: Long) {
+                    Log.d("QuestText", "timer is ticking ${sdf.format(millisUntilFinished)}")
+                    text_time_stage.text = sdf.format((quest.duration - DataController.instance.quests.getTimeCompleteLastTask()) * 1000 - millisUntilFinished)
+                    text_time_until_finish.text = sdf.format(millisUntilFinished)
+                }
+
+                override fun onFinish() {
+                    Log.d("QuestText", "timer is finished")
+                    (context as NavigationActivity).navigation_view.selectedItemId = R.id.nav_quest
+                }
+            }.start()
+        }
+    }
+
+    private fun stopTimer() {
+        timer.cancel()
     }
 
     private fun completeTaskCallback(response: Network.NetworkResponse) {

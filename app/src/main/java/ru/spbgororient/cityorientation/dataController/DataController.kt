@@ -18,7 +18,7 @@ class DataController private constructor(private val sharedPreferences: SharedPr
                                          private val network: Network) {
     var timeZone: Long = 0
     var timeOffset: Long = 0
-    /**
+    /**Z
      * Загружает login, password команды из внутреннего хранилища.
      *
      * @return возвращает true, если данные были успешно считаны. Иначе false.
@@ -120,8 +120,13 @@ class DataController private constructor(private val sharedPreferences: SharedPr
      */
     fun loadTasks(callback: (response: Network.NetworkResponse) -> Unit) {
         network.loadTasks(team.login, quests.questId) { response, listOfTasks ->
-            if (response == Network.NetworkResponse.OK)
+            if (response == Network.NetworkResponse.OK) {
                 quests.listOfTasks = listOfTasks
+                /* Устанавливаем времена прохождения равные -1.
+                   Необходимо сделать это только в том случае, если мы не загрузили этот массив в getState */
+                if (quests.timesComplete.size == 0)
+                    quests.timesComplete = MutableList(listOfTasks.size) {-1}
+            }
             callback(response)
         }
     }
@@ -139,11 +144,10 @@ class DataController private constructor(private val sharedPreferences: SharedPr
             if (response == Network.NetworkResponse.OK) {
                 team.teamName = data.teamName
                 timeZone = data.timeZone
-                timeOffset = data.seconds * 1000 - System.currentTimeMillis()
+                timeOffset = data.seconds - System.currentTimeMillis()
                 with(quests) {
                     this.questId = data.questId
                     this.step = data.step
-                    this.times = data.times
                     this.timesComplete = data.timesComplete
                 }
             }
@@ -160,12 +164,12 @@ class DataController private constructor(private val sharedPreferences: SharedPr
      *
      * @param[callback] вызывается при завершении запроса.
      */
-    /*fun getStateForTimer(callback: (response: Network.NetworkResponse, questId: String, step: Int, seconds: Long, times: List<Int>, timesComplete: List<Int>) -> Unit) {
+    /*fun getStateForTimer(callback: (response: Network.NetworkResponse, questId: String, step: Int, startTime: Long, times: List<Int>, timesComplete: List<Int>) -> Unit) {
         network.getState(team.login) { response, data ->
             if (response == Network.NetworkResponse.OK) {
                 team.teamName = data.teamName
             }
-            callback(response, questId, step, seconds, times, timeZone, timesComplete)
+            callback(response, questId, step, startTime, times, timeZone, timesComplete)
         }
     }*/
 
@@ -175,11 +179,11 @@ class DataController private constructor(private val sharedPreferences: SharedPr
      * @param[callback] вызывается при завершении запроса.
      */
     fun completeTask(callback: (response: Network.NetworkResponse) -> Unit) {
-        network.completeTask(team.login, quests.questId, quests.step) { response ->
+        network.completeTask(team.login, quests.questId, quests.step) { response, timeComplete ->
             if (response == Network.NetworkResponse.OK) {
+                quests.timesComplete[quests.step] = timeComplete
                 quests.step += 1
-
-            } // TODO: Доделать метод
+            }
             callback(response)
         }
     }

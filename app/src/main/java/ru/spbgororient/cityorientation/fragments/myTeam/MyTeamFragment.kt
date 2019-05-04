@@ -25,6 +25,8 @@ class MyTeamFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // TODO: При перелогине в другой аккаунт остаются старые данные.
         edit_name_team.setText(DataController.instance.team.teamName)
         edit_login_team.setText(DataController.instance.team.login)
         edit_password_team.setText(DataController.instance.team.password)

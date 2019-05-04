@@ -3,10 +3,9 @@ package ru.spbgororient.cityorientation.quests
 class Quests {
     var mapOfQuests: Map<String, Quest> = HashMap()
     var listOfTasks: List<Task> = ArrayList()
-    var questId = ""
-    var step = 0
-    var times: List<Int> = ArrayList(0)
-    var timesComplete: List<Int> = ArrayList(0)
+    var questId = "" // ID текущего квест
+    var step = 0 // текущий этап
+    var timesComplete: MutableList<Int> = ArrayList()
     var isStarted = false
 
     val isFinished : Boolean
@@ -21,6 +20,15 @@ class Quests {
      */
     fun getTask(): Task {
         return listOfTasks[step]
+    }
+
+    /**
+     * Возвращает время, за которое был пройден предыдущее задание.
+     */
+    fun getTimeCompleteLastTask(): Int {
+        if (step == 0)
+            return 0
+        return timesComplete[step - 1]
     }
 
     fun setMapOfQuests(listOfQuests: List<Quest>) {
@@ -38,7 +46,6 @@ class Quests {
         questId = ""
         step = 0
         listOfTasks = ArrayList()
-        times = ArrayList()
         isStarted = false
     }
 }

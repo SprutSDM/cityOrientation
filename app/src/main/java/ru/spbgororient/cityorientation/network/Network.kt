@@ -195,7 +195,6 @@ class Network private constructor() {
      *   * [Team.teamName]
      *   * [Quests.questId]
      *   * [Quests.step]
-     *   * [Quests.times]
      *   * [Quests.timesComplete]
      *
      * @param[login] логин команды.
@@ -206,14 +205,13 @@ class Network private constructor() {
             override fun onResponse(call: Call<GetStateResponse>, response: Response<GetStateResponse>) {
                 val data = response.body()!!
                 when (data.message) {
-                    "ok" ->
-                        callback(NetworkResponse.OK, data)
-                    else -> callback(NetworkResponse.FAILURE, GetStateResponse("", "", "", ArrayList(), ArrayList(), 0, 0, 0))
+                    "ok" -> callback(NetworkResponse.OK, data)
+                    else -> callback(NetworkResponse.FAILURE, GetStateResponse("", "", "", ArrayList(), 0, 0, 0))
                 }
             }
 
             override fun onFailure(call: Call<GetStateResponse>, t: Throwable) {
-                callback(NetworkResponse.NETWORK_ERROR, GetStateResponse("", "", "", ArrayList(), ArrayList(), 0, 0, 0))
+                callback(NetworkResponse.NETWORK_ERROR, GetStateResponse("", "", "", ArrayList(), 0, 0, 0))
             }
         })
     }
@@ -226,21 +224,19 @@ class Network private constructor() {
      * @param[step] позиция текущего задания.
      * @param[callback] вызывается при завершении запроса.
      */
-    fun completeTask(login: String, questId: String, step: Int, callback: (response: NetworkResponse) -> Unit) {
+    fun completeTask(login: String, questId: String, step: Int, callback: (response: NetworkResponse, timeComplete: Int) -> Unit) {
         cityApi.completeTask(CompleteTaskRequest(login = login, questId = questId, taskNumber = step.toString()))
             .enqueue(object: Callback<CompleteTaskResponse> {
             override fun onResponse(call: Call<CompleteTaskResponse>, response: Response<CompleteTaskResponse>) {
                 val data = response.body()!!
-                callback(
-                    when (data.message) {
-                        "ok" -> NetworkResponse.OK
-                        else -> NetworkResponse.FAILURE
-                    }
-                )
+                when (data.message) {
+                    "ok" -> callback(NetworkResponse.OK, data.timeComplete)
+                    else -> callback(NetworkResponse.FAILURE, 0)
+                }
             }
 
             override fun onFailure(call: Call<CompleteTaskResponse>, t: Throwable) {
-                callback(NetworkResponse.NETWORK_ERROR)
+                callback(NetworkResponse.NETWORK_ERROR, 0)
             }
         })
     }

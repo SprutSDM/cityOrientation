@@ -244,8 +244,8 @@ class Network private constructor() {
     companion object {
         private const val LOG_KEY = "Network"
         val instance: Network by lazy { Network() }
-        private const val URL = "http://192.168.43.32:5000"
-        private const val URL_API = "$URL/api/v1/"
-        const val URL_IMG = "$URL/quest_images/"
+        const val URL = "http://192.168.43.32:5000/"
+        private const val URL_API = "${URL}api/v1/"
+        const val URL_IMG = "${URL}quest_images/"
     }
 }

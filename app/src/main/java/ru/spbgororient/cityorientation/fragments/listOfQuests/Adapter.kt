@@ -8,7 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_navigation.*
 import ru.spbgororient.cityorientation.R
 import ru.spbgororient.cityorientation.activities.NavigationActivity
@@ -30,12 +32,15 @@ class Adapter(val context: Context,
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
+        Picasso.with(context)
+            .load(Network.URL + quests[i].img)
+            .fit()
+            .into(viewHolder.questCard.findViewById<ImageView>(R.id.image_preview_quest))
         viewHolder.questCard.findViewById<TextView>(R.id.text_number_quest).text = quests[i].name
         viewHolder.questCard.findViewById<TextView>(R.id.text_place_start).text = quests[i].place
         val date = Date(quests[i].startTime * 1000L)
         val sdf = SimpleDateFormat("MMM, dd в HH:mm", Locale("ru"))
         viewHolder.questCard.findViewById<TextView>(R.id.text_date_start).text = sdf.format(date)
-        viewHolder.questCard.findViewById<TextView>(R.id.text_amount_cp).text = quests[i].amountOfCp.toString()
         viewHolder.questCard.findViewById<Button>(R.id.but_apply).setOnClickListener {
             DataController.instance.joinToQuest(quests[i].questId, ::callbackApply)
         }

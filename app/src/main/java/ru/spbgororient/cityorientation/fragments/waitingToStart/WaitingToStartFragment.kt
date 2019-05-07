@@ -7,11 +7,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_navigation.*
 import kotlinx.android.synthetic.main.fragment_waiting_to_start.*
 import ru.spbgororient.cityorientation.R
 import ru.spbgororient.cityorientation.activities.NavigationActivity
 import ru.spbgororient.cityorientation.dataController.DataController
+import ru.spbgororient.cityorientation.network.Network
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -28,6 +31,13 @@ class WaitingToStartFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         DataController.instance.quests.getQuest()?.let { quest ->
+            Picasso.with(context)
+                .load(Network.URL + quest.img)
+                .fit()
+                .into(image_preview_waiting_quest)
+            text_title_of_quest.text = quest.name
+            text_start.text = quest.startText
+
             val time = quest.startTime * 1000 - System.currentTimeMillis()
             text_time_from_start_quest.text = sdf.format(time)
         }

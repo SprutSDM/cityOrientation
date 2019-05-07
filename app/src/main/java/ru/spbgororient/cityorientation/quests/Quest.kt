@@ -9,4 +9,6 @@ data class Quest(
     @SerializedName("img") var img: String,
     @SerializedName("start_time") var startTime: Long,
     @SerializedName("amount_of_cp") var amountOfCp: Int,
-    @SerializedName("duration") var duration: Int)
+    @SerializedName("duration") var duration: Int,
+    @SerializedName("start_text") var startText: String,
+    @SerializedName("final_text") var finalText: String)

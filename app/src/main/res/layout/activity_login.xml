@@ -40,7 +40,6 @@
             <EditText
                     android:id="@+id/edit_login"
                     android:layout_width="200dp" android:layout_height="wrap_content"
-                    android:padding="0dp"
                     android:inputType="textEmailAddress"
                     android:ems="10"
                     android:hint="Login"
@@ -60,7 +59,6 @@
             <EditText
                     android:id="@+id/edit_password"
                     android:layout_width="200dp" android:layout_height="wrap_content"
-                    android:padding="0dp"
                     android:inputType="textPassword"
                     android:ems="10"
                     android:hint="Password"
@@ -85,6 +83,7 @@
                 android:id="@+id/image_vk_logo"
                 android:layout_width="24dp" android:layout_height="24dp"
                 android:layout_marginBottom="16dp"
+                android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
                 android:contentDescription="VK Logo"
                 app:srcCompat="@drawable/ic_vk_logo"
@@ -94,6 +93,7 @@
                 android:id="@+id/text_link_vk"
                 android:layout_width="wrap_content" android:layout_height="24dp"
                 android:text="vk.com/spb.gor.orient"
+                android:layout_marginLeft="4dp"
                 android:layout_marginStart="4dp"
                 android:gravity="fill_vertical"
                 app:layout_constraintTop_toTopOf="@+id/image_vk_logo" app:layout_constraintBottom_toBottomOf="@+id/image_vk_logo"

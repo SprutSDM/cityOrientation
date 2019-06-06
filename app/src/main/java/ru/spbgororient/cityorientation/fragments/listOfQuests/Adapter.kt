@@ -35,11 +35,12 @@ class Adapter(val context: Context,
         Picasso.with(context)
             .load(Network.URL + quests[i].img)
             .fit()
+            .centerCrop()
             .into(viewHolder.questCard.findViewById<ImageView>(R.id.image_preview_quest))
         viewHolder.questCard.findViewById<TextView>(R.id.text_number_quest).text = quests[i].name
         viewHolder.questCard.findViewById<TextView>(R.id.text_place_start).text = quests[i].place
         val date = Date(quests[i].startTime * 1000L)
-        val sdf = SimpleDateFormat("MMM, dd в HH:mm", Locale("ru"))
+        val sdf = SimpleDateFormat("dd, MMM в HH:mm", Locale("ru"))
         viewHolder.questCard.findViewById<TextView>(R.id.text_date_start).text = sdf.format(date)
         viewHolder.questCard.findViewById<Button>(R.id.but_apply).setOnClickListener {
             DataController.instance.joinToQuest(quests[i].questId, ::callbackApply)

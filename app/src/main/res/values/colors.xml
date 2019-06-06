@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#5c6bc0</color>
-    <color name="colorWhite">#ffffff</color>
+    <color name="colorPrimary">#009587</color>
+    <color name="colorPrimaryDark">#009587</color>
+    <color name="colorAccent">#556efc</color>
+    <color name="colorWhite">#FFFFFF</color>
     <color name="colorNavBarBackground">@android:color/white</color>
     <color name="colorNavBarItemNotSelected">#616161</color>
     <color name="colorFullImageBackground">#263238</color>
     <color name="colorFullImageBackgroundDark">#202528</color>
-    <color name="colorPrimaryRipple">#425c6bc0</color>
+    <color name="colorAccentRipple">#425c6bc0</color>
 </resources>

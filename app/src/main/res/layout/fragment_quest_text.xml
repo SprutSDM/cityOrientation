@@ -86,6 +86,7 @@
                 <android.support.design.widget.TextInputLayout
                         android:id="@+id/input_answer"
                         android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
                         android:layout_marginEnd="8dp"
                         app:layout_constraintTop_toBottomOf="@+id/text_content_quest"
                         app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toStartOf="@+id/button_check_answer">
@@ -105,6 +106,7 @@
                 <Button
                         android:id="@+id/button_check_answer"
                         android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
                         android:layout_marginEnd="8dp"
                         android:backgroundTint="@color/colorAccent"
                         android:textColor="@color/colorWhite"
@@ -130,6 +132,7 @@
                 <Button
                         android:id="@+id/button_get_tip_1"
                         android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
                         android:layout_marginEnd="8dp"
                         android:backgroundTint="@color/colorAccent"
                         android:text="Получить"
@@ -163,6 +166,7 @@
                 <Button
                         android:id="@+id/button_get_tip_2"
                         android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
                         android:layout_marginEnd="8dp"
                         android:backgroundTint="@color/colorAccent"
                         android:text="Получить"

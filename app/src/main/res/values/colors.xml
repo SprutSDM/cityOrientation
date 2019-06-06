@@ -3,6 +3,10 @@
     <color name="colorPrimary">#009587</color>
     <color name="colorPrimaryDark">#009587</color>
     <color name="colorAccent">#556efc</color>
+
+    <color name="colorDisabled">#BDBDBD</color>
+    <color name="colorTextDisabled">#424242</color>
+
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorNavBarBackground">@android:color/white</color>
     <color name="colorNavBarItemNotSelected">#616161</color>

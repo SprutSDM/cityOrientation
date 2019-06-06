@@ -27,6 +27,10 @@ class ListOfQuestsFragment: Fragment() {
         return thisView
     }
 
+    fun notifyDataSetChanged() {
+        adapter.notifyDataSetChanged()
+    }
+
     companion object {
         val instance: ListOfQuestsFragment by lazy { ListOfQuestsFragment() }
         const val TAG = "ListOfQuestsFragment"

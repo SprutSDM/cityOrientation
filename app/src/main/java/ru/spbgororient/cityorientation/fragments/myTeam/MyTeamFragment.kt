@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.fragment_my_team.*
 import ru.spbgororient.cityorientation.activities.LoginActivity
 import ru.spbgororient.cityorientation.R
 import ru.spbgororient.cityorientation.dataController.DataController
+import ru.spbgororient.cityorientation.fragments.listOfQuests.ListOfQuestsFragment
 import ru.spbgororient.cityorientation.network.Network
 
 class MyTeamFragment: Fragment() {
@@ -94,6 +95,7 @@ class MyTeamFragment: Fragment() {
         if (response == Network.NetworkResponse.OK) {
             activity?.runOnUiThread {
                 button_leave_quest.visibility = View.INVISIBLE
+                ListOfQuestsFragment.instance.notifyDataSetChanged()
                 activity?.let {
                     Snackbar.make(it.findViewById(R.id.content_frame), "Вы успешно покинули текущий квест!",
                         Snackbar.LENGTH_LONG).show()

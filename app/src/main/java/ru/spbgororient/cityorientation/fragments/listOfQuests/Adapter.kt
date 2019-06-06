@@ -1,6 +1,7 @@
 package ru.spbgororient.cityorientation.fragments.listOfQuests
 
 import android.content.Context
+import android.provider.ContactsContract
 import android.support.v4.app.FragmentManager
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
@@ -45,6 +46,8 @@ class Adapter(val context: Context,
         viewHolder.questCard.findViewById<Button>(R.id.but_apply).setOnClickListener {
             DataController.instance.joinToQuest(quests[i].questId, ::callbackApply)
         }
+        if (DataController.instance.quests.questId != "")
+            viewHolder.questCard.findViewById<Button>(R.id.but_apply).isEnabled = false
     }
 
     /**
@@ -53,6 +56,7 @@ class Adapter(val context: Context,
     private fun callbackApply(response: Network.NetworkResponse) {
         if (response == Network.NetworkResponse.OK) {
             MyTeamFragment.instance.setVisibleLeaveButton()
+            notifyDataSetChanged()
             DataController.instance.loadTasks(::callbackListOfTasks)
         }
     }

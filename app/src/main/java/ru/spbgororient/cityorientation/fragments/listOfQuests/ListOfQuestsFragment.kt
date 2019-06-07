@@ -28,7 +28,8 @@ class ListOfQuestsFragment: Fragment() {
     }
 
     fun notifyDataSetChanged() {
-        adapter.notifyDataSetChanged()
+        if (::adapter.isInitialized)
+            adapter.notifyDataSetChanged()
     }
 
     companion object {

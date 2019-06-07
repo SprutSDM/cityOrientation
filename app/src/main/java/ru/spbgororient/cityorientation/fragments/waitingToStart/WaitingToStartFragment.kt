@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_navigation.*
 import kotlinx.android.synthetic.main.fragment_waiting_to_start.*
@@ -34,7 +33,7 @@ class WaitingToStartFragment: Fragment() {
             Picasso.with(context)
                 .load(Network.URL + quest.img)
                 .fit()
-                .into(image_preview_waiting_quest)
+                .into(image_preview)
             text_title_of_quest.text = quest.name
             text_start.text = quest.startText
 

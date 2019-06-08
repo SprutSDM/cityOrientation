@@ -11,4 +11,6 @@ data class Quest(
     @SerializedName("amount_of_cp") var amountOfCp: Int,
     @SerializedName("duration") var duration: Int,
     @SerializedName("start_text") var startText: String,
-    @SerializedName("final_text") var finalText: String)
+    @SerializedName("final_text") var finalText: String,
+    @SerializedName("tip_1_time") var tip_1_time: Int,
+    @SerializedName("tip_2_time") var tip_2_time: Int)

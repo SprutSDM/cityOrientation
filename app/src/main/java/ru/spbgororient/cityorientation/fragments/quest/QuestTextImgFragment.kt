@@ -57,11 +57,7 @@ class QuestTextImgFragment: Fragment() {
                     if (edit_answer.text.toString() != "") {
                         (activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(
                             activity!!.currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
-                        if (edit_answer!!.text.toString().toLowerCase() in DataController.instance.quests.getTask().answers) {
-                            updateCardFragment()
-                            Snackbar.make(activity!!.findViewById(R.id.content_frame), "Правильно!", Snackbar.LENGTH_LONG).show()
-                        } else
-                            Snackbar.make(activity!!.findViewById(R.id.content_frame), "Ответ неверный!", Snackbar.LENGTH_LONG).show()
+                        checkAnswer()
                     }
                     true
                 }
@@ -72,23 +68,31 @@ class QuestTextImgFragment: Fragment() {
             if (edit_answer.text.toString() != "") {
                 (activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(
                     activity!!.currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
-                if (edit_answer.text.toString().toLowerCase() in DataController.instance.quests.getTask().answers) {
-                    updateCardFragment()
-                    Snackbar.make(activity!!.findViewById(R.id.content_frame), "Правильно!", Snackbar.LENGTH_LONG).show()
-                } else {
-                    Snackbar.make(activity!!.findViewById(R.id.content_frame), "Ответ неверный!", Snackbar.LENGTH_LONG)
-                        .show()
-                }
+                checkAnswer()
             }
         }
+
         button_get_tip_1.setOnClickListener {
-            text_tip_1.text = "Подсказка №1: ${DataController.instance.quests.getTask().tips[0]}"
-            button_get_tip_1.visibility = View.GONE
+            DataController.instance.quests.getQuest()?.let {
+                val fragment = TipDialogFragment()
+                val bundle = Bundle()
+                fragment.setTargetFragment(this, 0)
+                bundle.putInt("time", it.tip_1_time * 1000)
+                fragment.arguments = bundle
+                fragment.show(fragmentManager, fragment::class.java.name)
+            }
         }
         button_get_tip_2.setOnClickListener {
-            text_tip_2.text = "Подсказка №2: ${DataController.instance.quests.getTask().tips[1]}"
-            button_get_tip_2.visibility = View.GONE
+            DataController.instance.quests.getQuest()?.let {
+                val fragment = TipDialogFragment()
+                val bundle = Bundle()
+                fragment.setTargetFragment(this, 1)
+                bundle.putInt("time", it.tip_2_time * 1000)
+                fragment.arguments = bundle
+                fragment.show(fragmentManager, fragment::class.java.name)
+            }
         }
+
         image_quest.setOnClickListener {
             val intent = Intent(context, FullImageActivity::class.java)
             activity!!.startActivity(intent)
@@ -97,6 +101,18 @@ class QuestTextImgFragment: Fragment() {
         DataController.instance.quests.getQuest()?.let { quest ->
             text_time_stage.text = sdf.format(quest.startTime * 1000 - (System.currentTimeMillis() + DataController.instance.timeOffset) - DataController.instance.quests.getTimeCompleteLastTask())
             text_time_until_finish.text = sdf.format(System.currentTimeMillis() + DataController.instance.timeOffset)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        DataController.instance.useTip(requestCode) { response, tipNumber ->
+            if (response == Network.NetworkResponse.OK) {
+                when (tipNumber) {
+                    0 -> showFirstTip()
+                    1 -> showSecondTip()
+                }
+            }
         }
     }
 
@@ -112,6 +128,24 @@ class QuestTextImgFragment: Fragment() {
 
     private fun updateCardFragment() {
         DataController.instance.completeTask(::completeTaskCallback)
+    }
+
+    private fun checkAnswer() {
+        if (edit_answer!!.text.toString().toLowerCase() in DataController.instance.quests.getTask().answers) {
+            updateCardFragment()
+            Snackbar.make(activity!!.findViewById(R.id.content_frame), "Правильно!", Snackbar.LENGTH_LONG).show()
+        } else
+            Snackbar.make(activity!!.findViewById(R.id.content_frame), "Ответ неверный!", Snackbar.LENGTH_LONG).show()
+    }
+
+    private fun showFirstTip() {
+        text_tip_1.text = "Подсказка №1: ${DataController.instance.quests.getTask().tips[0]}"
+        button_get_tip_1.visibility = View.GONE
+    }
+
+    private fun showSecondTip() {
+        text_tip_2.text = "Подсказка №2: ${DataController.instance.quests.getTask().tips[1]}"
+        button_get_tip_2.visibility = View.GONE
     }
 
     private fun startTimer() {

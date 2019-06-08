@@ -206,12 +206,12 @@ class Network private constructor() {
                 val data = response.body()!!
                 when (data.message) {
                     "ok" -> callback(NetworkResponse.OK, data)
-                    else -> callback(NetworkResponse.FAILURE, GetStateResponse("", "", "", ArrayList(), 0, 0, 0))
+                    else -> callback(NetworkResponse.FAILURE, GetStateResponse("", "", "", ArrayList(), 0, 0, 0, ArrayList()))
                 }
             }
 
             override fun onFailure(call: Call<GetStateResponse>, t: Throwable) {
-                callback(NetworkResponse.NETWORK_ERROR, GetStateResponse("", "", "", ArrayList(), 0, 0, 0))
+                callback(NetworkResponse.NETWORK_ERROR, GetStateResponse("", "", "", ArrayList(), 0, 0, 0, ArrayList()))
             }
         })
     }
@@ -227,24 +227,50 @@ class Network private constructor() {
     fun completeTask(login: String, questId: String, step: Int, callback: (response: NetworkResponse, timeComplete: Int) -> Unit) {
         cityApi.completeTask(CompleteTaskRequest(login = login, questId = questId, taskNumber = step.toString()))
             .enqueue(object: Callback<CompleteTaskResponse> {
-            override fun onResponse(call: Call<CompleteTaskResponse>, response: Response<CompleteTaskResponse>) {
-                val data = response.body()!!
-                when (data.message) {
-                    "ok" -> callback(NetworkResponse.OK, data.timeComplete)
-                    else -> callback(NetworkResponse.FAILURE, 0)
+                override fun onResponse(call: Call<CompleteTaskResponse>, response: Response<CompleteTaskResponse>) {
+                    val data = response.body()!!
+                    when (data.message) {
+                        "ok" -> callback(NetworkResponse.OK, data.timeComplete)
+                        else -> callback(NetworkResponse.FAILURE, 0)
+                    }
                 }
-            }
 
-            override fun onFailure(call: Call<CompleteTaskResponse>, t: Throwable) {
-                callback(NetworkResponse.NETWORK_ERROR, 0)
-            }
+                override fun onFailure(call: Call<CompleteTaskResponse>, t: Throwable) {
+                    callback(NetworkResponse.NETWORK_ERROR, 0)
+                }
         })
+    }
+
+    /**
+     * Уведомляет о том, что была использована подсказка под номером [tipNumber].
+     *
+     * @param[login] логин команды.
+     * @param[questId] id квеста.
+     * @param[step] номер задания.
+     * @param[tipNumber] номер подсказки.
+     * @param[callback] вызывается при завершении запроса.
+     */
+    fun useTip(login: String, questId: String, step: Int, tipNumber: Int, callback: (response: NetworkResponse) -> Unit) {
+        cityApi.useTip(UseTipRequest(login = login, questId = questId, taskNumber = step.toString(), tipNumber = tipNumber.toString()))
+            .enqueue(object: Callback<UseTipResponse> {
+                override fun onResponse(call: Call<UseTipResponse>, response: Response<UseTipResponse>) {
+                    val data = response.body()!!
+                    when (data.message) {
+                        "ok" -> callback(NetworkResponse.OK)
+                        else -> callback(NetworkResponse.FAILURE)
+                    }
+                }
+
+                override fun onFailure(call: Call<UseTipResponse>, t: Throwable) {
+                    callback(NetworkResponse.NETWORK_ERROR)
+                }
+            })
     }
 
     companion object {
         private const val LOG_KEY = "Network"
         val instance: Network by lazy { Network() }
-        const val URL = "http://192.168.43.32:5000/"
+        const val URL = "http://192.168.42.207:5000/"
         private const val URL_API = "${URL}api/v1/"
         const val URL_IMG = "${URL}quest_images/"
     }

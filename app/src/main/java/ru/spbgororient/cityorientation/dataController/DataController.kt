@@ -152,6 +152,7 @@ class DataController private constructor(private val sharedPreferences: SharedPr
                     this.questId = data.questId
                     this.step = data.step
                     this.timesComplete = data.timesComplete
+                    this.tips = data.tips
                 }
             }
             callback(response)
@@ -177,7 +178,7 @@ class DataController private constructor(private val sharedPreferences: SharedPr
     }*/
 
     /**
-     * Уведомлеят о том, что текущее задание из текущего квеста решено верно.
+     * Уведомлеят сервер о том, что текущее задание из текущего квеста решено верно.
      *
      * @param[callback] вызывается при завершении запроса.
      */
@@ -188,6 +189,21 @@ class DataController private constructor(private val sharedPreferences: SharedPr
                 quests.step += 1
             }
             callback(response)
+        }
+    }
+
+    /**
+     * Уведомляет сервер о том, что была использована подсказка с номером [tipNumber].
+     *
+     * @param[tipNumber] номер подсказки.
+     * @param[callback] вызывается при завершении запроса.
+     */
+    fun useTip(tipNumber: Int, callback: (response: Network.NetworkResponse, tipNumber: Int) -> Unit) {
+        network.useTip(team.login, quests.questId, quests.step, tipNumber) { response ->
+            if (response == Network.NetworkResponse.OK) {
+                quests.tips[quests.step][tipNumber] = true
+                callback(response, tipNumber)
+            }
         }
     }
 

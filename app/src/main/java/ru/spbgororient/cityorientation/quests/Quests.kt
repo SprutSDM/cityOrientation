@@ -6,6 +6,7 @@ class Quests {
     var questId = "" // ID текущего квест
     var step = 0 // текущий этап
     var timesComplete: MutableList<Int> = ArrayList()
+    var tips: MutableList<MutableList<Boolean>> = ArrayList()
 
     val isFinished : Boolean
         get() = step >= listOfTasks.size
@@ -19,6 +20,13 @@ class Quests {
      */
     fun getTask(): Task {
         return listOfTasks[step]
+    }
+
+    /**
+     * Возвращает true, если на текущем задании подсказка с номером [number] была использована.
+     */
+    fun isUsedTip(number: Int): Boolean {
+        return tips[step][number]
     }
 
     /**
@@ -45,5 +53,6 @@ class Quests {
         questId = ""
         step = 0
         listOfTasks = ArrayList()
+        tips = ArrayList()
     }
 }

@@ -55,7 +55,8 @@ data class GetStateResponse(
     @SerializedName("times_complete") val timesComplete: MutableList<Int>,
     @SerializedName("step") val step: Int,
     @SerializedName("seconds") val seconds: Long,
-    @SerializedName("time_zone") val timeZone: Long)
+    @SerializedName("time_zone") val timeZone: Long,
+    @SerializedName("tips") val tips: MutableList<MutableList<Boolean>>)
 
 data class CompleteTaskRequest(
     @SerializedName("login") val login: String,
@@ -65,3 +66,12 @@ data class CompleteTaskRequest(
 data class CompleteTaskResponse(
     @SerializedName("message") val message: String,
     @SerializedName("time_complete") val timeComplete: Int)
+
+data class UseTipRequest(
+    @SerializedName("login") val login: String,
+    @SerializedName("quest_id") val questId: String,
+    @SerializedName("task_number") val taskNumber: String,
+    @SerializedName("tip_number") val tipNumber: String)
+
+data class UseTipResponse(
+    @SerializedName("message") val message: String)

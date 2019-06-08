@@ -29,4 +29,7 @@ interface CityOrientationApi {
 
     @POST("completeTask")
     fun completeTask(@Body body: CompleteTaskRequest): Call<CompleteTaskResponse>
+
+    @POST("useTip")
+    fun useTip(@Body body: UseTipRequest): Call<UseTipResponse>
 }

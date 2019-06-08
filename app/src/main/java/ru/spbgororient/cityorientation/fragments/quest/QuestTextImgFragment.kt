@@ -15,16 +15,6 @@ import android.view.inputmethod.InputMethodManager
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_navigation.*
 import kotlinx.android.synthetic.main.fragment_quest_text_img.*
-import kotlinx.android.synthetic.main.fragment_quest_text_img.button_check_answer
-import kotlinx.android.synthetic.main.fragment_quest_text_img.button_get_tip_1
-import kotlinx.android.synthetic.main.fragment_quest_text_img.button_get_tip_2
-import kotlinx.android.synthetic.main.fragment_quest_text_img.edit_answer
-import kotlinx.android.synthetic.main.fragment_quest_text_img.text_content_quest
-import kotlinx.android.synthetic.main.fragment_quest_text_img.text_number_quest
-import kotlinx.android.synthetic.main.fragment_quest_text_img.text_time_stage
-import kotlinx.android.synthetic.main.fragment_quest_text_img.text_time_until_finish
-import kotlinx.android.synthetic.main.fragment_quest_text_img.text_tip_1
-import kotlinx.android.synthetic.main.fragment_quest_text_img.text_tip_2
 import ru.spbgororient.cityorientation.activities.FullImageActivity
 import ru.spbgororient.cityorientation.R
 import ru.spbgororient.cityorientation.activities.NavigationActivity
@@ -48,9 +38,16 @@ class QuestTextImgFragment: Fragment() {
 
         text_number_quest.text = "Задание №${DataController.instance.quests.step + 1}"
         text_content_quest.text = DataController.instance.quests.getTask().content
+
+        if (DataController.instance.quests.isUsedTip(0) || DataController.instance.quests.getTask().tips[0] == "")
+            showFirstTip()
+        if (DataController.instance.quests.isUsedTip(1) || DataController.instance.quests.getTask().tips[1] == "")
+            showSecondTip()
+
         Picasso.with(context)
             .load(Network.URL_IMG + DataController.instance.quests.getTask().img)
             .into(image_quest)
+
         edit_answer.setOnEditorActionListener { v, actionId, event ->
             when (actionId) {
                 EditorInfo.IME_ACTION_DONE -> {
@@ -139,30 +136,32 @@ class QuestTextImgFragment: Fragment() {
     }
 
     private fun showFirstTip() {
-        text_tip_1.text = "Подсказка №1: ${DataController.instance.quests.getTask().tips[0]}"
+        if (DataController.instance.quests.getTask().tips[0] == "")
+            text_tip_1.text = "К этому заданию нету подсказки №1"
+        else
+            text_tip_1.text = "Подсказка №1: ${DataController.instance.quests.getTask().tips[0]}"
         button_get_tip_1.visibility = View.GONE
     }
 
     private fun showSecondTip() {
-        text_tip_2.text = "Подсказка №2: ${DataController.instance.quests.getTask().tips[1]}"
+        if (DataController.instance.quests.getTask().tips[1] == "")
+            text_tip_2.text = "К этому заданию нету подсказки №2"
+        else
+            text_tip_2.text = "Подсказка №2: ${DataController.instance.quests.getTask().tips[1]}"
         button_get_tip_2.visibility = View.GONE
     }
 
     private fun startTimer() {
         DataController.instance.quests.getQuest()?.let { quest ->
             val time = (quest.duration + quest.startTime) * 1000 - DataController.instance.currentTime
-            Log.d("QuestTextImg", "System.currentTimeMillis: ${System.currentTimeMillis()}, quest: ${quest.startTime * 1000}")
-            Log.d("QuestTextImg", "time: $time")
             timer = object: CountDownTimer(time, 1000L) {
 
                 override fun onTick(millisUntilFinished: Long) {
-                    Log.d("QuestTextImg", "timer is ticking ${sdf.format(millisUntilFinished)}")
                     text_time_stage.text = sdf.format((quest.duration - DataController.instance.quests.getTimeCompleteLastTask()) * 1000 - millisUntilFinished)
                     text_time_until_finish.text = sdf.format(millisUntilFinished)
                 }
 
                 override fun onFinish() {
-                    Log.d("QuestTextImg", "timer is finished")
                     (context as NavigationActivity).navigation_view.selectedItemId = R.id.nav_quest
                 }
             }.start()

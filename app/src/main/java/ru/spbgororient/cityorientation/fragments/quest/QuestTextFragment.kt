@@ -5,9 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.support.design.widget.Snackbar
-import android.support.v4.app.DialogFragment
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,9 +35,9 @@ class QuestTextFragment: Fragment() {
 
         text_number_quest.text = "Задание №${DataController.instance.quests.step + 1}"
         text_content_quest.text = DataController.instance.quests.getTask().content
-        if (DataController.instance.quests.isUsedTip(0))
+        if (DataController.instance.quests.isUsedTip(0) || DataController.instance.quests.getTask().tips[0] == "")
             showFirstTip()
-        if (DataController.instance.quests.isUsedTip(1))
+        if (DataController.instance.quests.isUsedTip(1) || DataController.instance.quests.getTask().tips[1] == "")
             showSecondTip()
 
         edit_answer.setOnEditorActionListener { v, actionId, event ->
@@ -124,12 +122,18 @@ class QuestTextFragment: Fragment() {
     }
 
     private fun showFirstTip() {
-        text_tip_1.text = "Подсказка №1: ${DataController.instance.quests.getTask().tips[0]}"
+        if (DataController.instance.quests.getTask().tips[0] == "")
+            text_tip_1.text = "К этому заданию нету подсказки №1"
+        else
+            text_tip_1.text = "Подсказка №1: ${DataController.instance.quests.getTask().tips[0]}"
         button_get_tip_1.visibility = View.GONE
     }
 
     private fun showSecondTip() {
-        text_tip_2.text = "Подсказка №2: ${DataController.instance.quests.getTask().tips[1]}"
+        if (DataController.instance.quests.getTask().tips[1] == "")
+            text_tip_2.text = "К этому заданию нету подсказки №2"
+        else
+            text_tip_2.text = "Подсказка №2: ${DataController.instance.quests.getTask().tips[1]}"
         button_get_tip_2.visibility = View.GONE
     }
 

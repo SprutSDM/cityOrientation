@@ -12,9 +12,6 @@ import ru.spbgororient.cityorientation.dataController.DataController
 import ru.spbgororient.cityorientation.network.Network
 
 class FinishFragment: Fragment() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_finish, container, false)
@@ -26,6 +23,7 @@ class FinishFragment: Fragment() {
             Picasso.with(context)
                 .load(Network.URL + quest.img)
                 .fit()
+                .centerCrop()
                 .into(image_preview)
             text_title_of_quest.text = quest.name
             text_final.text = quest.finalText
@@ -34,6 +32,5 @@ class FinishFragment: Fragment() {
 
     companion object {
         val instance: FinishFragment by lazy { FinishFragment() }
-        const val TAG = "FinishFragment"
     }
 }

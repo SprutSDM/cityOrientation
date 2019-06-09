@@ -82,7 +82,7 @@ class MyTeamFragment: Fragment() {
     private fun callbackRenameTeam(response: Network.NetworkResponse) {
         if (response == Network.NetworkResponse.OK) {
             activity?.let {
-                Snackbar.make(it.findViewById(R.id.content_frame), "Команда успешно переименована!",
+                Snackbar.make(it.findViewById(R.id.content_frame), getString(R.string.team_renamed),
                     Snackbar.LENGTH_LONG).show()
             }
         }
@@ -97,7 +97,7 @@ class MyTeamFragment: Fragment() {
                 button_leave_quest.visibility = View.INVISIBLE
                 ListOfQuestsFragment.instance.notifyDataSetChanged()
                 activity?.let {
-                    Snackbar.make(it.findViewById(R.id.content_frame), "Вы успешно покинули текущий квест!",
+                    Snackbar.make(it.findViewById(R.id.content_frame), getString(R.string.left_quest),
                         Snackbar.LENGTH_LONG).show()
                 }
             }
@@ -113,6 +113,5 @@ class MyTeamFragment: Fragment() {
 
     companion object {
         var instance = MyTeamFragment()
-        const val TAG = "MyTeamFragment"
     }
 }

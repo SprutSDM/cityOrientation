@@ -14,6 +14,7 @@
         <ImageView
                 android:id="@+id/image_preview_quest"
                 android:layout_width="match_parent" android:layout_height="140dp"
+                android:contentDescription="@string/quest_img_desc"
                 app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
@@ -21,7 +22,6 @@
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
-                android:text="Название квеста"
                 android:textColor="@android:color/black"
                 app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/image_preview_quest" android:textSize="18sp"/>
@@ -37,8 +37,8 @@
                 android:id="@+id/text_content_quest"
                 android:layout_width="0dp" android:layout_height="wrap_content"
                 android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
-                android:gravity="right"
-                android:text="Дата и время начала"
+                android:gravity="end"
+                android:text="@string/date_time_start"
                 android:textSize="12sp"
                 app:layout_constraintTop_toTopOf="@+id/vertical_line"
                 app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toStartOf="@+id/vertical_line"/>
@@ -47,16 +47,15 @@
                 android:layout_width="0dp" android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
-                android:text="Место проведения"
+                android:text="@string/location"
                 android:textSize="12sp"
-                android:gravity="right"
+                android:gravity="end"
                 app:layout_constraintTop_toBottomOf="@+id/text_content_quest"
                 app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toStartOf="@+id/vertical_line"/>
         <TextView
                 android:id="@+id/text_date_start"
                 android:layout_width="0dp" android:layout_height="wrap_content"
                 android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
-                android:text="01.01.2019 в 00:00"
                 android:textSize="12sp"
                 app:layout_constraintTop_toTopOf="@+id/vertical_line"
                 app:layout_constraintStart_toEndOf="@+id/vertical_line" app:layout_constraintEnd_toEndOf="parent"/>
@@ -65,7 +64,6 @@
                 android:layout_width="0dp" android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
-                android:text="Петроградский район"
                 android:textSize="12sp"
                 app:layout_constraintTop_toBottomOf="@+id/text_date_start"
                 app:layout_constraintStart_toEndOf="@+id/vertical_line" app:layout_constraintEnd_toEndOf="parent"/>
@@ -73,7 +71,7 @@
                 android:id="@+id/but_apply"
                 android:layout_width="0dp" android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:text="Подать заявку"
+                android:text="@string/apply"
                 android:backgroundTint="@color/button_color"
                 android:textColor="@color/button_text_color"
                 android:textSize="12sp"

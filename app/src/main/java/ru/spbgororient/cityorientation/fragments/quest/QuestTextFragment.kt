@@ -23,9 +23,10 @@ import java.util.*
 class QuestTextFragment: Fragment() {
 
     private lateinit var timer: CountDownTimer
-    val sdf = SimpleDateFormat("HH:mm:ss")
+    lateinit var sdf: SimpleDateFormat
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        sdf = SimpleDateFormat(getString(R.string.sdf_time))
         sdf.timeZone = TimeZone.getTimeZone("UTC")
         return inflater.inflate(R.layout.fragment_quest_text, container, false)
     }
@@ -33,7 +34,7 @@ class QuestTextFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        text_number_quest.text = "Задание №${DataController.instance.quests.step + 1}"
+        text_number_quest.text = getString(R.string.task_number, DataController.instance.quests.step + 1)
         text_content_quest.text = DataController.instance.quests.getTask().content
         if (DataController.instance.quests.isUsedTip(0) || DataController.instance.quests.getTask().tips[0] == "")
             showFirstTip()
@@ -116,24 +117,24 @@ class QuestTextFragment: Fragment() {
     private fun checkAnswer() {
         if (edit_answer.text.toString().toLowerCase() in DataController.instance.quests.getTask().answers) {
             updateCardFragment()
-            Snackbar.make(activity!!.findViewById(R.id.content_frame), "Правильно!", Snackbar.LENGTH_LONG).show()
+            Snackbar.make(activity!!.findViewById(R.id.content_frame), getString(R.string.correct), Snackbar.LENGTH_LONG).show()
         } else
-            Snackbar.make(activity!!.findViewById(R.id.content_frame), "Ответ неверный!", Snackbar.LENGTH_LONG).show()
+            Snackbar.make(activity!!.findViewById(R.id.content_frame), getString(R.string.wrong), Snackbar.LENGTH_LONG).show()
     }
 
     private fun showFirstTip() {
         if (DataController.instance.quests.getTask().tips[0] == "")
-            text_tip_1.text = "К этому заданию нету подсказки №1"
+            text_tip_1.text = getString(R.string.no_tip, 1)
         else
-            text_tip_1.text = "Подсказка №1: ${DataController.instance.quests.getTask().tips[0]}"
+            text_tip_1.text = getString(R.string.tip_number, 1, DataController.instance.quests.getTask().tips[0])
         button_get_tip_1.visibility = View.GONE
     }
 
     private fun showSecondTip() {
         if (DataController.instance.quests.getTask().tips[1] == "")
-            text_tip_2.text = "К этому заданию нету подсказки №2"
+            text_tip_2.text = getString(R.string.no_tip, 2)
         else
-            text_tip_2.text = "Подсказка №2: ${DataController.instance.quests.getTask().tips[1]}"
+            text_tip_2.text = getString(R.string.tip_number, 2, DataController.instance.quests.getTask().tips[1])
         button_get_tip_2.visibility = View.GONE
     }
 
@@ -170,7 +171,6 @@ class QuestTextFragment: Fragment() {
 
     companion object {
         var instance: QuestTextFragment = QuestTextFragment()
-        const val TAG = "QuestTextFragment"
 
         fun newInstance(): QuestTextFragment {
             instance = QuestTextFragment()

@@ -34,6 +34,5 @@ class ListOfQuestsFragment: Fragment() {
 
     companion object {
         val instance: ListOfQuestsFragment by lazy { ListOfQuestsFragment() }
-        const val TAG = "ListOfQuestsFragment"
     }
 }

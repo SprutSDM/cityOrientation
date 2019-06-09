@@ -5,7 +5,6 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.Snackbar
-import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.widget.ProgressBar
 import kotlinx.android.synthetic.main.activity_login.*
@@ -105,21 +104,16 @@ class LoginActivity : AppCompatActivity() {
      * Вызывается при завершении login команды.
      */
     private fun callbackLogin(response: Network.NetworkResponse) {
-        Log.d(LOG_KEY, response.toString())
         if (response == Network.NetworkResponse.OK)
             DataController.instance.getState(::callbackGetState)
         else {
             hideProgressBar()
             Snackbar.make(findViewById(R.id.activity_login),
                 when (response) {
-                    Network.NetworkResponse.NETWORK_ERROR -> "Нет соединения с сетью Интернет."
-                    else -> "Неправильный логин или пароль!"
+                    Network.NetworkResponse.NETWORK_ERROR -> getString(R.string.no_internet_connection)
+                    else -> getString(R.string.incorrect_login_or_password)
                 },
                 Snackbar.LENGTH_LONG).show()
         }
-    }
-
-    companion object {
-        private const val LOG_KEY = "LoginActivity"
     }
 }

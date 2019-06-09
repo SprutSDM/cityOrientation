@@ -19,8 +19,9 @@
                 android:layout_width="180dp" android:layout_height="wrap_content"
                 android:inputType="textPersonName"
                 android:ems="10"
+                android:text=" "
                 android:imeOptions="actionDone"
-                android:hint="Название команды"
+                android:hint="@string/hint_team_name"
                 android:importantForAutofill="no"/>
     </android.support.design.widget.TextInputLayout>
 
@@ -36,9 +37,9 @@
                 android:layout_width="150dp" android:layout_height="wrap_content"
                 android:enabled="false"
                 android:ems="10"
-                android:hint="Логин команды"
-                android:text="team1"
+                android:hint="@string/hint_login"
                 android:inputType="text"
+                android:text=" "
                 android:background="@android:color/transparent"
                 android:textColor="@android:color/black"
                 android:importantForAutofill="no"/>
@@ -57,9 +58,9 @@
                 android:inputType="textPassword"
                 android:enabled="false"
                 android:ems="10"
+                android:text=" "
                 android:importantForAutofill="no"
-                android:hint="Пароль для входа"
-                android:text="its password"
+                android:hint="@string/hint_password"
                 android:background="@android:color/transparent"
                 android:textColor="@android:color/black"/>
     </android.support.design.widget.TextInputLayout>
@@ -70,12 +71,11 @@
             android:button="@drawable/hide_show_check_button"
             app:layout_constraintTop_toTopOf="@+id/input_password_team"
             app:layout_constraintBottom_toBottomOf="@+id/input_password_team"
-            app:layout_constraintVertical_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/input_password_team"/>
     <Button
             android:id="@+id/button_leave_team"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:text="Покинуть команду"
+            android:text="@string/leave_team"
             android:backgroundTint="@color/colorAccent"
             android:textColor="@color/colorWhite"
             android:layout_marginTop="8dp"
@@ -85,7 +85,7 @@
             android:id="@+id/button_leave_quest"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Покинуть квест"
+            android:text="@string/leave_quest"
             android:backgroundTint="@color/colorAccent"
             android:textColor="@color/colorWhite"
             app:layout_constraintStart_toStartOf="@+id/button_leave_team"
@@ -104,8 +104,7 @@
             android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
             android:backgroundTint="@color/colorAccent"
             android:textColor="@color/colorWhite"
-            android:text="Сохранить"
+            android:text="@string/save"
             app:layout_constraintStart_toEndOf="@+id/input_name_team" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintTop_toTopOf="@+id/input_name_team"/>
 </android.support.constraint.ConstraintLayout>

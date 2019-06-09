@@ -20,9 +20,10 @@ import java.util.*
 class WaitingToStartFragment: Fragment() {
 
     private lateinit var timer: CountDownTimer
-    val sdf = SimpleDateFormat("HH:mm:ss")
+    lateinit var sdf: SimpleDateFormat
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        sdf = SimpleDateFormat(getString(R.string.sdf_time))
         sdf.timeZone = TimeZone.getTimeZone("UTC")
         return inflater.inflate(R.layout.fragment_waiting_to_start, container, false)
     }
@@ -33,6 +34,7 @@ class WaitingToStartFragment: Fragment() {
             Picasso.with(context)
                 .load(Network.URL + quest.img)
                 .fit()
+                .centerCrop()
                 .into(image_preview)
             text_title_of_quest.text = quest.name
             text_start.text = quest.startText
@@ -55,18 +57,13 @@ class WaitingToStartFragment: Fragment() {
     private fun startTimer() {
         DataController.instance.quests.getQuest()?.let { quest ->
             val time = quest.startTime * 1000 - (System.currentTimeMillis() + DataController.instance.timeOffset)
-            Log.d("WaitingToStart", "System.currentTimeMillis: ${System.currentTimeMillis()}, quest: ${quest.startTime * 1000}")
-            Log.d("WaitingToStart", "time: $time")
-            Log.d("WaitingToStart", "timeOffset: ${DataController.instance.timeOffset}")
             timer = object: CountDownTimer(time, 1000L) {
 
                 override fun onTick(millisUntilFinished: Long) {
-                    Log.d("WaitingToStartFragment", "timer is ticking ${sdf.format(millisUntilFinished)}")
                     text_time_from_start_quest.text = sdf.format(millisUntilFinished)
                 }
 
                 override fun onFinish() {
-                    Log.d("WaitingToStartFragment", "timer is finished")
                     (context as NavigationActivity).navigation_view.selectedItemId = R.id.nav_quest
                 }
             }.start()
@@ -81,7 +78,6 @@ class WaitingToStartFragment: Fragment() {
 
     companion object {
         var instance: WaitingToStartFragment = WaitingToStartFragment()
-        const val TAG = "WaitingToStartFragment"
 
         fun newInstance(): WaitingToStartFragment {
             instance = WaitingToStartFragment()

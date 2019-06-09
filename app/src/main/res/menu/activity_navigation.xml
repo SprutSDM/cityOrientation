@@ -7,14 +7,14 @@
         <item
                 android:id="@+id/nav_my_group"
                 android:icon="@drawable/ic_account_group"
-                android:title="Моя команда"/>
+                android:title="@string/bottom_bar_my_team"/>
         <item
                 android:id="@+id/nav_list_of_quests"
                 android:icon="@drawable/ic_lists"
-                android:title="Список квестов"/>
+                android:title="@string/bottom_bor_list_of_quests"/>
         <item
                 android:id="@+id/nav_quest"
                 android:icon="@drawable/ic_star"
-                android:title="Текущее задание"/>
+                android:title="@string/bottom_bar_current_task"/>
     </group>
 </menu>

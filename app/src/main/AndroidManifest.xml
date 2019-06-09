@@ -21,12 +21,10 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".activities.NavigationActivity"
-                android:label="@string/title_activity_navigation">
+                android:name=".activities.NavigationActivity">
         </activity>
         <activity
                 android:name=".activities.FullImageActivity"
-                android:label="@string/title_activity_full_image"
                 android:theme="@style/AppTheme.FullImage">
         </activity>
     </application>

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_navigation.*
 import ru.spbgororient.cityorientation.fragments.finish.FinishFragment
@@ -15,7 +14,7 @@ import ru.spbgororient.cityorientation.fragments.quest.QuestTextImgFragment
 import ru.spbgororient.cityorientation.fragments.waitingToStart.WaitingToStartFragment
 import ru.spbgororient.cityorientation.R
 import ru.spbgororient.cityorientation.dataController.DataController
-import ru.spbgororient.cityorientation.fragments.finish.NoQuestSelectedFragment
+import ru.spbgororient.cityorientation.fragments.noQuestSelected.NoQuestSelectedFragment
 
 
 class NavigationActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
@@ -41,7 +40,6 @@ class NavigationActivity : AppCompatActivity(), BottomNavigationView.OnNavigatio
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        Log.d("NavigationActivity", "item selected: ${item.title}")
         fragment = when (item.itemId) {
             R.id.nav_my_group -> MyTeamFragment.instance
             R.id.nav_list_of_quests -> ListOfQuestsFragment.instance

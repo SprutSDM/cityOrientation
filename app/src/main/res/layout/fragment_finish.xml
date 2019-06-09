@@ -9,13 +9,13 @@
     <ImageView
             android:id="@+id/image_preview"
             android:layout_width="match_parent" android:layout_height="196dp"
+            android:contentDescription="@string/quest_img_desc"
             app:layout_constraintTop_toTopOf="parent"/>
     <TextView
             android:id="@+id/text_title_of_quest"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
-            android:text="Название квеста"
             android:textSize="18sp"
             android:textColor="@android:color/black"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
@@ -25,7 +25,7 @@
             android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
-            android:text="Квест окончен!"
+            android:text="@string/quest_finished"
             android:textColor="@android:color/black"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_title_of_quest"/>
@@ -34,7 +34,6 @@
             android:layout_width="0dp" android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginStart="16dp" android:layout_marginEnd="16dp"
-            android:text="Привет! Ты принял участие в городском ориентировании."
             android:gravity="center"
             app:layout_constraintTop_toBottomOf="@+id/text_quest_finished"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"/>

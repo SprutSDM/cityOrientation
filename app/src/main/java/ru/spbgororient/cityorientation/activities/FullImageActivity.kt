@@ -6,6 +6,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_full_image.*
 import ru.spbgororient.cityorientation.R
 import ru.spbgororient.cityorientation.dataController.DataController
+import ru.spbgororient.cityorientation.network.Network
 
 class FullImageActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -13,7 +14,7 @@ class FullImageActivity: AppCompatActivity() {
         setContentView(R.layout.activity_full_image)
 
         Picasso.with(baseContext)
-            .load(DataController.instance.quests.getTask().img)
+            .load(Network.URL_IMG + DataController.instance.quests.getTask().img)
             .into(image_full_size)
     }
 }

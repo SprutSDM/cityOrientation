@@ -14,7 +14,6 @@
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:layout_marginTop="36dp"
                 android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
-                android:text="Тайны Петербурга"
                 android:textSize="18sp"
                 android:textColor="@android:color/black"
                 app:layout_constraintTop_toTopOf="parent"
@@ -24,7 +23,8 @@
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginStart="8dp"
-                android:text="Время на этом этапе:"
+                android:layout_marginLeft="8dp"
+                android:text="@string/time_at_this_stage"
                 android:textSize="10sp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"/>
@@ -32,7 +32,8 @@
                 android:id="@+id/text_time_stage"
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="00:00:00"
+                android:layout_marginLeft="8dp"
+                android:text="@string/default_time"
                 android:textSize="10sp"
                 app:layout_constraintTop_toBottomOf="@+id/text_stage"
                 app:layout_constraintStart_toStartOf="parent"/>
@@ -41,7 +42,8 @@
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:text="Время до конца квеста:"
+                android:layout_marginRight="8dp"
+                android:text="@string/time_to_end"
                 android:textSize="10sp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
@@ -49,7 +51,8 @@
                 android:id="@+id/text_time_until_finish"
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:text="00:00:00"
+                android:layout_marginRight="8dp"
+                android:text="@string/default_time"
                 android:textSize="10sp"
                 app:layout_constraintTop_toBottomOf="@+id/text_quest"
                 app:layout_constraintEnd_toEndOf="parent"/>
@@ -70,7 +73,6 @@
                         android:layout_width="wrap_content" android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
-                        android:text="Задание №1"
                         android:textColor="@android:color/black"
                         app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"/>
@@ -79,7 +81,6 @@
                         android:layout_width="0dp" android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
-                        android:text="Шарманщик, запах жареных каштанов и уютных кафе. Такая вот частичка франузской романтики. Сколько этажей в здании с флагом России?"
                         android:textSize="14sp"
                         app:layout_constraintTop_toBottomOf="@+id/text_number_quest"
                         app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"/>
@@ -97,8 +98,9 @@
                             android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
                             android:inputType="text"
                             android:ems="10"
-                            android:hint="Ответ"
+                            android:hint="@string/hint_answer"
                             android:textSize="14sp"
+                            android:importantForAutofill="no"
                             app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"/>
                 </android.support.design.widget.TextInputLayout>
@@ -111,7 +113,7 @@
                         android:backgroundTint="@color/colorAccent"
                         android:textColor="@color/colorWhite"
                         android:textSize="10sp"
-                        android:text="Отправить"
+                        android:text="@string/send"
                         app:layout_constraintTop_toBottomOf="@+id/text_content_quest"
                         app:layout_constraintEnd_toEndOf="parent"/>
             </android.support.constraint.ConstraintLayout>
@@ -135,7 +137,7 @@
                         android:layout_marginRight="8dp"
                         android:layout_marginEnd="8dp"
                         android:backgroundTint="@color/colorAccent"
-                        android:text="Получить"
+                        android:text="@string/receive"
                         android:textColor="@color/colorWhite"
                         android:textSize="10sp"
                         app:layout_constraintTop_toTopOf="parent"
@@ -144,7 +146,7 @@
                         android:id="@+id/text_tip_1"
                         android:layout_width="match_parent" android:layout_height="wrap_content"
                         android:layout_margin="8dp"
-                        android:text="Получить подсказку №1"
+                        android:text="@string/get_tip_number_1"
                         android:textSize="12sp"
                         app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"/>
@@ -169,7 +171,7 @@
                         android:layout_marginRight="8dp"
                         android:layout_marginEnd="8dp"
                         android:backgroundTint="@color/colorAccent"
-                        android:text="Получить"
+                        android:text="@string/receive"
                         android:textSize="10sp"
                         android:textColor="@color/colorWhite"
                         app:layout_constraintTop_toTopOf="parent"
@@ -178,7 +180,7 @@
                         android:id="@+id/text_tip_2"
                         android:layout_width="match_parent" android:layout_height="wrap_content"
                         android:layout_margin="8dp"
-                        android:text="Получить подсказку №2"
+                        android:text="@string/get_tip_number_2"
                         android:textSize="12sp"
                         app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"/>

@@ -126,9 +126,12 @@ class DataController private constructor(private val sharedPreferences: SharedPr
             if (response == Network.NetworkResponse.OK) {
                 quests.listOfTasks = listOfTasks
                 /* Устанавливаем времена прохождения равные -1.
-                   Необходимо сделать это только в том случае, если мы не загрузили этот массив в getState */
+                   Необходимо сделать это только в том случае, если мы не загрузили этот массив в getState.
+                   Тоже самое для tips*/
                 if (quests.timesComplete.size == 0)
                     quests.timesComplete = MutableList(listOfTasks.size) {-1}
+                if (quests.tips.size == 0)
+                    quests.tips = MutableList(listOfTasks.size) { MutableList(2) { false } }
             }
             callback(response)
         }

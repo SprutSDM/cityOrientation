@@ -45,8 +45,8 @@ class QuestTextFragment: Fragment() {
             when (actionId) {
                 EditorInfo.IME_ACTION_DONE -> {
                     if (edit_answer.text.toString() != "") {
-                        (activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(
-                            activity!!.currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+                        (activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(
+                            activity?.currentFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
                         checkAnswer()
                     }
                     true
@@ -56,8 +56,8 @@ class QuestTextFragment: Fragment() {
         }
         button_check_answer.setOnClickListener {
             if (edit_answer.text.toString() != "") {
-                (activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(
-                    activity!!.currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+                (activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(
+                    activity?.currentFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
                 checkAnswer()
             }
         }
@@ -162,6 +162,7 @@ class QuestTextFragment: Fragment() {
     private fun completeTaskCallback(response: Network.NetworkResponse) {
         if (response == Network.NetworkResponse.OK) {
             when {
+                DataController.instance.quests.isFinished -> 0 // Действий не надо. Всё будет сделано за нас в NavigationActivity
                 DataController.instance.quests.getTask().img == "" -> newInstance()
                 else -> QuestTextImgFragment.newInstance()
             }

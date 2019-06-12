@@ -52,8 +52,8 @@ class QuestTextImgFragment: Fragment() {
             when (actionId) {
                 EditorInfo.IME_ACTION_DONE -> {
                     if (edit_answer.text.toString() != "") {
-                        (activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(
-                            activity!!.currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+                        (activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(
+                            activity?.currentFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
                         checkAnswer()
                     }
                     true
@@ -63,8 +63,8 @@ class QuestTextImgFragment: Fragment() {
         }
         button_check_answer.setOnClickListener {
             if (edit_answer.text.toString() != "") {
-                (activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(
-                    activity!!.currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+                (activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(
+                    activity?.currentFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
                 checkAnswer()
             }
         }
@@ -92,7 +92,7 @@ class QuestTextImgFragment: Fragment() {
 
         image_quest.setOnClickListener {
             val intent = Intent(context, FullImageActivity::class.java)
-            activity!!.startActivity(intent)
+            activity?.startActivity(intent)
         }
 
         DataController.instance.quests.getQuest()?.let { quest ->
@@ -128,7 +128,7 @@ class QuestTextImgFragment: Fragment() {
     }
 
     private fun checkAnswer() {
-        if (edit_answer!!.text.toString().toLowerCase() in DataController.instance.quests.getTask().answers) {
+        if (edit_answer.text.toString().toLowerCase() in DataController.instance.quests.getTask().answers) {
             updateCardFragment()
             Snackbar.make(activity!!.findViewById(R.id.content_frame), getString(R.string.correct), Snackbar.LENGTH_LONG).show()
         } else

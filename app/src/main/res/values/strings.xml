@@ -37,6 +37,7 @@
     <string name="leave_quest">Покинуть квест</string>
     <string name="save">Сохранить</string>
     <string name="no_quest_selected">Вы пока что не приняли участие в квесте</string>
+    <string name="quest_set_empty">В ближайшее время не планируется квестов. Пожалуйста, проверьте позже</string>
     <string name="time_at_this_stage">Время на этом этапе:</string>
     <string name="default_time">00:00:00</string>
     <string name="time_to_end">Время до конца квеста:</string>

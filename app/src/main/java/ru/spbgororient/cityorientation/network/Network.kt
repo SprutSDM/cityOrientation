@@ -231,6 +231,7 @@ class Network private constructor() {
                     val data = response.body()!!
                     when (data.message) {
                         "ok" -> callback(NetworkResponse.OK, data.timeComplete)
+                        "task already complete" -> callback(NetworkResponse.OK, data.timeComplete)
                         else -> callback(NetworkResponse.FAILURE, 0)
                     }
                 }

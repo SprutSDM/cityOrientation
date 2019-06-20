@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_navigation.*
 import ru.spbgororient.cityorientation.fragments.finish.FinishFragment

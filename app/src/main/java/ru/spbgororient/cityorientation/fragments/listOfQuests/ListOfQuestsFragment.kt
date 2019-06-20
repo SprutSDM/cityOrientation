@@ -7,7 +7,9 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kotlinx.android.synthetic.main.fragment_list_of_quests.*
 import ru.spbgororient.cityorientation.R
+import ru.spbgororient.cityorientation.dataController.DataController
 
 class ListOfQuestsFragment: Fragment() {
     private lateinit var adapter: Adapter
@@ -25,6 +27,13 @@ class ListOfQuestsFragment: Fragment() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(thisView.context)
         return thisView
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        if (DataController.instance.quests.getListOfQuests().size == 0)
+            text.visibility = View.VISIBLE
     }
 
     fun notifyDataSetChanged() {

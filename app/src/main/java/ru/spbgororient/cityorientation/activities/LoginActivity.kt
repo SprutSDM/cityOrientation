@@ -1,7 +1,9 @@
 package ru.spbgororient.cityorientation.activities
 
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -44,6 +46,12 @@ class LoginActivity : AppCompatActivity() {
                 }
                 else -> false
             }
+        }
+        image_vk_logo.setOnClickListener {
+            openVk()
+        }
+        text_link_vk.setOnClickListener {
+            openVk()
         }
     }
 
@@ -114,6 +122,20 @@ class LoginActivity : AppCompatActivity() {
                     else -> getString(R.string.incorrect_login_or_password)
                 },
                 Snackbar.LENGTH_LONG).show()
+        }
+    }
+
+    private fun openVk() {
+        val url = "https://" + getString(R.string.website_url)
+        var intent = Intent(Intent.ACTION_VIEW).apply {
+            data = Uri.parse(url)
+        }
+        try {
+            startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            Snackbar.make(findViewById(R.id.activity_login),
+                getString(R.string.fail_when_open_link),
+                Snackbar.LENGTH_SHORT).show()
         }
     }
 }

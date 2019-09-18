@@ -7,7 +7,7 @@
     <string name="sdf_time">HH:mm:ss</string>
     <string name="sdf_time_with_exlp">HHч. mmмин. ssсек.</string>
     <string name="team_renamed">Команда успешно переименована!</string>
-    <string name="left_quest">Вы успешно покинули текущий квест!</string>
+    <string name="left_quest">Вы успешно покинули текущую Игру!</string>
     <string name="task_number">Задание №%1$d</string>
     <string name="tip_number">Подсказка №%1$d: %2$s</string>
     <string name="no_tip">К этому заданию нет подсказки №%1$d</string>
@@ -21,33 +21,33 @@
     <string name="wrong">Ответ неверный!</string>
 
     <string name="image_desc">Картинка задания</string>
-    <string name="logo_desc">Лого Квеста</string>
+    <string name="logo_desc">Лого Игры</string>
     <string name="welcome">Добро пожаловать в \'Неизвестный Питер\'! Для продолжения введите логин и пароль, которые Вам отправил организатор!</string>
     <string name="hint_login">Login</string>
     <string name="hint_password">Password</string>
     <string name="continue_button">Продолжить</string>
     <string name="vk_logo_desc">VK Logo</string>
     <string name="website_url">vk.com/spb.gor.orient</string>
-    <string name="quest_img_desc">Изображение квеста</string>
+    <string name="quest_img_desc">Изображение Игры</string>
     <string name="date_time_start">Дата и время начала</string>
     <string name="location">Место проведения</string>
     <string name="apply">Подать заявку</string>
-    <string name="quest_finished">Квест окончен!</string>
+    <string name="quest_finished">Игра окончена!</string>
     <string name="hint_team_name">Название команды</string>
     <string name="leave_team">Покинуть команду</string>
-    <string name="leave_quest">Покинуть квест</string>
+    <string name="leave_quest">Покинуть Игру</string>
     <string name="save">Сохранить</string>
-    <string name="no_quest_selected">Вы пока что не приняли участие в квесте</string>
-    <string name="quest_set_empty">В ближайшее время не планируется квестов. Пожалуйста, проверьте позже</string>
+    <string name="no_quest_selected">Вы пока что не приняли участие в Игре</string>
+    <string name="quest_set_empty">В ближайшее время не планируется Игр. Пожалуйста, проверьте позже</string>
     <string name="time_at_this_stage">Время на этом этапе:</string>
     <string name="default_time">00:00:00</string>
-    <string name="time_to_end">Время до конца квеста:</string>
+    <string name="time_to_end">Время до конца Игры:</string>
     <string name="hint_answer">Ответ</string>
     <string name="send">Отправить</string>
     <string name="receive">Получить</string>
     <string name="time_before_start">До начала осталось:</string>
 
     <string name="bottom_bar_my_team">Моя команда</string>
-    <string name="bottom_bar_list_of_quests">Список квестов</string>
+    <string name="bottom_bar_list_of_quests">Список Игр</string>
     <string name="bottom_bar_current_task">Текущее задание</string>
 </resources>

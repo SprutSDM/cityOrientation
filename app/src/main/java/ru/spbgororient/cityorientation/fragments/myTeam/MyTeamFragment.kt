@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.text.InputType
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,7 +27,8 @@ class MyTeamFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        Log.d("MyTeamFragment", "${DataController.instance.team.teamName}")
+        Log.d("MyTeamFragment", "hashCode(): ${this.hashCode()}")
         // TODO: При перелогине в другой аккаунт остаются старые данные.
         edit_name_team.setText(DataController.instance.team.teamName)
         edit_login_team.setText(DataController.instance.team.login)

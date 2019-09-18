@@ -41,6 +41,9 @@ class NavigationActivity : AppCompatActivity(), BottomNavigationView.OnNavigatio
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        Log.d("NavigationItemSelected", "item: $item\n" +
+                                        "${MyTeamFragment.instance}")
+
         fragment = when (item.itemId) {
             R.id.nav_my_group -> MyTeamFragment.instance
             R.id.nav_list_of_quests -> ListOfQuestsFragment.instance

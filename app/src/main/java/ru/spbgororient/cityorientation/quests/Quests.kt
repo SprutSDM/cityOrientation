@@ -1,7 +1,7 @@
 package ru.spbgororient.cityorientation.quests
 
 class Quests {
-    var mapOfQuests: Map<String, Quest> = HashMap()
+    private var mapOfQuests: Map<String, Quest> = HashMap()
     var listOfTasks: List<Task> = ArrayList()
     var questId = "" // ID текущего квест
     var step = 0 // текущий этап

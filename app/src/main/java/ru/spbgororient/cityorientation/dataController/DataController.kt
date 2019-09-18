@@ -163,24 +163,6 @@ class DataController private constructor(private val sharedPreferences: SharedPr
     }
 
     /**
-     * Получает текущее состояние.
-     *
-     * Возвращает в callback данные, которые могли измениться другими участниками команды. Данные должны быть сохранены
-     * в callback'е. Этот метод используется для обновления в фоне. Благодаря такому callback'у можно определить
-     * какое действие совершили
-     *
-     * @param[callback] вызывается при завершении запроса.
-     */
-    /*fun getStateForTimer(callback: (response: Network.NetworkResponse, questId: String, step: Int, startTime: Long, times: List<Int>, timesComplete: List<Int>) -> Unit) {
-        network.getState(team.login) { response, data ->
-            if (response == Network.NetworkResponse.OK) {
-                team.teamName = data.teamName
-            }
-            callback(response, questId, step, startTime, times, timeZone, timesComplete)
-        }
-    }*/
-
-    /**
      * Уведомлеят сервер о том, что текущее задание из текущего квеста решено верно.
      *
      * @param[callback] вызывается при завершении запроса.

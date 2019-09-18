@@ -9,7 +9,6 @@ class Team {
     var login = "Login"
     var password = "Password"
     var teamName = "Team Name"
-    var isLogin = false
 
     /**
      * Загружает данные из [settings].
@@ -23,10 +22,8 @@ class Team {
         if (settings.contains(spLogin) && settings.contains(spPassword)) {
             login = settings.getString(spLogin, "")!!
             password = settings.getString(spPassword, "")!!
-            isLogin = true
             return true
         }
-        isLogin = false
         return false
     }
 
@@ -44,7 +41,6 @@ class Team {
         editor.putString(spLogin, login)
         editor.putString(spPassword, password)
         editor.apply()
-        isLogin = true
     }
 
     /**
@@ -53,11 +49,13 @@ class Team {
      * @param[settings] экземпляр SharedPreferences.
      */
     fun reset(settings: SharedPreferences) {
+        login = ""
+        password = ""
+        teamName = ""
         val editor = settings.edit()
         editor.remove(spLogin)
         editor.remove(spPassword)
         editor.apply()
-        isLogin = false
     }
 
     /**

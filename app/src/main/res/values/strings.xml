@@ -47,6 +47,6 @@
     <string name="time_before_start">До начала осталось:</string>
 
     <string name="bottom_bar_my_team">Моя команда</string>
-    <string name="bottom_bor_list_of_quests">Список квестов</string>
+    <string name="bottom_bar_list_of_quests">Список квестов</string>
     <string name="bottom_bar_current_task">Текущее задание</string>
 </resources>

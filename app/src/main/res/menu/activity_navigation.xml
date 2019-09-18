@@ -11,7 +11,7 @@
         <item
                 android:id="@+id/nav_list_of_quests"
                 android:icon="@drawable/ic_lists"
-                android:title="@string/bottom_bor_list_of_quests"/>
+                android:title="@string/bottom_bar_list_of_quests"/>
         <item
                 android:id="@+id/nav_quest"
                 android:icon="@drawable/ic_star"

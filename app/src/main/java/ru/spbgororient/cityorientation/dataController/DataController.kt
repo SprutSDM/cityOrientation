@@ -108,7 +108,7 @@ class DataController private constructor(private val sharedPreferences: SharedPr
      *
      * @param[callback] вызывается при завершении запроса.
      */
-    fun loadQuests(callback: (response: Network.NetworkResponse) -> Unit) {
+fun loadQuests(callback: (response: Network.NetworkResponse) -> Unit) {
         network.loadQuests { response, listOfQuests ->
             if (response == Network.NetworkResponse.OK)
                 quests.setMapOfQuests(listOfQuests)

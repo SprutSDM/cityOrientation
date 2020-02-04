@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">Неизвестный Питер</string>
-    <string name="no_internet_connection">Нет соединения с сетью Интернет</string>
-    <string name="incorrect_login_or_password">Неправильный логин или пароль!</string>
-    <string name="fail_when_open_link">Произошла ошибка при открытии ссылки</string>
+    <string name="snackbar_no_internet_connection">Нет соединения с сетью Интернет!</string>
+    <string name="snackbar_incorrect_login_or_password">Неправильный логин или пароль!</string>
+    <string name="snackbar_fail_when_open_link">Произошла ошибка при открытии ссылки!</string>
+
     <string name="sdf_full_time">dd MMM в HH:mm</string>
     <string name="sdf_time">HH:mm:ss</string>
     <string name="sdf_time_with_exlp">HHч. mmмин. ssсек.</string>

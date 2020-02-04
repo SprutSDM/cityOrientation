@@ -1,7 +1,6 @@
 package ru.spbgororient.cityorientation.fragments.myTeam
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
@@ -14,7 +13,6 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import kotlinx.android.synthetic.main.fragment_my_team.*
-import ru.spbgororient.cityorientation.activities.LoginActivity
 import ru.spbgororient.cityorientation.R
 import ru.spbgororient.cityorientation.dataController.DataController
 import ru.spbgororient.cityorientation.fragments.listOfQuests.ListOfQuestsFragment
@@ -62,8 +60,9 @@ class MyTeamFragment: Fragment() {
         }
         button_leave_team.setOnClickListener {
             DataController.instance.resetTeam()
-            val intent = Intent(context, LoginActivity::class.java)
-            activity!!.startActivity(intent)
+            // TODO
+//            val intent = Intent(context, LoginActivity::class.java)
+//            activity!!.startActivity(intent)
         }
         button_leave_quest.setOnClickListener {
             if (DataController.instance.quests.questId != "")

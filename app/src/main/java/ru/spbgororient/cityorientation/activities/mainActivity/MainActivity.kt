@@ -1,4 +1,4 @@
-package ru.spbgororient.cityorientation.activities
+package ru.spbgororient.cityorientation.activities.mainActivity
 
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
@@ -17,9 +17,8 @@ import ru.spbgororient.cityorientation.R
 import ru.spbgororient.cityorientation.dataController.DataController
 import ru.spbgororient.cityorientation.fragments.noQuestSelected.NoQuestSelectedFragment
 
-
-class NavigationActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
-    private lateinit var fragment: Fragment
+class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener, MainContract.View {
+    private val presenter: MainContract.Presenter by lazy { MainPresenter(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,38 +32,33 @@ class NavigationActivity : AppCompatActivity(), BottomNavigationView.OnNavigatio
         }
     }
 
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        Log.d("NavigationItemSelected", "item: $item\n" +
+                                        "${MyTeamFragment.instance}")
+        when (item.itemId) {
+            R.id.nav_my_group -> presenter.navigateToMyTeam()
+            R.id.nav_list_of_quests -> presenter.navigateToListOfQuests()
+            R.id.nav_quest -> presenter.navigateToQuest()
+        }
+        return true
+    }
+
+    override fun showMyTeam() = loadFragment(MyTeamFragment.instance)
+
+    override fun showListOfQuests() = loadFragment(ListOfQuestsFragment.instance)
+
+    override fun showWaitingQuest() = loadFragment(WaitingToStartFragment.instance)
+
+    override fun showTask() = loadFragment(QuestTextFragment.instance)
+
+    override fun showFinishQuest() = loadFragment(FinishFragment.instance)
+
+    override fun showNoQuestSelected() = loadFragment(NoQuestSelectedFragment.instance)
+
     private fun loadFragment(fragment: Fragment) {
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.content_frame, fragment)
             .commit()
-    }
-
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        Log.d("NavigationItemSelected", "item: $item\n" +
-                                        "${MyTeamFragment.instance}")
-
-        fragment = when (item.itemId) {
-            R.id.nav_my_group -> MyTeamFragment.instance
-            R.id.nav_list_of_quests -> ListOfQuestsFragment.instance
-            R.id.nav_quest -> {
-                val quest = DataController.instance.quests.getQuest()
-                DataController.instance.quests.let {
-                    when {
-                        quest == null -> NoQuestSelectedFragment.instance
-                        quest.startTime * 1000 > DataController.instance.currentTime  -> WaitingToStartFragment.instance
-                        it.isFinished ||(quest.startTime + quest.duration) * 1000
-                                <= DataController.instance.currentTime -> FinishFragment.instance
-                        it.getTask().img == "" -> QuestTextFragment.instance
-                        it.getTask().img != "" -> QuestTextImgFragment.instance
-                        else -> WaitingToStartFragment.instance
-                    }
-                }
-            }
-            else -> ListOfQuestsFragment.instance
-        }
-        loadFragment(fragment)
-        title = item.title
-        return true
     }
 }

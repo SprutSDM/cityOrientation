@@ -3,7 +3,6 @@ package ru.spbgororient.cityorientation.fragments.waitingToStart
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_navigation.*
 import kotlinx.android.synthetic.main.fragment_waiting_to_start.*
 import ru.spbgororient.cityorientation.R
-import ru.spbgororient.cityorientation.activities.NavigationActivity
+import ru.spbgororient.cityorientation.activities.mainActivity.MainActivity
 import ru.spbgororient.cityorientation.dataController.DataController
 import ru.spbgororient.cityorientation.network.Network
 import java.text.SimpleDateFormat
@@ -64,7 +63,7 @@ class WaitingToStartFragment: Fragment() {
                 }
 
                 override fun onFinish() {
-                    (context as NavigationActivity).navigation_view.selectedItemId = R.id.nav_quest
+                    (context as MainActivity).navigation_view.selectedItemId = R.id.nav_quest
                 }
             }.start()
         }

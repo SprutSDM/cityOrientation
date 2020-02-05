@@ -1,7 +1,6 @@
 package ru.spbgororient.cityorientation.fragments.listOfQuests
 
 import android.content.Context
-import android.provider.ContactsContract
 import android.support.v4.app.FragmentManager
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
@@ -14,7 +13,7 @@ import android.widget.TextView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_navigation.*
 import ru.spbgororient.cityorientation.R
-import ru.spbgororient.cityorientation.activities.NavigationActivity
+import ru.spbgororient.cityorientation.activities.mainActivity.MainActivity
 import ru.spbgororient.cityorientation.dataController.DataController
 import ru.spbgororient.cityorientation.fragments.myTeam.MyTeamFragment
 import ru.spbgororient.cityorientation.fragments.waitingToStart.WaitingToStartFragment
@@ -68,7 +67,7 @@ class Adapter(val context: Context,
     private fun callbackListOfTasks(response: Network.NetworkResponse) {
         if (response == Network.NetworkResponse.OK) {
             WaitingToStartFragment.newInstance() // TODO: разобраться, нужно ли это
-            (context as NavigationActivity).navigation_view.selectedItemId = R.id.nav_quest
+            (context as MainActivity).navigation_view.selectedItemId = R.id.nav_quest
         }
     }
 

@@ -13,7 +13,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ProgressBar
 import kotlinx.android.synthetic.main.activity_login.*
 import ru.spbgororient.cityorientation.R
-import ru.spbgororient.cityorientation.activities.NavigationActivity
+import ru.spbgororient.cityorientation.activities.mainActivity.MainActivity
 import ru.spbgororient.cityorientation.dataController.DataController
 
 class LoginActivity: AppCompatActivity(), LoginContract.View {
@@ -69,7 +69,7 @@ class LoginActivity: AppCompatActivity(), LoginContract.View {
     }
 
     override fun openNavigationActivity() {
-        val intent = Intent(this, NavigationActivity::class.java)
+        val intent = Intent(this, MainActivity::class.java)
         this.startActivity(intent)
     }
 

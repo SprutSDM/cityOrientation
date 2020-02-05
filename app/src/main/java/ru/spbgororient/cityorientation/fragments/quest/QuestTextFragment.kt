@@ -14,7 +14,7 @@ import android.view.inputmethod.InputMethodManager
 import kotlinx.android.synthetic.main.activity_navigation.*
 import kotlinx.android.synthetic.main.fragment_quest_text.*
 import ru.spbgororient.cityorientation.R
-import ru.spbgororient.cityorientation.activities.NavigationActivity
+import ru.spbgororient.cityorientation.activities.mainActivity.MainActivity
 import ru.spbgororient.cityorientation.dataController.DataController
 import ru.spbgororient.cityorientation.network.Network
 import java.text.SimpleDateFormat
@@ -149,7 +149,7 @@ class QuestTextFragment: Fragment() {
                 }
 
                 override fun onFinish() {
-                    (context as NavigationActivity).navigation_view.selectedItemId = R.id.nav_quest
+                    (context as MainActivity).navigation_view.selectedItemId = R.id.nav_quest
                 }
             }.start()
         }
@@ -162,11 +162,11 @@ class QuestTextFragment: Fragment() {
     private fun completeTaskCallback(response: Network.NetworkResponse) {
         if (response == Network.NetworkResponse.OK) {
             when {
-                DataController.instance.quests.isFinished -> 0 // Действий не надо. Всё будет сделано за нас в NavigationActivity
+                DataController.instance.quests.isFinished -> 0 // Действий не надо. Всё будет сделано за нас в MainActivity
                 DataController.instance.quests.getTask().img == "" -> newInstance()
                 else -> QuestTextImgFragment.newInstance()
             }
-            (context as NavigationActivity).navigation_view.selectedItemId = R.id.nav_quest
+            (context as MainActivity).navigation_view.selectedItemId = R.id.nav_quest
         }
     }
 

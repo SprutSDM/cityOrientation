@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".activities.NavigationActivity">
+                android:name=".activities.mainActivity.MainActivity">
         </activity>
         <activity
                 android:name=".activities.FullImageActivity"

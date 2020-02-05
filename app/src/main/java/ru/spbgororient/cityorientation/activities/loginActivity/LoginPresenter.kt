@@ -47,7 +47,7 @@ class LoginPresenter(private val view: LoginContract.View): LoginContract.Presen
      */
     private fun callbackGetState(response: Network.NetworkResponse) {
         if (response == Network.NetworkResponse.OK) {
-            // Если текущий квест не выбран, то сразу переходим на NavigationActivity
+            // Если текущий квест не выбран, то сразу переходим на MainActivity
             if (DataController.instance.quests.questId == "") {
                 view.hideLoadingData()
                 view.openNavigationActivity()

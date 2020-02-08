@@ -1,4 +1,4 @@
-package ru.spbgororient.cityorientation.fragments.quest
+package ru.spbgororient.cityorientation.fragments.task
 
 import android.app.Activity
 import android.app.AlertDialog
@@ -7,11 +7,12 @@ import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import ru.spbgororient.cityorientation.R
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
+import java.util.TimeZone
 
 class TipDialogFragment: DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val sdf = SimpleDateFormat(getString(R.string.sdf_time_with_exlp))
+        val sdf = SimpleDateFormat(getString(R.string.sdf_time_with_exlp), Locale.UK)
         sdf.timeZone = TimeZone.getTimeZone("UTC")
         val builder = AlertDialog.Builder(activity)
         val time = arguments?.getInt("time")

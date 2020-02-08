@@ -10,15 +10,14 @@ import kotlinx.android.synthetic.main.activity_navigation.*
 import ru.spbgororient.cityorientation.fragments.finish.FinishFragment
 import ru.spbgororient.cityorientation.fragments.listOfQuests.ListOfQuestsFragment
 import ru.spbgororient.cityorientation.fragments.myTeam.MyTeamFragment
-import ru.spbgororient.cityorientation.fragments.quest.QuestTextFragment
-import ru.spbgororient.cityorientation.fragments.quest.QuestTextImgFragment
 import ru.spbgororient.cityorientation.fragments.waitingToStart.WaitingToStartFragment
 import ru.spbgororient.cityorientation.R
 import ru.spbgororient.cityorientation.dataController.DataController
 import ru.spbgororient.cityorientation.fragments.noQuestSelected.NoQuestSelectedFragment
+import ru.spbgororient.cityorientation.fragments.task.TaskFragment
 
 class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener, MainContract.View {
-    private val presenter: MainContract.Presenter by lazy { MainPresenter(this) }
+    val presenter: MainContract.Presenter by lazy { MainPresenter(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +48,12 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
     override fun showWaitingQuest() = loadFragment(WaitingToStartFragment.instance)
 
-    override fun showTask() = loadFragment(QuestTextFragment.instance)
+    override fun showTask() {
+        if (TaskFragment.instance.isAdded) {
+            TaskFragment.instance.presenter.updateTaskContent()
+        }
+        loadFragment(TaskFragment.instance)
+    }
 
     override fun showFinishQuest() = loadFragment(FinishFragment.instance)
 

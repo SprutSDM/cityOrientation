@@ -16,5 +16,6 @@ interface MainContract {
         fun navigateToMyTeam()
         fun navigateToListOfQuests()
         fun navigateToQuest()
+        fun updateTaskFragment()
     }
 }

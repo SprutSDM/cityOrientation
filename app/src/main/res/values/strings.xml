@@ -13,13 +13,12 @@
     <string name="tip_number">Подсказка №%1$d: %2$s</string>
     <string name="no_tip">К этому заданию нет подсказки №%1$d</string>
     <string name="get_tip">Получить подсказку</string>
-    <string name="get_tip_number_1">Получить подсказку №1</string>
-    <string name="get_tip_number_2">Получить подсказку №2</string>
+    <string name="get_tip_number">Получить подсказку №%1$d</string>
     <string name="warning_get_tip">"Вы действительно хотите воспользоваться подсказкой №%1$d?\n\nЭто добавит %2$s штрафного времени!"</string>
     <string name="ok">OK</string>
     <string name="cancel">Отмена</string>
-    <string name="correct">Правильно!</string>
-    <string name="wrong">Ответ неверный!</string>
+    <string name="correct_answer">Правильно!</string>
+    <string name="incorrect_answer">Ответ неверный!</string>
 
     <string name="image_desc">Картинка задания</string>
     <string name="logo_desc">Лого Игры</string>

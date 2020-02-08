@@ -61,7 +61,7 @@
                 android:id="@+id/card_quest_view"
                 android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/text_title_of_quest"
+                app:layout_constraintTop_toBottomOf="@id/text_title_of_quest"
                 app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
                 card_view:cardCornerRadius="8dp">
 
@@ -90,7 +90,7 @@
                         android:layout_marginRight="8dp"
                         android:layout_marginEnd="8dp"
                         app:layout_constraintTop_toBottomOf="@+id/text_content_quest"
-                        app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toStartOf="@+id/button_check_answer">
+                        app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toStartOf="@id/button_check_answer">
 
                     <EditText
                             android:id="@+id/edit_answer"
@@ -123,78 +123,27 @@
                         android:layout_marginTop="8dp"
                         android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
                         android:contentDescription="@string/image_desc"
-                        app:layout_constraintTop_toBottomOf="@+id/text_number_quest"
+                        app:layout_constraintTop_toBottomOf="@id/text_number_quest"
                         app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
                         card_view:srcCompat="@drawable/logo"/>
             </android.support.constraint.ConstraintLayout>
         </android.support.v7.widget.CardView>
 
-        <android.support.v7.widget.CardView
-                xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/card_tip_1"
-                android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/card_quest_view"
-                app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
-                card_view:cardCornerRadius="8dp">
+        <include
+            android:id="@+id/card_tip_1"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/card_quest_view"
+            layout="@layout/tip_view"/>
 
-            <android.support.constraint.ConstraintLayout
+        <include
+            android:id="@+id/card_tip_2"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/card_tip_1"
+            layout="@layout/tip_view"/>
 
-                    android:layout_width="match_parent" android:layout_height="match_parent">
-                <Button
-                        android:id="@+id/button_get_tip_1"
-                        android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:layout_marginRight="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:backgroundTint="@color/colorAccent"
-                        android:text="@string/receive"
-                        android:textSize="10sp"
-                        android:textColor="@color/colorWhite"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"/>
-                <TextView
-                        android:id="@+id/text_tip_1"
-                        android:layout_width="match_parent" android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:text="@string/get_tip_number_1"
-                        android:textSize="12sp"
-                        app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"/>
-            </android.support.constraint.ConstraintLayout>
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-                xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/card_tip_2"
-                android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/card_tip_1"
-                app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
-                card_view:cardCornerRadius="8dp">
-
-            <android.support.constraint.ConstraintLayout
-                    android:layout_width="match_parent" android:layout_height="match_parent">
-
-                <Button
-                        android:id="@+id/button_get_tip_2"
-                        android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:layout_marginRight="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:backgroundTint="@color/colorAccent"
-                        android:text="@string/receive"
-                        android:textSize="10sp"
-                        android:textColor="@color/colorWhite"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"/>
-                <TextView
-                        android:id="@+id/text_tip_2"
-                        android:layout_width="match_parent" android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:text="@string/get_tip_number_2"
-                        android:textSize="12sp"
-                        app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"/>
-            </android.support.constraint.ConstraintLayout>
-        </android.support.v7.widget.CardView>
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

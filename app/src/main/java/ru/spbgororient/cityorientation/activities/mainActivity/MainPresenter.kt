@@ -7,7 +7,9 @@ class MainPresenter(private val view: MainContract.View) : MainContract.Presente
 
     override fun navigateToListOfQuests() = view.showListOfQuests()
 
-    override fun navigateToQuest() {
+    override fun navigateToQuest() = updateTaskFragment()
+
+    override fun updateTaskFragment() {
         val quest = DataController.instance.quests.getQuest()
         DataController.instance.quests.let {
             when {
@@ -15,7 +17,7 @@ class MainPresenter(private val view: MainContract.View) : MainContract.Presente
                 quest.startTime * 1000 > DataController.instance.currentTime -> view.showWaitingQuest()
                 it.isFinished ||(quest.startTime + quest.duration) * 1000
                         <= DataController.instance.currentTime -> view.showFinishQuest()
-                it.getTask().img == "" -> view.showTask()
+                else -> view.showTask()
             }
         }
     }

@@ -16,64 +16,55 @@ import ru.spbgororient.cityorientation.network.Network
 import java.text.SimpleDateFormat
 import java.util.*
 
-class WaitingToStartFragment: Fragment() {
+class WaitingToStartFragment: Fragment(), WaitingToStartContract.View {
 
-    private lateinit var timer: CountDownTimer
-    lateinit var sdf: SimpleDateFormat
+    private lateinit var presenter: WaitingToStartContract.Presenter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        sdf = SimpleDateFormat(getString(R.string.sdf_time))
-        sdf.timeZone = TimeZone.getTimeZone("UTC")
+        activity.let {
+            if (it is MainActivity) {
+                presenter = WaitingToStartPresenter(this, it.presenter)
+            }
+        }
         return inflater.inflate(R.layout.fragment_waiting_to_start, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        DataController.instance.quests.getQuest()?.let { quest ->
-            Picasso.with(context)
-                .load(Network.URL + quest.img)
-                .fit()
-                .centerCrop()
-                .into(image_preview)
-            text_title_of_quest.text = quest.name
-            text_start.text = quest.startText
-
-            val time = quest.startTime * 1000 - System.currentTimeMillis()
-            text_time_from_start_quest.text = sdf.format(time)
-        }
+        presenter.viewCreated()
     }
 
     override fun onStart() {
         super.onStart()
-        startTimer()
+        presenter.start()
     }
 
     override fun onStop() {
         super.onStop()
-        stopTimer()
+        presenter.stop()
     }
 
-    private fun startTimer() {
-        DataController.instance.quests.getQuest()?.let { quest ->
-            val time = quest.startTime * 1000 - (System.currentTimeMillis() + DataController.instance.timeOffset)
-            timer = object: CountDownTimer(time, 1000L) {
-
-                override fun onTick(millisUntilFinished: Long) {
-                    text_time_from_start_quest.text = sdf.format(millisUntilFinished)
-                }
-
-                override fun onFinish() {
-                    (context as MainActivity).navigation_view.selectedItemId = R.id.nav_quest
-                }
-            }.start()
-        }
+    override fun updateTimer(timeUntilStart: String) {
+        text_time_from_start_quest.text = timeUntilStart
     }
 
-    private fun stopTimer() {
-        DataController.instance.quests.getQuest()?.let {
-            timer.cancel()
-        }
+    override fun setQuestLogo(url: String) {
+        Picasso.with(context)
+            .load(url)
+            .fit()
+            .centerCrop()
+            .into(image_preview)
     }
+
+    override fun setQuestTitle(title: String) {
+        text_title_of_quest.text = title
+    }
+
+    override fun setWelcomeText(text: String) {
+        text_start.text = text
+    }
+
+    override fun getTimeFormat(): String = getString(R.string.sdf_time)
 
     companion object {
         var instance: WaitingToStartFragment = WaitingToStartFragment()

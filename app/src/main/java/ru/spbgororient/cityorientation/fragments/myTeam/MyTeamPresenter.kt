@@ -1,7 +1,6 @@
 package ru.spbgororient.cityorientation.fragments.myTeam
 
 import ru.spbgororient.cityorientation.dataController.DataController
-import ru.spbgororient.cityorientation.fragments.listOfQuests.ListOfQuestsFragment
 import ru.spbgororient.cityorientation.network.Network
 
 class MyTeamPresenter(private val view: MyTeamContract.View) : MyTeamContract.Presenter {
@@ -58,8 +57,8 @@ class MyTeamPresenter(private val view: MyTeamContract.View) : MyTeamContract.Pr
     private fun callbackLeaveQuest(response: Network.NetworkResponse) {
         if (response == Network.NetworkResponse.OK) {
             view.disableLeaveQuestButton()
-            //TODO refactor
-            ListOfQuestsFragment.instance.notifyDataSetChanged()
+            // TODO refactor
+            // ListOfQuestsFragment.instance.notifyDataSetChanged()
             view.showLeftQuest()
         }
     }

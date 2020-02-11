@@ -6,7 +6,7 @@
         android:layout_width="match_parent" android:layout_height="match_parent"
         android:fillViewport="true">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/activity_login"
             android:layout_width="match_parent" android:layout_height="wrap_content"
             tools:context=".activities.loginActivity.LoginActivity">
@@ -29,7 +29,7 @@
                 android:gravity="center_horizontal"
                 app:layout_constraintBottom_toTopOf="@+id/input_login"
                 app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"/>
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_login"
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -46,9 +46,9 @@
                     android:importantForAutofill="no"
                     app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"/>
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_password"
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -66,7 +66,7 @@
                     android:imeOptions="actionDone"
                     app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"/>
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
                 android:id="@+id/button_login"
@@ -106,5 +106,5 @@
                 android:visibility="invisible"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"/>
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

@@ -3,9 +3,9 @@ package ru.spbgororient.cityorientation.fragments.myTeam
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.annotation.StringRes
-import android.support.design.widget.Snackbar
-import android.support.v4.app.Fragment
+import androidx.annotation.StringRes
+import com.google.android.material.snackbar.Snackbar
+import androidx.fragment.app.Fragment
 import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +18,7 @@ import ru.spbgororient.cityorientation.R
 import ru.spbgororient.cityorientation.activities.loginActivity.LoginActivity
 import ru.spbgororient.cityorientation.dataController.DataController
 
-class MyTeamFragment: Fragment(), MyTeamContract.View {
+class MyTeamFragment: androidx.fragment.app.Fragment(), MyTeamContract.View {
     private val presenter: MyTeamContract.Presenter by lazy { MyTeamPresenter(this) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

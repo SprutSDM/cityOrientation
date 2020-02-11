@@ -2,7 +2,7 @@ package ru.spbgororient.cityorientation
 
 import android.app.Application
 import android.content.Context
-import android.support.v7.app.AppCompatDelegate
+import androidx.appcompat.app.AppCompatDelegate
 import ru.spbgororient.cityorientation.dataController.DataController
 
 class App : Application() {

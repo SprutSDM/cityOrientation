@@ -4,13 +4,13 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
+import androidx.fragment.app.DialogFragment
 import ru.spbgororient.cityorientation.R
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
 
-class TipDialogFragment: DialogFragment() {
+class TipDialogFragment: androidx.fragment.app.DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val sdf = SimpleDateFormat(getString(R.string.sdf_time_with_exlp), Locale.UK)
         sdf.timeZone = TimeZone.getTimeZone("UTC")

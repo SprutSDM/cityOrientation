@@ -2,7 +2,7 @@ package ru.spbgororient.cityorientation.fragments.waitingToStart
 
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +16,7 @@ import ru.spbgororient.cityorientation.network.Network
 import java.text.SimpleDateFormat
 import java.util.*
 
-class WaitingToStartFragment: Fragment(), WaitingToStartContract.View {
+class WaitingToStartFragment: androidx.fragment.app.Fragment(), WaitingToStartContract.View {
 
     private lateinit var presenter: WaitingToStartContract.Presenter
 

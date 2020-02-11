@@ -3,9 +3,9 @@ package ru.spbgororient.cityorientation.fragments.task
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.annotation.StringRes
-import android.support.design.widget.Snackbar
-import android.support.v4.app.Fragment
+import androidx.annotation.StringRes
+import com.google.android.material.snackbar.Snackbar
+import androidx.fragment.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -22,7 +22,7 @@ import ru.spbgororient.cityorientation.activities.mainActivity.MainActivity
 import ru.spbgororient.cityorientation.dataController.DataController
 import ru.spbgororient.cityorientation.network.Network
 
-class TaskFragment: Fragment(), TaskContract.View {
+class TaskFragment: androidx.fragment.app.Fragment(), TaskContract.View {
 
     lateinit var presenter: TaskContract.Presenter
 

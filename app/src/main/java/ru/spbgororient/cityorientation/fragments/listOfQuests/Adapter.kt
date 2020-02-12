@@ -1,7 +1,6 @@
 package ru.spbgororient.cityorientation.fragments.listOfQuests
 
 import android.content.Context
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -19,7 +18,8 @@ import java.util.*
 
 class Adapter(private val context: Context,
               quests: List<Quest>,
-              private val itemListener: QuestItemListener) : androidx.recyclerview.widget.RecyclerView.Adapter<Adapter.ViewHolder>() {
+              private val dataController: DataController,
+              private val itemListener: QuestItemListener) : RecyclerView.Adapter<Adapter.ViewHolder>() {
 
     var quests: List<Quest> = quests
         set(quests) {
@@ -46,7 +46,7 @@ class Adapter(private val context: Context,
         viewHolder.questCard.findViewById<Button>(R.id.but_apply).setOnClickListener {
             itemListener.onJoinToQuestClick(quests[i])
         }
-        if (DataController.instance.quests.questId != "") {
+        if (dataController.quests.questId != "") {
             viewHolder.questCard.findViewById<Button>(R.id.but_apply).isEnabled = false
         }
     }
@@ -55,7 +55,7 @@ class Adapter(private val context: Context,
         return quests.size
     }
 
-    class ViewHolder(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val questCard: androidx.cardview.widget.CardView = itemView.findViewById(R.id.card_quest_view_preview)
     }
 }

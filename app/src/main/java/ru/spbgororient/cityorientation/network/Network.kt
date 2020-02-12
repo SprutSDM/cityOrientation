@@ -13,14 +13,13 @@ import ru.spbgororient.cityorientation.quests.Quests
 import ru.spbgororient.cityorientation.quests.Task
 import ru.spbgororient.cityorientation.team.Team
 
-
 /**
  * Этот класс содержит методы для общения с Rest Api сервером.
  *
  * Все запросы выполняются в фоновом потоке. У каждого метода есть callback, который вызывается
  * по завершению запроса. Первым аргументом всегда идёт Response.
  */
-class Network private constructor() {
+class Network {
     enum class NetworkResponse {
         OK,
         LOADING,
@@ -270,7 +269,6 @@ class Network private constructor() {
 
     companion object {
         private const val LOG_KEY = "Network"
-        val instance: Network by lazy { Network() }
         const val URL = "http://192.168.42.207:5000/"
         private const val URL_API = "${URL}api/v1/"
         const val URL_IMG = "${URL}quest_images/"

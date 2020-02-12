@@ -11,7 +11,8 @@ import java.util.Locale
 import java.util.TimeZone
 
 class TaskPresenter(private val view: TaskContract.View,
-                    private val mainPresenter: MainContract.Presenter) : TaskContract.Presenter {
+                    private val mainPresenter: MainContract.Presenter,
+                    private val dataController: DataController) : TaskContract.Presenter {
     private lateinit var timer: CountDownTimer
     private var sdf = SimpleDateFormat(view.getTimeFormat(), Locale.US).apply {
         timeZone = TimeZone.getTimeZone("UTC")
@@ -19,14 +20,14 @@ class TaskPresenter(private val view: TaskContract.View,
 
     override fun checkAnswer(answer: String) {
         Log.d("app debug", "answer: $answer")
-        if (answer.toLowerCase(Locale.getDefault()) in DataController.instance.quests.getTask().answers) {
-            DataController.instance.completeTask(::completeTaskCallback)
+        if (answer.toLowerCase(Locale.getDefault()) in dataController.quests.getTask().answers) {
+            dataController.completeTask(::completeTaskCallback)
         }
     }
 
     override fun getTip(tipNumber: Int, confirmed: Boolean) {
-        val quest = DataController.instance.quests.getQuest() ?: return
-        val task = DataController.instance.quests.getTask()
+        val quest = dataController.quests.getQuest() ?: return
+        val task = dataController.quests.getTask()
         if (confirmed) {
             if (task.tips[tipNumber].isEmpty()) {
                 view.showNoTip(tipNumber)
@@ -43,14 +44,14 @@ class TaskPresenter(private val view: TaskContract.View,
     override fun viewCreated() = updateTaskContent()
 
     override fun updateTaskContent() {
-        val task = DataController.instance.quests.getTask()
-        setupTaskContent(task, DataController.instance.quests.step)
+        val task = dataController.quests.getTask()
+        setupTaskContent(task, dataController.quests.step)
     }
 
     private fun setupTaskContent(task: Task, taskNumber: Int) {
-        DataController.instance.quests.getQuest()?.let { quest ->
-            val timeOnStage = quest.startTime * 1000 - (System.currentTimeMillis() + DataController.instance.timeOffset) - DataController.instance.quests.getTimeCompleteLastTask()
-            val timeUntilFinish = System.currentTimeMillis() + DataController.instance.timeOffset
+        dataController.quests.getQuest()?.let { quest ->
+            val timeOnStage = quest.startTime * 1000 - (System.currentTimeMillis() + dataController.timeOffset) - dataController.quests.getTimeCompleteLastTask()
+            val timeUntilFinish = System.currentTimeMillis() + dataController.timeOffset
             view.updateTimer(sdf.format(timeOnStage), sdf.format(timeUntilFinish))
         }
         view.resetAnswer()
@@ -61,10 +62,10 @@ class TaskPresenter(private val view: TaskContract.View,
             view.showTask(taskNumber + 1, task.content, task.img)
         }
         view.hideTips()
-        if (DataController.instance.quests.isUsedTip(0) || DataController.instance.quests.getTask().tips[0] == "") {
+        if (dataController.quests.isUsedTip(0) || dataController.quests.getTask().tips[0] == "") {
             view.showTip(0, task.tips[0])
         }
-        if (DataController.instance.quests.isUsedTip(1) || DataController.instance.quests.getTask().tips[1] == "") {
+        if (dataController.quests.isUsedTip(1) || dataController.quests.getTask().tips[1] == "") {
             view.showTip(1, task.tips[1])
         }
     }
@@ -77,14 +78,22 @@ class TaskPresenter(private val view: TaskContract.View,
         timer.cancel()
     }
 
+    override fun activityResult(requestCode: Int, resultCode: Int) {
+        dataController.useTip(requestCode) { response, tipNumber ->
+            if (response == Network.NetworkResponse.OK) {
+                getTip(tipNumber, confirmed = true)
+            }
+        }
+    }
+
     private fun startTimer() {
-        DataController.instance.quests.getQuest()?.let { quest ->
-            val time = (quest.duration + quest.startTime) * 1000 - DataController.instance.currentTime
+        dataController.quests.getQuest()?.let { quest ->
+            val time = (quest.duration + quest.startTime) * 1000 - dataController.currentTime
             timer = object: CountDownTimer(time, 1000L) {
 
                 override fun onTick(millisUntilFinished: Long) {
                     //TODO refactor
-                    val timeOnStage = quest.duration - DataController.instance.quests.getTimeCompleteLastTask() * 1000 - millisUntilFinished
+                    val timeOnStage = quest.duration - dataController.quests.getTimeCompleteLastTask() * 1000 - millisUntilFinished
                     view.updateTimer(sdf.format(timeOnStage), sdf.format(millisUntilFinished))
                 }
 

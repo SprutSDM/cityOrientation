@@ -26,5 +26,6 @@ interface TaskContract {
         fun updateTaskContent()
         fun start()
         fun stop()
+        fun activityResult(requestCode: Int, resultCode: Int)
     }
 }

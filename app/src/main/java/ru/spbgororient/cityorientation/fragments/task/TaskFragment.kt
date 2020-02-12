@@ -16,13 +16,12 @@ import android.widget.Button
 import android.widget.TextView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_task.*
+import ru.spbgororient.cityorientation.App
 import ru.spbgororient.cityorientation.activities.FullImageActivity
 import ru.spbgororient.cityorientation.R
 import ru.spbgororient.cityorientation.activities.mainActivity.MainActivity
-import ru.spbgororient.cityorientation.dataController.DataController
-import ru.spbgororient.cityorientation.network.Network
 
-class TaskFragment: androidx.fragment.app.Fragment(), TaskContract.View {
+class TaskFragment: Fragment(), TaskContract.View {
 
     lateinit var presenter: TaskContract.Presenter
 
@@ -32,7 +31,7 @@ class TaskFragment: androidx.fragment.app.Fragment(), TaskContract.View {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         activity.let {
             if (it is MainActivity) {
-                presenter = TaskPresenter(this, it.presenter)
+                presenter = TaskPresenter(this, it.presenter, (it.applicationContext as App).dataController)
             }
         }
         return inflater.inflate(R.layout.fragment_task, container, false)
@@ -88,11 +87,7 @@ class TaskFragment: androidx.fragment.app.Fragment(), TaskContract.View {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        DataController.instance.useTip(requestCode) { response, tipNumber ->
-            if (response == Network.NetworkResponse.OK) {
-                presenter.getTip(tipNumber, confirmed = true)
-            }
-        }
+        presenter.activityResult(requestCode, resultCode)
     }
 
     override fun showTask(taskNumber: Int, question: String) {

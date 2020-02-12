@@ -5,31 +5,37 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.StringRes
 import com.google.android.material.snackbar.Snackbar
-import androidx.fragment.app.Fragment
 import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
 import kotlinx.android.synthetic.main.fragment_my_team.*
+import ru.spbgororient.cityorientation.App
 import ru.spbgororient.cityorientation.R
 import ru.spbgororient.cityorientation.activities.loginActivity.LoginActivity
-import ru.spbgororient.cityorientation.dataController.DataController
+import ru.spbgororient.cityorientation.activities.mainActivity.MainActivity
 
 class MyTeamFragment: androidx.fragment.app.Fragment(), MyTeamContract.View {
-    private val presenter: MyTeamContract.Presenter by lazy { MyTeamPresenter(this) }
+    private lateinit var presenter: MyTeamContract.Presenter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        activity.let {
+            if (it is MainActivity) {
+                presenter = MyTeamPresenter(this, (it.applicationContext as App).dataController)
+            }
+        }
         return inflater.inflate(R.layout.fragment_my_team, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val dataController = (activity?.applicationContext as App).dataController
         // TODO: При перелогине в другой аккаунт остаются старые данные.
-        if (DataController.instance.quests.questId == "")
+        if (dataController.quests.questId == "") {
             button_leave_quest.visibility = View.INVISIBLE
+        }
 
         check_box.setOnCheckedChangeListener { _, isChecked ->
             presenter.passwordCheckBoxChanged(isChecked)
@@ -97,12 +103,6 @@ class MyTeamFragment: androidx.fragment.app.Fragment(), MyTeamContract.View {
     private fun showSnackbar(@StringRes messageId: Int) {
         activity?.let { a ->
             Snackbar.make(a.findViewById(R.id.content_frame), getString(messageId), Snackbar.LENGTH_SHORT).show()
-        }
-    }
-
-    fun setVisibleLeaveButton() {
-        activity?.runOnUiThread {
-            activity?.findViewById<Button>(R.id.button_leave_quest)!!.visibility = View.VISIBLE
         }
     }
 

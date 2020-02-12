@@ -1,28 +1,31 @@
 package ru.spbgororient.cityorientation.fragments.listOfQuests
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_list_of_quests.*
+import ru.spbgororient.cityorientation.App
 import ru.spbgororient.cityorientation.R
 import ru.spbgororient.cityorientation.activities.mainActivity.MainActivity
+import ru.spbgororient.cityorientation.dataController.DataController
 import ru.spbgororient.cityorientation.quests.Quest
 
 class ListOfQuestsFragment: androidx.fragment.app.Fragment(), ListOfQuestsContract.View {
     private lateinit var adapter: Adapter
-    private lateinit var recyclerView: androidx.recyclerview.widget.RecyclerView
+    private lateinit var recyclerView: RecyclerView
     private lateinit var thisView: View
 
     private lateinit var presenter: ListOfQuestsContract.Presenter
+    private lateinit var dataController: DataController
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         activity.let {
             if (it is MainActivity) {
-                presenter = ListOfQuestsPresenter(this, it.presenter)
+                dataController = (it.applicationContext as App).dataController
+                presenter = ListOfQuestsPresenter(this, it.presenter, dataController)
             }
         }
         thisView = inflater.inflate(R.layout.fragment_list_of_quests, container, false)
@@ -34,9 +37,9 @@ class ListOfQuestsFragment: androidx.fragment.app.Fragment(), ListOfQuestsContra
             }
         }
 
-        adapter = Adapter(thisView.context, emptyList(), itemListener)
+        adapter = Adapter(thisView.context, emptyList(), dataController, itemListener)
         recyclerView.adapter = adapter
-        recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(thisView.context)
+        recyclerView.layoutManager = LinearLayoutManager(thisView.context)
         return thisView
     }
 

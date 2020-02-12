@@ -3,14 +3,15 @@ package ru.spbgororient.cityorientation.activities.loginActivity
 import ru.spbgororient.cityorientation.dataController.DataController
 import ru.spbgororient.cityorientation.network.Network
 
-class LoginPresenter(private val view: LoginContract.View): LoginContract.Presenter {
+class LoginPresenter(private val view: LoginContract.View,
+                     private val dataController: DataController): LoginContract.Presenter {
 
     override fun tryLogin(login: String, password: String) {
         if (!loginAndPasswordNotEmpty(login, password)) {
             return
         }
         view.showLoadingData()
-        DataController.instance.signUp(login, password, ::callbackLogin)
+        dataController.signUp(login, password, ::callbackLogin)
     }
 
     override fun onInputPasswordImeAction(login: String, password: String) {
@@ -19,7 +20,7 @@ class LoginPresenter(private val view: LoginContract.View): LoginContract.Presen
         }
         view.hideKeyboard()
         view.showLoadingData()
-        DataController.instance.signUp(login, password, ::callbackLogin)
+        dataController.signUp(login, password, ::callbackLogin)
     }
 
     override fun openVk() {
@@ -34,9 +35,9 @@ class LoginPresenter(private val view: LoginContract.View): LoginContract.Presen
      * Вызывается при завершении login команды.
      */
     private fun callbackLogin(response: Network.NetworkResponse) {
-        if (response == Network.NetworkResponse.OK)
-            DataController.instance.getState(::callbackGetState)
-        else {
+        if (response == Network.NetworkResponse.OK) {
+            dataController.getState(::callbackGetState)
+        } else {
             view.hideLoadingData()
             view.showNoInternetConnection()
         }
@@ -48,11 +49,11 @@ class LoginPresenter(private val view: LoginContract.View): LoginContract.Presen
     private fun callbackGetState(response: Network.NetworkResponse) {
         if (response == Network.NetworkResponse.OK) {
             // Если текущий квест не выбран, то сразу переходим на MainActivity
-            if (DataController.instance.quests.questId == "") {
+            if (dataController.quests.questId == "") {
                 view.hideLoadingData()
                 view.openNavigationActivity()
             } else { // Иначе грузим текущие задачи.
-                DataController.instance.loadTasks(::callbackListOfTasks)
+                dataController.loadTasks(::callbackListOfTasks)
             }
         } else {
             view.hideLoadingData()

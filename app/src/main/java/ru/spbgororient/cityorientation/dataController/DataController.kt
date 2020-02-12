@@ -12,10 +12,10 @@ import ru.spbgororient.cityorientation.team.Team
  * Сохраняет некоторые данные сразу в [Team] и [Quests], убирая таким образом эту обязанность с кода,
  * в котором вызываются эти методы. Данные возвращаются через callback.
  */
-class DataController private constructor(private val sharedPreferences: SharedPreferences,
-                                         val team: Team,
-                                         val quests: Quests,
-                                         private val network: Network) {
+class DataController (private val sharedPreferences: SharedPreferences,
+                      private val network: Network) {
+    val team = Team()
+    val quests = Quests()
     var timeZone: Long = 0
     var timeOffset: Long = 0
     val currentTime: Long
@@ -108,7 +108,7 @@ class DataController private constructor(private val sharedPreferences: SharedPr
      *
      * @param[callback] вызывается при завершении запроса.
      */
-fun loadQuests(callback: (response: Network.NetworkResponse) -> Unit) {
+    fun loadQuests(callback: (response: Network.NetworkResponse) -> Unit) {
         network.loadQuests { response, listOfQuests ->
             if (response == Network.NetworkResponse.OK)
                 quests.setMapOfQuests(listOfQuests)
@@ -189,16 +189,6 @@ fun loadQuests(callback: (response: Network.NetworkResponse) -> Unit) {
                 quests.tips[quests.step][tipNumber] = true
                 callback(response, tipNumber)
             }
-        }
-    }
-
-    companion object {
-        lateinit var instance: DataController
-
-        fun initInstance(sharedPreferences: SharedPreferences){
-            if (::instance.isInitialized)
-                return
-            instance = DataController(sharedPreferences, Team(), Quests(), Network.instance)
         }
     }
 }

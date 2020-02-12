@@ -2,7 +2,8 @@ package ru.spbgororient.cityorientation.activities.mainActivity
 
 import ru.spbgororient.cityorientation.dataController.DataController
 
-class MainPresenter(private val view: MainContract.View) : MainContract.Presenter {
+class MainPresenter(private val view: MainContract.View,
+                    private val dataController: DataController) : MainContract.Presenter {
     override fun navigateToMyTeam() = view.showMyTeam()
 
     override fun navigateToListOfQuests() = view.showListOfQuests()
@@ -10,13 +11,13 @@ class MainPresenter(private val view: MainContract.View) : MainContract.Presente
     override fun navigateToQuest() = updateTaskFragment()
 
     override fun updateTaskFragment() {
-        val quest = DataController.instance.quests.getQuest()
-        DataController.instance.quests.let {
+        val quest = dataController.quests.getQuest()
+        dataController.quests.let {
             when {
                 quest == null -> view.showNoQuestSelected()
-                quest.startTime * 1000 > DataController.instance.currentTime -> view.showWaitingQuest()
-                it.isFinished ||(quest.startTime + quest.duration) * 1000
-                        <= DataController.instance.currentTime -> view.showFinishQuest()
+                quest.startTime * 1000 > dataController.currentTime -> view.showWaitingQuest()
+                it.isFinished || (quest.startTime + quest.duration) * 1000
+                        <= dataController.currentTime -> view.showFinishQuest()
                 else -> view.showTask()
             }
         }

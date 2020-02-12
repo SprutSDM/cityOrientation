@@ -6,16 +6,17 @@ import ru.spbgororient.cityorientation.network.Network
 import ru.spbgororient.cityorientation.quests.Quest
 
 class ListOfQuestsPresenter(private val view: ListOfQuestsContract.View,
-                            private val mainPresenter: MainContract.Presenter) : ListOfQuestsContract.Presenter {
+                            private val mainPresenter: MainContract.Presenter,
+                            private val dataController: DataController) : ListOfQuestsContract.Presenter {
     override fun joinToQuest(quest: Quest) {
-        DataController.instance.joinToQuest(quest.questId, ::callbackApply)
+        dataController.joinToQuest(quest.questId, ::callbackApply)
     }
 
     override fun onViewCreated() {
-        if (DataController.instance.quests.getListOfQuests().size == 0) {
+        if (dataController.quests.getListOfQuests().size == 0) {
             view.showNoQuests()
         } else {
-            view.showQuests(DataController.instance.quests.getListOfQuests())
+            view.showQuests(dataController.quests.getListOfQuests())
         }
     }
 
@@ -27,7 +28,7 @@ class ListOfQuestsPresenter(private val view: ListOfQuestsContract.View,
             // TODO refactor
             // MyTeamFragment.instance.setVisibleLeaveButton()
             // notifyDataSetChanged()
-            DataController.instance.loadTasks(::callbackListOfTasks)
+            dataController.loadTasks(::callbackListOfTasks)
         }
     }
 

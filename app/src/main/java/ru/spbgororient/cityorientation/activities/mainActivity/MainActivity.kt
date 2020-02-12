@@ -7,26 +7,29 @@ import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_navigation.*
+import ru.spbgororient.cityorientation.App
 import ru.spbgororient.cityorientation.fragments.finish.FinishFragment
 import ru.spbgororient.cityorientation.fragments.listOfQuests.ListOfQuestsFragment
 import ru.spbgororient.cityorientation.fragments.myTeam.MyTeamFragment
 import ru.spbgororient.cityorientation.fragments.waitingToStart.WaitingToStartFragment
 import ru.spbgororient.cityorientation.R
-import ru.spbgororient.cityorientation.dataController.DataController
 import ru.spbgororient.cityorientation.fragments.noQuestSelected.NoQuestSelectedFragment
 import ru.spbgororient.cityorientation.fragments.task.TaskFragment
 
 class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener, MainContract.View {
-    val presenter: MainContract.Presenter by lazy { MainPresenter(this) }
+    lateinit var presenter: MainContract.Presenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_navigation)
 
+        val dataController = (applicationContext as App).dataController
+        presenter = MainPresenter(this, dataController)
+
         navigation_view.setOnNavigationItemSelectedListener(this)
 
         navigation_view.selectedItemId = when {
-            DataController.instance.quests.questId == "" -> R.id.nav_list_of_quests
+            dataController.quests.questId == "" -> R.id.nav_list_of_quests
             else -> R.id.nav_quest
         }
     }
@@ -59,7 +62,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
     override fun showNoQuestSelected() = loadFragment(NoQuestSelectedFragment.instance)
 
-    private fun loadFragment(fragment: androidx.fragment.app.Fragment) {
+    private fun loadFragment(fragment: Fragment) {
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.content_frame, fragment)

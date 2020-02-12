@@ -9,14 +9,15 @@ import java.util.Locale
 import java.util.TimeZone
 
 class WaitingToStartPresenter(private val view: WaitingToStartContract.View,
-                              private val mainPresenter: MainContract.Presenter): WaitingToStartContract.Presenter {
+                              private val mainPresenter: MainContract.Presenter,
+                              private val dataController: DataController): WaitingToStartContract.Presenter {
     private lateinit var timer: CountDownTimer
     private var sdf = SimpleDateFormat(view.getTimeFormat(), Locale.US).apply {
         timeZone = TimeZone.getTimeZone("UTC")
     }
 
     override fun viewCreated() {
-        val quest = DataController.instance.quests.getQuest() ?: return
+        val quest = dataController.quests.getQuest() ?: return
         val time = quest.startTime * 1000 - System.currentTimeMillis()
         view.updateTimer(sdf.format(time))
         view.setQuestLogo(Network.URL + quest.img)
@@ -34,8 +35,8 @@ class WaitingToStartPresenter(private val view: WaitingToStartContract.View,
     }
 
     private fun startTimer() {
-        DataController.instance.quests.getQuest()?.let { quest ->
-            val time = quest.startTime * 1000 - (System.currentTimeMillis() + DataController.instance.timeOffset)
+        dataController.quests.getQuest()?.let { quest ->
+            val time = quest.startTime * 1000 - (System.currentTimeMillis() + dataController.timeOffset)
             timer = object: CountDownTimer(time, 1000L) {
                 override fun onTick(millisUntilFinished: Long) {
                     view.updateTimer(sdf.format(millisUntilFinished))

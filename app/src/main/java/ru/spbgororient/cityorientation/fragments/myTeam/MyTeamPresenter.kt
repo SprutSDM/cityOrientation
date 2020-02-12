@@ -3,17 +3,18 @@ package ru.spbgororient.cityorientation.fragments.myTeam
 import ru.spbgororient.cityorientation.dataController.DataController
 import ru.spbgororient.cityorientation.network.Network
 
-class MyTeamPresenter(private val view: MyTeamContract.View) : MyTeamContract.Presenter {
+class MyTeamPresenter(private val view: MyTeamContract.View,
+                      private val dataController: DataController) : MyTeamContract.Presenter {
 
     override fun onViewCreated() {
-        if (DataController.instance.quests.questId == "") {
+        if (dataController.quests.questId == "") {
             view.disableLeaveQuestButton()
         } else {
             view.activateLeaveQuestButton()
         }
-        view.setLogin(DataController.instance.team.login)
-        view.setTeamName(DataController.instance.team.teamName)
-        view.setPassword(DataController.instance.team.password)
+        view.setLogin(dataController.team.login)
+        view.setTeamName(dataController.team.teamName)
+        view.setPassword(dataController.team.password)
     }
 
     override fun passwordCheckBoxChanged(isChecked: Boolean) {
@@ -26,19 +27,19 @@ class MyTeamPresenter(private val view: MyTeamContract.View) : MyTeamContract.Pr
 
     override fun renameTeam(teamName: String) {
         if (teamName != "") {
-            DataController.instance.renameTeam(teamName, ::callbackRenameTeam)
+            dataController.renameTeam(teamName, ::callbackRenameTeam)
             view.hideKeyboard()
         }
     }
 
     override fun logout() {
-        DataController.instance.resetTeam()
+        dataController.resetTeam()
         view.openLoginActivity()
     }
 
     override fun leaveQuest() {
-        if (DataController.instance.quests.questId != "") {
-            DataController.instance.leaveQuest(::callbackLeaveQuest)
+        if (dataController.quests.questId != "") {
+            dataController.leaveQuest(::callbackLeaveQuest)
         }
     }
 

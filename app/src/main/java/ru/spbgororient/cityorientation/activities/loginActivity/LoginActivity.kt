@@ -12,17 +12,22 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.ProgressBar
 import kotlinx.android.synthetic.main.activity_login.*
+import ru.spbgororient.cityorientation.App
 import ru.spbgororient.cityorientation.R
 import ru.spbgororient.cityorientation.activities.mainActivity.MainActivity
-import ru.spbgororient.cityorientation.dataController.DataController
 
 class LoginActivity: AppCompatActivity(), LoginContract.View {
-    private val presenter: LoginContract.Presenter by lazy { LoginPresenter(this) }
+    private lateinit var presenter: LoginContract.Presenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        DataController.instance.loadQuests({ })
+
+        val dataController = (applicationContext as App).dataController
+
+        presenter = LoginPresenter(this, dataController)
+
+        dataController.loadQuests({ })
 
         button_login.setOnClickListener {
             presenter.tryLogin(getLogin(), getPassword())

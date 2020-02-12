@@ -14,6 +14,7 @@ interface LoginContract {
     }
 
     interface Presenter {
+
         fun tryLogin(login: String, password: String)
         fun onInputPasswordImeAction(login: String, password: String)
         fun openVk()

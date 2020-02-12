@@ -150,7 +150,9 @@ class TaskFragment: Fragment(), TaskContract.View {
         fragment.setTargetFragment(this, tipNumber)
         bundle.putInt("time", time)
         fragment.arguments = bundle
-        fragment.show(fragmentManager, fragment::class.java.name)
+        activity?.let {
+            fragment.show(it.supportFragmentManager, fragment::class.java.name)
+        }
     }
 
     override fun updateTimer(timeOnStage: String, timeUntilFinish: String) {

@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.view.MenuItem
+import androidx.fragment.app.FragmentActivity
 import kotlinx.android.synthetic.main.activity_navigation.*
 import ru.spbgororient.cityorientation.App
 import ru.spbgororient.cityorientation.fragments.finish.FinishFragment

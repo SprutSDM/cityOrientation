@@ -41,13 +41,11 @@ class DataController (private val sharedPreferences: SharedPreferences,
      * @param[callback] вызывается при завершении запроса.
      */
     fun signUp(login: String, password: String, callback: (response: Network.NetworkResponse) -> Unit) {
-        Log.d("DataController", "loginTeam login:$login, password:$password")
         network.signUp(login, password) { response, teamName ->
             if (response == Network.NetworkResponse.OK) {
                 team.save(login, password, sharedPreferences)
                 team.rename(teamName)
             }
-            Log.d("DataController", response.toString())
             callback(response)
         }
     }

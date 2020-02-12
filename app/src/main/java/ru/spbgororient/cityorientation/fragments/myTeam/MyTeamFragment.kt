@@ -31,11 +31,6 @@ class MyTeamFragment: androidx.fragment.app.Fragment(), MyTeamContract.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val dataController = (activity?.applicationContext as App).dataController
-        // TODO: При перелогине в другой аккаунт остаются старые данные.
-        if (dataController.quests.questId == "") {
-            button_leave_quest.visibility = View.INVISIBLE
-        }
 
         check_box.setOnCheckedChangeListener { _, isChecked ->
             presenter.passwordCheckBoxChanged(isChecked)

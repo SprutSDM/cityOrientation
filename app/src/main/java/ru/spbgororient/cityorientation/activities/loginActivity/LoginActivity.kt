@@ -10,75 +10,74 @@ import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.ProgressBar
+import androidx.activity.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_login.*
-import ru.spbgororient.cityorientation.App
 import ru.spbgororient.cityorientation.R
 import ru.spbgororient.cityorientation.activities.mainActivity.MainActivity
 
-class LoginActivity: AppCompatActivity(), LoginContract.View {
-    private lateinit var presenter: LoginContract.Presenter
+class LoginActivity: AppCompatActivity(), OpenVkCallback, LoginClickCallback {
+    val model: LoginViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        val dataController = (applicationContext as App).dataController
-
-        presenter = LoginPresenter(this, dataController)
-
-        dataController.loadQuests({ })
-
-        button_login.setOnClickListener {
-            presenter.tryLogin(getLogin(), getPassword())
-        }
-        input_password.editText!!.setOnEditorActionListener { v, actionId, event ->
+        input_password.editText?.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                presenter.onInputPasswordImeAction(getLogin(), getPassword())
+                model.tryLogin(getLogin(), getPassword())
+                hideKeyboard()
                 true
             } else {
                 false
             }
         }
-        image_vk_logo.setOnClickListener {
-            presenter.openVk()
-        }
-        text_link_vk.setOnClickListener {
-            presenter.openVk()
-        }
+        model.snackbarMessage.observe(this, Observer { message ->
+            when (message) {
+                LoginViewModel.LoginSnackbarMessage.INVALID_LOGIN_OR_PASSWORD ->
+                    showSnackbar(R.string.snackbar_incorrect_login_or_password)
+                LoginViewModel.LoginSnackbarMessage.NO_INTERNET_CONNECTION ->
+                    showSnackbar(R.string.snackbar_no_internet_connection)
+                LoginViewModel.LoginSnackbarMessage.UNABLE_OPEN_LING ->
+                    showSnackbar(R.string.snackbar_fail_when_open_link)
+                else -> Unit
+            }
+        })
+        model.loginState.observe(this, Observer { state ->
+            when (state) {
+                LoginViewModel.LoginState.SUCCESS -> openNavigationActivity()
+                else -> Unit
+            }
+        })
     }
 
-    override fun showLoadingData() {
-        progress_bar.visibility = ProgressBar.VISIBLE
-        button_login.isEnabled = false
-    }
-
-    override fun hideLoadingData() {
-        progress_bar.visibility = ProgressBar.INVISIBLE
-        button_login.isEnabled = true
-    }
-
-    override fun hideKeyboard() {
+    private fun hideKeyboard() {
         (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(
             currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
     }
-
-    override fun showIncorrectLoginOrPassword() = showSnackbar(R.string.snackbar_incorrect_login_or_password)
-
-    override fun showFailOpenLink() = showSnackbar(R.string.snackbar_fail_when_open_link)
-
-    override fun showNoInternetConnection() = showSnackbar(R.string.snackbar_no_internet_connection)
 
     private fun showSnackbar(@StringRes messageId: Int) {
         Snackbar.make(findViewById(R.id.activity_login), getString(messageId), Snackbar.LENGTH_SHORT).show()
     }
 
-    override fun openNavigationActivity() {
+    private fun openNavigationActivity() {
         val intent = Intent(this, MainActivity::class.java)
         this.startActivity(intent)
     }
 
+    override fun onLoginClick() {
+        model.tryLogin(getLogin(), getPassword())
+    }
+
+    override fun onVkOpenClick() {
+        model.openVk(this)
+    }
+
     override fun openVk(): Boolean {
+        if (!lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
+            return false
+        }
         val url = "https://" + this.getString(R.string.website_url)
         val intent = Intent(Intent.ACTION_VIEW).apply {
             data = Uri.parse(url)

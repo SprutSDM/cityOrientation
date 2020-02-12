@@ -19,7 +19,6 @@ class TaskPresenter(private val view: TaskContract.View,
     }
 
     override fun checkAnswer(answer: String) {
-        Log.d("app debug", "answer: $answer")
         if (answer.toLowerCase(Locale.getDefault()) in dataController.quests.getTask().answers) {
             dataController.completeTask(::completeTaskCallback)
         }

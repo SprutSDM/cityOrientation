@@ -1,31 +1,31 @@
 package ru.spbgororient.cityorientation.activities.loginActivity
 
-import ru.spbgororient.cityorientation.dataController.DataController
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
+import ru.spbgororient.cityorientation.App
 import ru.spbgororient.cityorientation.network.Network
 
-class LoginPresenter(private val view: LoginContract.View,
-                     private val dataController: DataController): LoginContract.Presenter {
+class LoginViewModel(app: App) : AndroidViewModel(app) {
 
-    override fun tryLogin(login: String, password: String) {
+    private val dataController = app.dataController
+    val loginState = MutableLiveData<LoginState>(LoginState.INPUT_DATA)
+    val snackbarMessage = MutableLiveData<LoginSnackbarMessage>(LoginSnackbarMessage.NO)
+
+    init {
+        dataController.loadQuests {  }
+    }
+
+    fun tryLogin(login: String, password: String) {
         if (!loginAndPasswordNotEmpty(login, password)) {
             return
         }
-        view.showLoadingData()
+        loginState.value = LoginState.IN_PROGRESS
         dataController.signUp(login, password, ::callbackLogin)
     }
 
-    override fun onInputPasswordImeAction(login: String, password: String) {
-        if (!loginAndPasswordNotEmpty(login, password)) {
-            return
-        }
-        view.hideKeyboard()
-        view.showLoadingData()
-        dataController.signUp(login, password, ::callbackLogin)
-    }
-
-    override fun openVk() {
-        if (!view.openVk()) {
-            view.showFailOpenLink()
+    fun openVk(callback: OpenVkCallback) {
+        if (!callback.openVk()) {
+            snackbarMessage.value = LoginSnackbarMessage.UNABLE_OPEN_LING
         }
     }
 
@@ -38,8 +38,8 @@ class LoginPresenter(private val view: LoginContract.View,
         if (response == Network.NetworkResponse.OK) {
             dataController.getState(::callbackGetState)
         } else {
-            view.hideLoadingData()
-            view.showNoInternetConnection()
+            loginState.value = LoginState.INPUT_DATA
+            snackbarMessage.value = LoginSnackbarMessage.INVALID_LOGIN_OR_PASSWORD
         }
     }
 
@@ -50,13 +50,13 @@ class LoginPresenter(private val view: LoginContract.View,
         if (response == Network.NetworkResponse.OK) {
             // Если текущий квест не выбран, то сразу переходим на MainActivity
             if (dataController.quests.questId == "") {
-                view.hideLoadingData()
-                view.openNavigationActivity()
+                loginState.value = LoginState.SUCCESS
             } else { // Иначе грузим текущие задачи.
                 dataController.loadTasks(::callbackListOfTasks)
             }
         } else {
-            view.hideLoadingData()
+            loginState.value = LoginState.INPUT_DATA
+            snackbarMessage.value = LoginSnackbarMessage.NO_INTERNET_CONNECTION
         }
     }
 
@@ -65,8 +65,20 @@ class LoginPresenter(private val view: LoginContract.View,
      */
     private fun callbackListOfTasks(response: Network.NetworkResponse) {
         if (response == Network.NetworkResponse.OK) {
-            view.hideLoadingData()
-            view.openNavigationActivity()
+            loginState.value = LoginState.SUCCESS
         }
+    }
+
+    enum class LoginState {
+        IN_PROGRESS,
+        SUCCESS,
+        INPUT_DATA
+    }
+
+    enum class LoginSnackbarMessage {
+        INVALID_LOGIN_OR_PASSWORD,
+        NO_INTERNET_CONNECTION,
+        UNABLE_OPEN_LING,
+        NO
     }
 }

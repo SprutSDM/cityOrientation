@@ -36,8 +36,6 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        Log.d("NavigationItemSelected", "item: $item\n" +
-                                        "${MyTeamFragment.instance}")
         when (item.itemId) {
             R.id.nav_my_group -> presenter.navigateToMyTeam()
             R.id.nav_list_of_quests -> presenter.navigateToListOfQuests()

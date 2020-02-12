@@ -47,7 +47,6 @@ class TaskFragment: Fragment(), TaskContract.View {
             when (actionId) {
                 EditorInfo.IME_ACTION_DONE -> {
                     if (edit_answer.text.toString() != "") {
-                        Log.d("app debug", "pressed enter")
                         presenter.checkAnswer(edit_answer.text.toString())
                     }
                     true
@@ -57,7 +56,6 @@ class TaskFragment: Fragment(), TaskContract.View {
         }
         button_check_answer.setOnClickListener {
             if (edit_answer.text.toString() != "") {
-                Log.d("app debug", "pressed button")
                 presenter.checkAnswer(edit_answer.text.toString())
             }
         }

@@ -62,10 +62,5 @@ class WaitingToStartFragment: androidx.fragment.app.Fragment(), WaitingToStartCo
 
     companion object {
         var instance: WaitingToStartFragment = WaitingToStartFragment()
-
-        fun newInstance(): WaitingToStartFragment {
-            instance = WaitingToStartFragment()
-            return instance
-        }
     }
 }

@@ -3,6 +3,7 @@
     <string name="snackbar_no_internet_connection">Нет соединения с сетью Интернет!</string>
     <string name="snackbar_incorrect_login_or_password">Неправильный логин или пароль!</string>
     <string name="snackbar_fail_when_open_link">Произошла ошибка при открытии ссылки!</string>
+    <string name="snackbar_login_or_password_is_empty">Логин и пароль не должны быть пустыми!</string>
 
     <string name="sdf_full_time">dd MMM в HH:mm</string>
     <string name="sdf_time">HH:mm:ss</string>

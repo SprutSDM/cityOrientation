@@ -6,8 +6,8 @@
         <import type="android.view.View"/>
         <import type="ru.spbgororient.cityorientation.activities.loginActivity.LoginViewModel.LoginState"/>
         <variable
-            name="loading"
-            type="LoginState"/>
+            name="model"
+            type="ru.spbgororient.cityorientation.activities.loginActivity.LoginViewModel"/>
         <variable
             name="callback"
             type="ru.spbgororient.cityorientation.activities.loginActivity.LoginClickCallback" />
@@ -93,7 +93,6 @@
                     android:ems="10"
                     android:hint="@string/hint_password"
                     android:importantForAutofill="no"
-                    android:imeOptions="actionDone"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -108,7 +107,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:text="@string/continue_button"
-                android:enabled="@{loading == LoginState.IN_PROGRESS ? false : true}"
+                android:enabled="@{model.loginState != LoginState.IN_PROGRESS}"
                 android:backgroundTint="@color/colorAccent"
                 android:textColor="@color/colorWhite"
                 android:onClick="@{() -> callback.onLoginClick()}"
@@ -147,7 +146,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:visibility="@{loading == LoginState.IN_PROGRESS ? View.VISIBLE : View.GONE}"
+                android:visibility="@{model.loginState == LoginState.IN_PROGRESS ? View.VISIBLE : View.GONE}"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>

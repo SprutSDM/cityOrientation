@@ -1,38 +1,40 @@
 package ru.spbgororient.cityorientation.activities.loginActivity
 
 import android.content.ActivityNotFoundException
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
+import android.widget.EditText
 import androidx.annotation.StringRes
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
-import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
-import kotlinx.android.synthetic.main.activity_login.*
 import ru.spbgororient.cityorientation.R
 import ru.spbgororient.cityorientation.activities.mainActivity.MainActivity
+import ru.spbgororient.cityorientation.databinding.ActivityLoginBinding
 
 class LoginActivity: AppCompatActivity(), OpenVkCallback, LoginClickCallback {
     val model: LoginViewModel by viewModels()
 
+    private lateinit var loginEditView: EditText
+    private lateinit var passwordEditView: EditText
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
 
-        input_password.editText?.setOnEditorActionListener { v, actionId, event ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                model.tryLogin(getLogin(), getPassword())
-                hideKeyboard()
-                true
-            } else {
-                false
-            }
-        }
+        val binding: ActivityLoginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login)
+        binding.lifecycleOwner = this
+        binding.callback = this
+        binding.model = model
+        //setContentView(R.layout.activity_login)
+
+        loginEditView = findViewById(R.id.edit_login)
+        passwordEditView = findViewById(R.id.edit_password)
+
         model.snackbarMessage.observe(this, Observer { message ->
             when (message) {
                 LoginViewModel.LoginSnackbarMessage.INVALID_LOGIN_OR_PASSWORD ->
@@ -41,6 +43,8 @@ class LoginActivity: AppCompatActivity(), OpenVkCallback, LoginClickCallback {
                     showSnackbar(R.string.snackbar_no_internet_connection)
                 LoginViewModel.LoginSnackbarMessage.UNABLE_OPEN_LING ->
                     showSnackbar(R.string.snackbar_fail_when_open_link)
+                LoginViewModel.LoginSnackbarMessage.LOGIN_OR_PASSWORD_IS_EMPTY ->
+                    showSnackbar(R.string.snackbar_login_or_password_is_empty)
                 else -> Unit
             }
         })
@@ -50,11 +54,6 @@ class LoginActivity: AppCompatActivity(), OpenVkCallback, LoginClickCallback {
                 else -> Unit
             }
         })
-    }
-
-    private fun hideKeyboard() {
-        (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(
-            currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
     }
 
     private fun showSnackbar(@StringRes messageId: Int) {
@@ -90,7 +89,7 @@ class LoginActivity: AppCompatActivity(), OpenVkCallback, LoginClickCallback {
         }
     }
 
-    private fun getLogin(): String = input_login.editText!!.text.toString()
+    private fun getLogin(): String = loginEditView.text.toString()
 
-    private fun getPassword(): String = input_password.editText!!.text.toString()
+    private fun getPassword(): String = passwordEditView.text.toString()
 }

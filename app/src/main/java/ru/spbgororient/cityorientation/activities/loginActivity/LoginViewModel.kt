@@ -1,14 +1,16 @@
 package ru.spbgororient.cityorientation.activities.loginActivity
 
+import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import ru.spbgororient.cityorientation.App
 import ru.spbgororient.cityorientation.network.Network
 
-class LoginViewModel(app: App) : AndroidViewModel(app) {
+class LoginViewModel(app: Application) : AndroidViewModel(app) {
 
-    private val dataController = app.dataController
-    val loginState = MutableLiveData<LoginState>(LoginState.INPUT_DATA)
+    private val dataController = (app as App).dataController
+    var loginState = MutableLiveData<LoginState>(LoginState.INPUT_DATA)
     val snackbarMessage = MutableLiveData<LoginSnackbarMessage>(LoginSnackbarMessage.NO)
 
     init {
@@ -17,6 +19,7 @@ class LoginViewModel(app: App) : AndroidViewModel(app) {
 
     fun tryLogin(login: String, password: String) {
         if (!loginAndPasswordNotEmpty(login, password)) {
+            snackbarMessage.value = LoginSnackbarMessage.LOGIN_OR_PASSWORD_IS_EMPTY
             return
         }
         loginState.value = LoginState.IN_PROGRESS
@@ -35,12 +38,13 @@ class LoginViewModel(app: App) : AndroidViewModel(app) {
      * Вызывается при завершении login команды.
      */
     private fun callbackLogin(response: Network.NetworkResponse) {
-        if (response == Network.NetworkResponse.OK) {
-            dataController.getState(::callbackGetState)
-        } else {
-            loginState.value = LoginState.INPUT_DATA
-            snackbarMessage.value = LoginSnackbarMessage.INVALID_LOGIN_OR_PASSWORD
+        when (response) {
+            Network.NetworkResponse.OK -> return dataController.getState(::callbackGetState)
+            Network.NetworkResponse.FAILURE -> snackbarMessage.value = LoginSnackbarMessage.INVALID_LOGIN_OR_PASSWORD
+            Network.NetworkResponse.NETWORK_ERROR -> snackbarMessage.value = LoginSnackbarMessage.NO_INTERNET_CONNECTION
+            else -> Unit
         }
+        loginState.value = LoginState.INPUT_DATA
     }
 
     /**
@@ -79,6 +83,7 @@ class LoginViewModel(app: App) : AndroidViewModel(app) {
         INVALID_LOGIN_OR_PASSWORD,
         NO_INTERNET_CONNECTION,
         UNABLE_OPEN_LING,
+        LOGIN_OR_PASSWORD_IS_EMPTY,
         NO
     }
 }

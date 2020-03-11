@@ -12,10 +12,10 @@ import ru.spbgororient.cityorientation.team.Team
  * Сохраняет некоторые данные сразу в [Team] и [Quests], убирая таким образом эту обязанность с кода,
  * в котором вызываются эти методы. Данные возвращаются через callback.
  */
-class DataController private constructor(private val sharedPreferences: SharedPreferences,
-                                         val team: Team,
-                                         val quests: Quests,
-                                         private val network: Network) {
+class DataController (private val sharedPreferences: SharedPreferences,
+                      private val network: Network) {
+    val team = Team()
+    val quests = Quests()
     var timeZone: Long = 0
     var timeOffset: Long = 0
     val currentTime: Long
@@ -41,13 +41,11 @@ class DataController private constructor(private val sharedPreferences: SharedPr
      * @param[callback] вызывается при завершении запроса.
      */
     fun signUp(login: String, password: String, callback: (response: Network.NetworkResponse) -> Unit) {
-        Log.d("DataController", "loginTeam login:$login, password:$password")
         network.signUp(login, password) { response, teamName ->
             if (response == Network.NetworkResponse.OK) {
                 team.save(login, password, sharedPreferences)
                 team.rename(teamName)
             }
-            Log.d("DataController", response.toString())
             callback(response)
         }
     }
@@ -189,16 +187,6 @@ class DataController private constructor(private val sharedPreferences: SharedPr
                 quests.tips[quests.step][tipNumber] = true
                 callback(response, tipNumber)
             }
-        }
-    }
-
-    companion object {
-        lateinit var instance: DataController
-
-        fun initInstance(sharedPreferences: SharedPreferences){
-            if (::instance.isInitialized)
-                return
-            instance = DataController(sharedPreferences, Team(), Quests(), Network.instance)
         }
     }
 }

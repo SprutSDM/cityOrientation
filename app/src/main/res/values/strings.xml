@@ -1,8 +1,10 @@
 <resources>
     <string name="app_name">Неизвестный Питер</string>
-    <string name="no_internet_connection">Нет соединения с сетью Интернет</string>
-    <string name="incorrect_login_or_password">Неправильный логин или пароль!</string>
-    <string name="fail_when_open_link">Произошла ошибка при открытии ссылки</string>
+    <string name="snackbar_no_internet_connection">Нет соединения с сетью Интернет!</string>
+    <string name="snackbar_incorrect_login_or_password">Неправильный логин или пароль!</string>
+    <string name="snackbar_fail_when_open_link">Произошла ошибка при открытии ссылки!</string>
+    <string name="snackbar_login_or_password_is_empty">Логин и пароль не должны быть пустыми!</string>
+
     <string name="sdf_full_time">dd MMM в HH:mm</string>
     <string name="sdf_time">HH:mm:ss</string>
     <string name="sdf_time_with_exlp">HHч. mmмин. ssсек.</string>
@@ -12,13 +14,12 @@
     <string name="tip_number">Подсказка №%1$d: %2$s</string>
     <string name="no_tip">К этому заданию нет подсказки №%1$d</string>
     <string name="get_tip">Получить подсказку</string>
-    <string name="get_tip_number_1">Получить подсказку №1</string>
-    <string name="get_tip_number_2">Получить подсказку №2</string>
+    <string name="get_tip_number">Получить подсказку №%1$d</string>
     <string name="warning_get_tip">"Вы действительно хотите воспользоваться подсказкой №%1$d?\n\nЭто добавит %2$s штрафного времени!"</string>
     <string name="ok">OK</string>
     <string name="cancel">Отмена</string>
-    <string name="correct">Правильно!</string>
-    <string name="wrong">Ответ неверный!</string>
+    <string name="correct_answer">Правильно!</string>
+    <string name="incorrect_answer">Ответ неверный!</string>
 
     <string name="image_desc">Картинка задания</string>
     <string name="logo_desc">Лого Игры</string>
